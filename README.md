@@ -1,3 +1,6 @@
+[English](#english) | [Русский](#russian)
+<a name="english"></a>
+
 # Mandelbrot set. 60 FPS and palette rotation
 
 ## Palette Rotation Logic
@@ -77,7 +80,7 @@ OpenMP - Scalability: Your code will run equally efficiently on a 4-core laptop 
 
 
 
-
+<a name="russian"></a>
 # Множество Мандельброта. 60 FPS и вращение палитры
 
 ## Логика вращения палитры
