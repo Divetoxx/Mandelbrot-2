@@ -38,6 +38,7 @@ The application provides intuitive mouse and keyboard controls for exploring the
 ### Keyboard Navigation
 *   **F1 - F8 Keys:** Instantly jump to 8 predefined iconic locations within the Mandelbrot set.
 
+```C++
 const long double PRESETS[8][3] = {
     {-0.7849975438787509L, 0.1465897423090329L, 0.00000000000015L},
     {-1.39968383250956L, -0.0005525550160L, 0.0000000000146L},
@@ -48,6 +49,7 @@ const long double PRESETS[8][3] = {
     {-1.3996669964593604L, 0.0005429083913L, 0.000000000000026L},
     {-0.5503493176297569L, 0.6259309572825709L, 0.00000000000031L}
 };
+```
 
 *   **UP / DOWN Arrows:** Precision zoom in/out by a factor of **2.0x**.
 *   **LEFT / RIGHT Arrows:** Fine-tuned zoom in/out by a factor of **1.1x**.
@@ -109,6 +111,7 @@ pal[a][2]:=Random(256)
 WM_LBUTTONDOWN (Левая кнопка) - увеличиваем масштаб в 2 раза и центрируем новую область вокруг точки клика
 а WM_RBUTTONDOWN (Правая кнопка) - уменьшаем. В VK_F1 - VK_F8 - восемь мест Множество Мандельброта на экран.
 
+```C++
 const long double PRESETS[8][3] = {
     {-0.7849975438787509L, 0.1465897423090329L, 0.00000000000015L},
     {-1.39968383250956L, -0.0005525550160L, 0.0000000000146L},
@@ -119,6 +122,7 @@ const long double PRESETS[8][3] = {
     {-1.3996669964593604L, 0.0005429083913L, 0.000000000000026L},
     {-0.5503493176297569L, 0.6259309572825709L, 0.00000000000031L}
 };
+```
 
 VK_UP (Стрелка ВВЕРХ) и VK_DOWN (Стрелка ВНИЗ) - увеличиваем и уменьшаем в 2 раза но без точки клика.
 А в VK_LEFT (Стрелка ВЛЕВО) и VK_RIGHT (Стрелка ВПРАВО) - в 1.1 раз.
