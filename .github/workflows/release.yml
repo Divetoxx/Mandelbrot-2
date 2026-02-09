@@ -1,4 +1,4 @@
-name: Create Release
+name: Create Release Windows Only
 
 on:
   push:
@@ -10,55 +10,26 @@ permissions:
 
 jobs:
   build:
-    name: Build for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+    name: Build Windows App
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install OpenMP (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo apt-get update && sudo apt-get install libomp-dev
-
-      - name: Compile (Linux)
-        if: matrix.os == 'ubuntu-latest'
+      - name: Compile Windows Version
         run: |
-          g++ -O3 main-2.cpp -o Mandelbrot-2_linux -fopenmp -static-libstdc++ -static-libgcc
-          strip Mandelbrot-2_linux
-      - name: Compile (Windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          g++ -O3 main-2.cpp -o Mandelbrot-2_windows.exe -lgdi32 -luser32 -ldwmapi -fopenmp -static
-          strip Mandelbrot-2_windows.exe
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: binary-${{ matrix.os }}
-          path: |
-            Mandelbrot-2_linux
-            Mandelbrot-2_windows.exe
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
+          g++ -O3 main-2.cpp -o Mandelbrot-2.exe -lgdi32 -luser32 -ldwmapi -fopenmp -static
+          strip Mandelbrot-2.exe
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Mandelbrot Release 2 ${{ github.ref_name }}"
+          name: "Mandelbrot Explorer WinAPI v${{ github.ref_name }}"
           body: |
-            ## Mandelbrot Explorer 2
-            This version includes:
-            - Parallel processing with **OpenMP**
-          files: |
-            binary-ubuntu-latest/Mandelbrot-2_linux
-            binary-windows-latest/Mandelbrot-2_windows.exe
+            ### Windows Interactive Edition
+            - High-precision 80-bit rendering
+            - WinAPI GUI with Real-time rotation
+            - Multi-threaded performance (OpenMP)
+          files: Mandelbrot-2.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
