@@ -15,7 +15,7 @@ OpenMP - Scalability: Your code will run equally efficiently on a 4-core laptop 
 
 ## Look at the results! 
 
-![Mandelbrot Set](Mandelbrot Animation 1.gif)
+![Mandelbrot Set]("Mandelbrot Animation 1.gif")
 
 **[Download Latest Version (Windows & Linux)](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 
@@ -38,7 +38,7 @@ pal[a][2]:=Random(256)
 
 ## Посмотрите на результаты!
 
-![Mandelbrot Set](Mandelbrot Animation 1.gif)
+![Mandelbrot Set]("Mandelbrot Animation 1.gif")
 
 
 **[Скачать последнюю версию (Windows и Linux)](https://github.com/Divetoxx/Mandelbrot-2/releases)**
