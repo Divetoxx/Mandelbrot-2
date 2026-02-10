@@ -13,15 +13,12 @@ pal[a][2]:=Random(256)
 ```
 
 The engine uses an 8-bit indexed color mode specifically for lightning-fast performance:
-
 *   **SetDIBColorTable Optimization:** The rendering pipeline relies on SetDIBColorTable, which is designed exclusively for indexed palettes.
 *   **Hardware Efficiency:** Since the palette is limited to 256 entries, rotating the colors only requires modifying **1024 bytes** (1 KB) of data.
 *   **Instant Updates:** Because we only update 1 KB of color data instead of re-rendering millions of pixels, the palette rotation remains incredibly smooth and fast, even on legacy hardware.
 
 ## Seamless Synchronization with DwmFlush
-
 The engine achieves perfect visual smoothness by synchronizing directly with the Windows Desktop Window Manager (DWM):
-
 *   **Adaptive Refresh Rate:** Instead of a hardcoded frame limit, the application uses DwmFlush(). This pauses code execution until the DWM has finished compositing the screen.
 *   **Monitor-Dependent FPS:** 
     - If your monitor is set to **60 Hz**, you get **60 FPS**.
@@ -29,9 +26,7 @@ The engine achieves perfect visual smoothness by synchronizing directly with the
     - On high-end **240 Hz** displays, you will see a buttery-smooth **240 FPS**.
 *   **Zero Tearing:** By aligning with the system's vertical sync (VSync) settings, the fractal animation remains perfectly stable without any screen tearing.
 
-
 ## Controls & Hotkeys
-
 The application provides intuitive mouse and keyboard controls for exploring the fractal:
 
 ### Mouse Controls
@@ -58,17 +53,25 @@ const long double PRESETS[8][3] = {
 *   **LEFT / RIGHT Arrows:** Fine-tuned zoom in/out by a factor of **1.1x**.
 
 ### Data Management
-*   **ENTER (VK_RETURN):** Export current coordinates. The program saves the exact `absc`, `ordi`, and `size_val` to **Mandelbrot.txt** with 20-digit precision.
+*   **ENTER (VK_RETURN):** Export current coordinates. The program saves the exact `absc`, `ordi`, and `size_val` to **Mandelbrot.txt**.
 
 ![Mandelbrot txt](1.png)
 
 *   **BACKSPACE (VK_BACK):** Import coordinates. Reads the three values from **Mandelbrot.txt** and instantly renders that location.
 
-
 ## OpenMP
-
+OpenMP is a standard that tells the compiler, "Take this loop and distribute the iterations among the different processor cores."
+Yes, using OpenMP you are doing parallel programming at the Multithreading level.
 Everything is powered by **OpenMP** parallel loops for maximum performance.
 OpenMP - Scalability: Your code will run equally efficiently on a 4-core laptop and a 128-core server.
+
+## High-Precision Rendering (80-bit vs 64-bit)
+Most Mandelbrot explorers use standard **64-bit double precision**, which leads to "pixelation" and math collapse at zoom levels around $10^{14}$. 
+This project leverages **80-bit Extended Precision Arithmetic** (`long double`) to push the boundaries of the fractal:
+
+*   **Standard Double (64-bit):** Fails at deep zoom, turning the fractal into a blurry mess.
+*   **My Implementation (80-bit):** Provides **4 extra decimal digits** of precision, allowing you to explore **10,000x deeper** ($10^{18}$ range).
+*   **Hardware Optimized:** Directly utilizes the **x87 FPU registers** for maximum mathematical depth.
 
 ## Look at the results! 
 
@@ -99,9 +102,7 @@ pal[a][2]:=Random(256)
 Когда вы вращаете палитру вы меняете всего 1024 байта, поэтому это работает
 невероятно быстро даже на старом железе.
 
-
 ## DwmFlush
-
 А DwmFlush - синхронизация с монитором, как обычно 60 fps. DwmFlush() приостанавливает выполнение вашего кода
 до тех пор, пока диспетчер окон (DWM) не обновит экран. Если ваш монитор работает на 144 Гц,
 функция будет срабатывать 144 раза в секунду, обеспечивая 144 FPS.
@@ -110,7 +111,6 @@ pal[a][2]:=Random(256)
 получите 240 FPS. Она даст 60 FPS только если ваш монитор настроен на 60 Гц; на игровых мониторах FPS будет выше, согласно их герцовке. 
 
 ## Горячие клавиши
-
 WM_LBUTTONDOWN (Левая кнопка) - увеличиваем масштаб в 2 раза и центрируем новую область вокруг точки клика
 а WM_RBUTTONDOWN (Правая кнопка) - уменьшаем. В VK_F1 - VK_F8 - восемь мест Множество Мандельброта на экран.
 
@@ -135,26 +135,28 @@ VK_UP (Стрелка ВВЕРХ) и VK_DOWN (Стрелка ВНИЗ) - уве�
 
 ![Mandelbrot txt](1.png)
 
-Устанавливаем точность 20 знаков после запятой
-
 А VK_BACK (это та самая клавиша НАД Enter, Backspace) - читает Mandelbrot.txt (читаем три строки из файла) и запускает на экран.
 
-
 ## OpenMP
-
-И тоже параллельный цикл OpenMP. OpenMP - масштабируемость: ваш код будет одинаково эффективно работать как на 4-ядерном ноутбуке,
+OpenMP - это стандарт, который говорит компилятору: "Возьми этот цикл и сам раздай итерации разным ядрам процессора".
+Используя OpenMP, вы занимаетесь параллельным программированием на уровне многопоточности (Multithreading).
+OpenMP - масштабируемость: ваш код будет одинаково эффективно работать как на 4-ядерном ноутбуке,
 так и на 128-ядерном сервере.
+
+## Высокоточная отрисовка (80-бит против 64-бит)
+Большинство исследователей фрактала Мандельброта используют стандартную **64-битную двойную точность**,
+что приводит к "пикселизации" и коллапсу математических вычислений при масштабировании около $10^{14}$.
+
+В этом проекте используется **80-битная арифметика с расширенной точностью** (<long double>) для расширения границ фрактала:
+
+* **Стандартная двойная точность (64-бит):** Не работает при глубоком масштабировании, превращая фрактал в размытое изображение.
+* **Моя реализация (80-бит):** Обеспечивает **4 дополнительных десятичных знака** точности, позволяя исследовать **в 10 000 раз глубже** (диапазон $10^{18}$).
+* **Аппаратная оптимизация:** Непосредственно использует **регистры FPU x87** для максимальной глубины математических вычислений.
 
 ## Посмотрите на результаты!
 
 ![Mandelbrot Animation](mandelbrot_animation.gif)
 ![Mandelbrot Animation](mandelbrot_animation2.gif)
 
-
 **[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
-
-
-
-
-
 
