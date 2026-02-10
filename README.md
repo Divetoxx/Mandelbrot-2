@@ -75,7 +75,7 @@ This project leverages **80-bit Extended Precision Arithmetic** (`long double`) 
 
 ## Look at the results! 
 
-![Mandelbrot Animation](mandelbrot_animation.mp4)
+![Mandelbrot Animation](mandelbrot_animation.gif)
 ![Mandelbrot Animation](mandelbrot_animation2.mp4)
 
 **[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
