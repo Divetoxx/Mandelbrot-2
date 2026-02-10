@@ -23,7 +23,10 @@ jobs:
         with:
           name: "Mandelbrot Explorer WinAPI ${{ github.ref_name }}"
           body: |
-            ### Windows Interactive Edition
+            ## Windows Interactive Edition
+            <video src="https://github.com{{ github.repository }}/raw/main/1.mp4" 
+                   autoplay loop muted playsinline style="max-width:100%;">
+            </video>
             - High-precision 80-bit rendering
             - WinAPI GUI with Real-time rotation
             - Multi-threaded performance (OpenMP)
