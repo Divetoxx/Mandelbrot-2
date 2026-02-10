@@ -156,15 +156,11 @@ OpenMP - масштабируемость: ваш код будет одинак
 ## Посмотрите на результаты!
 
 
-<video src="https://github.com/Divetoxx/Mandelbrot-2/raw/main/mandelbrot_animation.mp4" width="600"></video>
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/2015b37e-7a52-485a-93a6-25d0c84cc10f" width="600" controls muted loop>
+  </video>
+</div>
 
-
-
-https://github.com/user-attachments/assets/2015b37e-7a52-485a-93a6-25d0c84cc10f
-
-
-
-![Mandelbrot Animation](mandelbrot_animation2.mp4)
 
 **[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 
