@@ -75,7 +75,11 @@ This project leverages **80-bit Extended Precision Arithmetic** (`long double`) 
 
 ## The videos are small - they show the program! 
 
+https://github.com/user-attachments/assets/38b9b4a7-74ae-490a-ab65-8b684a27faf1
 
+https://github.com/user-attachments/assets/0b746d25-365a-4ac3-9b93-9bbc218bfd86
+
+https://github.com/user-attachments/assets/feaa147e-b9d3-4c97-8cad-66f69bfebbe7
 
 **[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 
@@ -154,11 +158,11 @@ OpenMP - масштабируемость: ваш код будет одинак
 
 ## Видео маленькие - показывает программу!
 
-https://github.com/Divetoxx/Mandelbrot-2/blob/main/Mandelbrot1.mp4
+https://github.com/user-attachments/assets/38b9b4a7-74ae-490a-ab65-8b684a27faf1
 
-https://github.com/Divetoxx/Mandelbrot-2/blob/main/Mandelbrot2.mp4
+https://github.com/user-attachments/assets/0b746d25-365a-4ac3-9b93-9bbc218bfd86
 
-https://github.com/Divetoxx/Mandelbrot-2/blob/main/Mandelbrot3.mp4
+https://github.com/user-attachments/assets/feaa147e-b9d3-4c97-8cad-66f69bfebbe7
 
 **[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 
