@@ -55,7 +55,7 @@ const long double PRESETS[8][3] = {
 ### Data Management
 *   **ENTER (VK_RETURN):** Export current coordinates. The program saves the exact `absc`, `ordi`, and `size_val` to **Mandelbrot.txt**.
 
-![Mandelbrot txt](1.png)
+![Mandelbrot txt](Mandelbrot.png)
 
 *   **BACKSPACE (VK_BACK):** Import coordinates. Reads the three values from **Mandelbrot.txt** and instantly renders that location.
 
@@ -73,9 +73,9 @@ This project leverages **80-bit Extended Precision Arithmetic** (`long double`) 
 *   **My Implementation (80-bit):** Provides **4 extra decimal digits** of precision, allowing you to explore **10,000x deeper** ($10^{18}$ range).
 *   **Hardware Optimized:** Directly utilizes the **x87 FPU registers** for maximum mathematical depth.
 
-## Look at the results! 
+## The videos are small - they show the program! 
 
-![Mandelbrot Animation](mandelbrot_animation.gif)
+
 
 **[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 
@@ -132,7 +132,7 @@ VK_UP (Стрелка ВВЕРХ) и VK_DOWN (Стрелка ВНИЗ) - уве�
 Очень важно VK_RETURN (Enter, Ввод) - у вас сейчас на экран какое-то Множество Мандельброта.
 И сейчас оно запишется в файл! Mandelbrot.txt вот таком виде:
 
-![Mandelbrot txt](1.png)
+![Mandelbrot txt](Mandelbrot.png)
 
 А VK_BACK (это та самая клавиша НАД Enter, Backspace) - читает Mandelbrot.txt (читаем три строки из файла) и запускает на экран.
 
@@ -152,9 +152,9 @@ OpenMP - масштабируемость: ваш код будет одинак
 * **Моя реализация (80-бит):** Обеспечивает **4 дополнительных десятичных знака** точности, позволяя исследовать **в 10 000 раз глубже** (диапазон $10^{18}$).
 * **Аппаратная оптимизация:** Непосредственно использует **регистры FPU x87** для максимальной глубины математических вычислений.
 
-## Посмотрите на результаты!
+## Видео маленькие - показывает программу!
 
-![Mandelbrot Animation](mandelbrot_animation.gif)
+
 
 **[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 

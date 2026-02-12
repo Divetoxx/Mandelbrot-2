@@ -16,7 +16,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Compile Windows Version
         run: |
-          g++ -O3 main-2.cpp -o Mandelbrot-2.exe -lgdi32 -luser32 -ldwmapi -fopenmp -static
+          windres resource.rc -o resource.o
+          g++ -O3 main-2.cpp resource.o -o Mandelbrot-2.exe -lgdi32 -luser32 -ldwmapi -fopenmp -static -mwindows
           strip Mandelbrot-2.exe
       - name: Create Release
         uses: softprops/action-gh-release@v2
