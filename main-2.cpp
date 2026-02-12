@@ -258,6 +258,7 @@ int main() {
     wc.hInstance = inst;
     wc.lpszClassName = L"MandelClass";
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hIcon = LoadIcon(inst, MAKEINTRESOURCE(1));
     RegisterClass(&wc);
     HWND hwnd = CreateWindowEx(0, L"MandelClass", L"Mandelbrot Explorer 80-bit C++", 
         WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 
