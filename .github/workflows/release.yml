@@ -25,7 +25,7 @@ jobs:
           name: "Mandelbrot Explorer WinAPI ${{ github.ref_name }}"
           body: |
             ## Windows Interactive Edition
-            https://github.com/user-attachments/assets/38b9b4a7-74ae-490a-ab65-8b684a27faf1
+            https://github.com/user-attachments/assets/0b746d25-365a-4ac3-9b93-9bbc218bfd86
             - High-precision 80-bit rendering
             - WinAPI GUI with Real-time rotation
             - Multi-threaded performance (OpenMP)
