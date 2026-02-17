@@ -25,9 +25,9 @@ jobs:
           name: "Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation ${{ github.ref_name }}"
           body: |
             ## Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation 
-            <video src="https://github.com/user-attachments/assets/44867c99-6c70-4fc0-a452-04e94b2598c9" controls width="600"></video>
-            <video src="https://github.com/user-attachments/assets/532f09d5-8e03-4b66-b61d-017d38de88a1" controls width="600"></video>
-            <video src="https://github.com/user-attachments/assets/79a4fa80-c936-4a9d-b1c2-3e9318bbb737" controls width="600"></video>
+            <video src="https://github.com/user-attachments/assets/44867c99-6c70-4fc0-a452-04e94b2598c9" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/532f09d5-8e03-4b66-b61d-017d38de88a1" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/79a4fa80-c936-4a9d-b1c2-3e9318bbb737" controls width="800"></video>
             - True 32-bit BGRA
             - Synchronization with DwmFlush
             - High-Precision Rendering (80-bit)
