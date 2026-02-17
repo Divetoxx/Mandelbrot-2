@@ -263,7 +263,7 @@ int main() {
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     RegisterClass(&wc);
 
-    HWND hwnd = CreateWindowEx(0, L"MandelClass", L"Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color", 
+    HWND hwnd = CreateWindowEx(0, L"MandelClass", L"Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation", 
         WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 
         WIDTH + 16, HEIGHT + 38, NULL, NULL, inst, NULL);
 
