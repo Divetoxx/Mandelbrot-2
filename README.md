@@ -1,7 +1,7 @@
 [English](#english) | [Русский](#russian)
 <a name="english"></a>
 
-# Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color
+# Mandelbrot set. 32-bit TrueColor. 60 FPS. 80-bit long double. OpenMP. Supersampling 2x2 (4 passes). Color rotation
 
 ## True 32-bit BGRA
 Migrated to full 32-bit BGRA color output, enabling smooth gradients and millions of unique shades.
@@ -121,7 +121,7 @@ https://github.com/user-attachments/assets/79a4fa80-c936-4a9d-b1c2-3e9318bbb737
 
 
 <a name="russian"></a>
-# Множество Мандельброта. 32-бит. 60 FPS. 80-бит. OpenMP. Суперсэмплинг 2x2. Цвет
+# Множество Мандельброта. 32-бит TrueColor. 60 FPS. 80-бит long double. OpenMP. Суперсэмплинг 2x2 (4 прохода). Смена цветов
 
 ## True 32-bit BGRA
 Переход на полную 32-битную цветопередачу BGRA, обеспечивающую плавные градиенты.
