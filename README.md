@@ -3,7 +3,7 @@
 
 # Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color
 
-## True 32-bit
+## True 32-bit BGRA
 Migrated to full 32-bit BGRA color output, enabling smooth gradients and millions of unique shades.
 By utilizing a native 32-bit BGRA pipeline, the engine can render millions of intermediate colors.
 
@@ -66,7 +66,7 @@ Instead of guessing what lies within a pixel, this engine takes 4 independent sa
 *    The Magic of Precision: If a thin filament falls within a pixel, it no longer "screams" with a single harsh color or disappears entirely. Instead, it becomes a clean, semi-transparent line that accurately represents the true fractal geometry.
 
 
-## Visual Aesthetics. Color
+## Visual Aesthetics. Color rotation
 The engine uses a sophisticated hybrid approach to color mapping.
 Smooth Transitions (Blue & Green): These channels are driven by phase-shifted sine and cosine waves (127 + 127 * 2 * pi * sin / cos). This creates deep, hypnotic gradients.
 High-Frequency Contrast (Red): The Red channel is populated using a pseudo-random distribution (stochastic noise).
@@ -123,7 +123,7 @@ https://github.com/user-attachments/assets/feaa147e-b9d3-4c97-8cad-66f69bfebbe7
 <a name="russian"></a>
 # Множество Мандельброта. 32-бит. 60 FPS. 80-бит. OpenMP. Суперсэмплинг 2x2. Цвет
 
-## True 32-bit
+## True 32-bit BGRA
 Переход на полную 32-битную цветопередачу BGRA, обеспечивающую плавные градиенты.
 Это позволяет отображать миллионы оттенков.
 Наш движок работает в честном 32-битном цветовом пространстве, может отображать миллионы промежуточных цветов.
@@ -192,7 +192,7 @@ True SSAA 2x2 (4 независимых образца на пиксель) по
 Она превратится в мягкую, полупрозрачную линию, которая точно передает форму фрактала.
 
 
-## Визуальная эстетика. Цвет
+## Визуальная эстетика. Смена цветов
 В движке используется сложный гибридный подход к отображению цветов.
 Плавные переходы (синий и зеленый): Эти каналы управляются сдвинутыми по фазе синусоидальными и косинусоидальными волнами (127 + 127 * 2 * pi * sin/cos). Это создает глубокие гипнотические градиенты.
 Высокочастотный контраст (красный): Красный канал заполняется с использованием псевдослучайного распределения (стохастический шум).
