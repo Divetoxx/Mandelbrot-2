@@ -22,13 +22,16 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Mandelbrot Explorer WinAPI ${{ github.ref_name }}"
+          name: "Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation ${{ github.ref_name }}"
           body: |
-            ## Windows Interactive Edition
+            ## Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation 
             https://github.com/user-attachments/assets/0b746d25-365a-4ac3-9b93-9bbc218bfd86
-            - High-precision 80-bit rendering
-            - WinAPI GUI with Real-time rotation
+            - True 32-bit BGRA
+            - Synchronization with DwmFlush
+            - High-Precision Rendering (80-bit)
             - Multi-threaded performance (OpenMP)
+            - True SSAA 2x2 (4 independent samples per pixel) direct RGB-space integration
+            - Visual Aesthetics. Color rotation
           files: Mandelbrot-2.exe
         env:
           GITHUB_TOKEN: ${{ secrets.MY_RELEASE_PAT }}
