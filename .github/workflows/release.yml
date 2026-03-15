@@ -33,7 +33,7 @@ jobs:
             - High-Precision Rendering (80-bit)
             - Multi-threaded performance (OpenMP)
             - True SSAA 2x2 (4 independent samples per pixel) direct RGB-space integration
-            - Harmonic oscillations (G, B, R)
+            - The Red, Green, and Blue channels are calculated using sine and cosine waves
           files: Mandelbrot-2.exe
         env:
           GITHUB_TOKEN: ${{ secrets.MY_RELEASE_PAT }}
