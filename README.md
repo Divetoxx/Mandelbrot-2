@@ -106,11 +106,13 @@ const long double PRESETS[8][3] = {
 
 ## The videos are small - they show the program! 
 
-https://github.com/user-attachments/assets/44867c99-6c70-4fc0-a452-04e94b2598c9
+https://github.com/user-attachments/assets/77f35c8b-98df-4b2b-ba09-b887dfff9f89
 
-https://github.com/user-attachments/assets/532f09d5-8e03-4b66-b61d-017d38de88a1
+https://github.com/user-attachments/assets/3ae964ac-2fa4-4283-8bc3-9167dedc3005
 
-https://github.com/user-attachments/assets/79a4fa80-c936-4a9d-b1c2-3e9318bbb737
+https://github.com/user-attachments/assets/990baae9-3eeb-4eea-adec-c06d4f0741f4
+
+
 
 **[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 
@@ -229,11 +231,13 @@ const long double PRESETS[8][3] = {
 
 ## Видео маленькие - показывает программу!
 
-https://github.com/user-attachments/assets/44867c99-6c70-4fc0-a452-04e94b2598c9
+https://github.com/user-attachments/assets/77f35c8b-98df-4b2b-ba09-b887dfff9f89
 
-https://github.com/user-attachments/assets/532f09d5-8e03-4b66-b61d-017d38de88a1
+https://github.com/user-attachments/assets/3ae964ac-2fa4-4283-8bc3-9167dedc3005
 
-https://github.com/user-attachments/assets/79a4fa80-c936-4a9d-b1c2-3e9318bbb737
+https://github.com/user-attachments/assets/990baae9-3eeb-4eea-adec-c06d4f0741f4
+
+
 
 **[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 
