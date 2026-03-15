@@ -33,7 +33,7 @@ jobs:
             - High-Precision Rendering (80-bit)
             - Multi-threaded performance (OpenMP)
             - True SSAA 2x2 (4 independent samples per pixel) direct RGB-space integration
-            - Visual Aesthetics. Color rotation
+            - Harmonic oscillations (G, B, R)
           files: Mandelbrot-2.exe
         env:
           GITHUB_TOKEN: ${{ secrets.MY_RELEASE_PAT }}
