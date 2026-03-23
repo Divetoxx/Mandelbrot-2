@@ -76,7 +76,7 @@ void thread_mandelbrot_calc() {
                 uint32_t i = 0;
 
                 while (i < p.iter_max && (re2 + im2) < 1000000.0L) {
-                    im = 2.0L * re * im + imc;
+                    im = (re + re) * im + imc;
                     re = re2 - im2 + rec;
                     re2 = re * re; im2 = im * im;
                     i++;
