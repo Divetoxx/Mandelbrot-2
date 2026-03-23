@@ -34,6 +34,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          token: ${{ secrets.MY_RELEASE_PAT }}
           name: "Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation ${{ github.ref_name }}"
           body: |
             ## Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation 
@@ -47,5 +48,3 @@ jobs:
             - True SSAA 2x2 (4 independent samples per pixel) direct RGB-space integration
             - The Red, Green, and Blue channels are calculated using sine and cosine waves
           files: Mandelbrot-2.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_RELEASE_PAT }}
