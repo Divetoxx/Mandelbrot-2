@@ -12,13 +12,25 @@ jobs:
   build:
     name: Build Windows App
     runs-on: windows-latest
+
     steps:
       - uses: actions/checkout@v4
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          install: mingw-w64-x86_64-gcc mingw-w64-x86_64-binutils
+          update: true
+
       - name: Compile Windows Version
+        shell: msys2 {0}
         run: |
           windres resource.rc -o resource.o
-          g++ -O3 main-2.cpp resource.o -o Mandelbrot-2.exe -lgdi32 -luser32 -ldwmapi -fopenmp -static -mwindows
+          g++ -O3 main-2.cpp resource.o -o Mandelbrot-2.exe \
+          -lgdi32 -luser32 -ldwmapi -fopenmp -static -mwindows \
+          -D__USE_MINGW_ANSI_STDIO=1
           strip Mandelbrot-2.exe
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
