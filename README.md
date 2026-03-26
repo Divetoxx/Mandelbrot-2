@@ -106,7 +106,7 @@ const long double PRESETS[8][3] = {
 
 ## The videos are small - they show the program! 
 
-https://github.com/user-attachments/assets/77f35c8b-98df-4b2b-ba09-b887dfff9f89
+https://github.com/user-attachments/assets/cab20d96-e137-47e0-9488-a2da472f08dc
 
 https://github.com/user-attachments/assets/3ae964ac-2fa4-4283-8bc3-9167dedc3005
 
@@ -231,7 +231,7 @@ const long double PRESETS[8][3] = {
 
 ## Видео маленькие - показывает программу!
 
-https://github.com/user-attachments/assets/77f35c8b-98df-4b2b-ba09-b887dfff9f89
+https://github.com/user-attachments/assets/cab20d96-e137-47e0-9488-a2da472f08dc
 
 https://github.com/user-attachments/assets/3ae964ac-2fa4-4283-8bc3-9167dedc3005
 
