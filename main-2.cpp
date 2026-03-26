@@ -33,15 +33,13 @@ std::atomic<bool> g_abort{false};
 HANDLE g_render_event;
 uint32_t g_ss_buffer[SS_W * SS_H];
 
-const long double PRESETS[8][3] = {
+const long double PRESETS[6][3] = {
     {-0.550345905862346513L, 0.625931416301985337L, 0.0000000000000029L},
     {-0.88380294401099034L, -0.23531813998049201L, 0.0000000000000019L},
     {-0.691488093510181825L, -0.465680729473216972L, 0.0000000000000016L},
     {-1.26392609056234794L, -0.17578764215262827L, 0.000000000000023L},
-    {-0.77781161182303603L, 0.13164688997878032L, 0.000000000000032L},
-    {0.36053464666960874L, 0.64131558138012431L, 0.0000000000000035L},
-    {-1.18963036804118707L, 0.30427573376836223L, 0.0000000000000014L},
-    {-0.5503493176297569L, 0.6259309572825709L, 0.00000000000031L}
+    {-1.785772754399825165L, -0.000000756806080773L, 0.0000000000000008L},
+    {-0.550343275621141512L, 0.625931269648659785L, 0.0000000000000021L}
 };
 
 void generate_full_palette(RGBQUAD* pal) {
@@ -171,7 +169,7 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             return 0;
         }
 
-if (wp >= '1' && wp <= '8') {
+if (wp >= '1' && wp <= '6') {
     int idx = (int)(wp - '1');
     g_abort = true;
     std::lock_guard<std::mutex> lock(g_params_mutex);
@@ -263,11 +261,11 @@ int main() {
     HBITMAP h_bmp = CreateDIBSection(hdc_mem, &bmi, DIB_RGB_COLORS, (void**)&screen_pixels, NULL, 0);
     SelectObject(hdc_mem, h_bmp);
 
-    g_params.size = 0.00000000000003L;
+    g_params.size = 0.0000000000000022L;
     g_params.iter_max = 50000;
     g_params.step = g_params.size / (long double)WIDTH;
-    g_params.labsc = -0.9177640112013507L - (g_params.size / 2.0L);
-    g_params.bordi = -0.2787829020420787L + (g_params.size / 2.0L);
+    g_params.labsc = -1.78577278039667471L - (g_params.size / 2.0L);
+    g_params.bordi = -0.00000075696313293L + (g_params.size / 2.0L);
     g_render_event = CreateEvent(NULL, TRUE, TRUE, NULL);
 
     std::thread(thread_mandelbrot_calc).detach();
