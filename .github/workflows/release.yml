@@ -26,7 +26,7 @@ jobs:
         shell: msys2 {0}
         run: |
           windres resource.rc -o resource.o
-          g++ -O3 main-2.cpp resource.o -o Mandelbrot-2.exe \
+          g++ -O3 main.cpp resource.o -o Mandelbrot-2.exe \
           -lgdi32 -luser32 -ldwmapi -fopenmp -static -mwindows \
           -D__USE_MINGW_ANSI_STDIO=1
           strip Mandelbrot-2.exe
@@ -38,9 +38,16 @@ jobs:
           name: "Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation ${{ github.ref_name }}"
           body: |
             ## Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation 
-            <video src="https://github.com/user-attachments/assets/cab20d96-e137-47e0-9488-a2da472f08dc" controls width="800"></video>
-            <video src="https://github.com/user-attachments/assets/3ae964ac-2fa4-4283-8bc3-9167dedc3005" controls width="800"></video>
-            <video src="https://github.com/user-attachments/assets/990baae9-3eeb-4eea-adec-c06d4f0741f4" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/5dc5ac1b-e89c-43e0-b37f-f457e203ebeb" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/c7b07a9d-768b-4a5d-915d-7aef8534ab9e" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/340ee230-f572-484b-aac9-05e6fba653ff" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/b3eac0d4-6f38-458a-b81a-a759b66ee017" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/d1a67c94-900e-467e-b5cf-8892f494b32a" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/8822f74f-77cb-4e1f-bc07-5898dff83471" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/fd0d2f71-f5af-44ee-8ae8-98863acbeb63" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/306ef593-c42e-4a88-b396-861f39779443" controls width="800"></video>
+            <video src="https://github.com/user-attachments/assets/a5790c36-0d5b-4768-b735-cdd4d3346d37" controls width="800"></video>
+
             - True 32-bit BGRA
             - Synchronization with DwmFlush
             - High-Precision Rendering (80-bit)
