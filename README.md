@@ -84,12 +84,12 @@ The application provides intuitive mouse and keyboard controls for exploring the
 const long double PRESETS[8][3] = {
     {-0.550345905862346513L, 0.625931416301985337L, 0.0000000000000029L},
     {-0.88380294401099034L, -0.23531813998049201L, 0.0000000000000019L},
-    {-0.691488093510181825L, -0.465680729473216972L, 0.0000000000000016L},
+    {-1.94053809966024986L, -0.00000120260253359L, 0.000000000000019L},
     {-1.26392609056234794L, -0.17578764215262827L, 0.000000000000023L},
-    {-0.77781161182303603L, 0.13164688997878032L, 0.000000000000032L},
-    {0.36053464666960874L, 0.64131558138012431L, 0.0000000000000035L},
-    {-1.18963036804118707L, 0.30427573376836223L, 0.0000000000000014L},
-    {-0.5503493176297569L, 0.6259309572825709L, 0.00000000000031L}
+    {-1.7857726777623849143L, 0.0000005345140451516L, 0.00000000000000053L},
+    {-0.593716453800438302L, -0.496153063339799092L, 0.0000000000000045L},
+    {-1.78577278039667471L, -0.00000075696313293L, 0.0000000000000022L},
+    {-1.40353608594492038L, -0.02929181552009826L, 0.00000000000008L}
 };
 ```
 
@@ -106,12 +106,24 @@ const long double PRESETS[8][3] = {
 
 ## The videos are small - they show the program! 
 
-https://github.com/user-attachments/assets/cab20d96-e137-47e0-9488-a2da472f08dc
 
-https://github.com/user-attachments/assets/3ae964ac-2fa4-4283-8bc3-9167dedc3005
+https://github.com/user-attachments/assets/5dc5ac1b-e89c-43e0-b37f-f457e203ebeb
 
-https://github.com/user-attachments/assets/990baae9-3eeb-4eea-adec-c06d4f0741f4
+https://github.com/user-attachments/assets/c7b07a9d-768b-4a5d-915d-7aef8534ab9e
 
+https://github.com/user-attachments/assets/340ee230-f572-484b-aac9-05e6fba653ff
+
+https://github.com/user-attachments/assets/b3eac0d4-6f38-458a-b81a-a759b66ee017
+
+https://github.com/user-attachments/assets/d1a67c94-900e-467e-b5cf-8892f494b32a
+
+https://github.com/user-attachments/assets/8822f74f-77cb-4e1f-bc07-5898dff83471
+
+https://github.com/user-attachments/assets/fd0d2f71-f5af-44ee-8ae8-98863acbeb63
+
+https://github.com/user-attachments/assets/306ef593-c42e-4a88-b396-861f39779443
+
+https://github.com/user-attachments/assets/a5790c36-0d5b-4768-b735-cdd4d3346d37
 
 
 **[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
@@ -208,12 +220,12 @@ True SSAA 2x2 (4 независимых образца на пиксель) по
 const long double PRESETS[8][3] = {
     {-0.550345905862346513L, 0.625931416301985337L, 0.0000000000000029L},
     {-0.88380294401099034L, -0.23531813998049201L, 0.0000000000000019L},
-    {-0.691488093510181825L, -0.465680729473216972L, 0.0000000000000016L},
+    {-1.94053809966024986L, -0.00000120260253359L, 0.000000000000019L},
     {-1.26392609056234794L, -0.17578764215262827L, 0.000000000000023L},
-    {-0.77781161182303603L, 0.13164688997878032L, 0.000000000000032L},
-    {0.36053464666960874L, 0.64131558138012431L, 0.0000000000000035L},
-    {-1.18963036804118707L, 0.30427573376836223L, 0.0000000000000014L},
-    {-0.5503493176297569L, 0.6259309572825709L, 0.00000000000031L}
+    {-1.7857726777623849143L, 0.0000005345140451516L, 0.00000000000000053L},
+    {-0.593716453800438302L, -0.496153063339799092L, 0.0000000000000045L},
+    {-1.78577278039667471L, -0.00000075696313293L, 0.0000000000000022L},
+    {-1.40353608594492038L, -0.02929181552009826L, 0.00000000000008L}
 };
 ```
 
@@ -231,11 +243,24 @@ const long double PRESETS[8][3] = {
 
 ## Видео маленькие - показывает программу!
 
-https://github.com/user-attachments/assets/cab20d96-e137-47e0-9488-a2da472f08dc
 
-https://github.com/user-attachments/assets/3ae964ac-2fa4-4283-8bc3-9167dedc3005
+https://github.com/user-attachments/assets/5dc5ac1b-e89c-43e0-b37f-f457e203ebeb
 
-https://github.com/user-attachments/assets/990baae9-3eeb-4eea-adec-c06d4f0741f4
+https://github.com/user-attachments/assets/c7b07a9d-768b-4a5d-915d-7aef8534ab9e
+
+https://github.com/user-attachments/assets/340ee230-f572-484b-aac9-05e6fba653ff
+
+https://github.com/user-attachments/assets/b3eac0d4-6f38-458a-b81a-a759b66ee017
+
+https://github.com/user-attachments/assets/d1a67c94-900e-467e-b5cf-8892f494b32a
+
+https://github.com/user-attachments/assets/8822f74f-77cb-4e1f-bc07-5898dff83471
+
+https://github.com/user-attachments/assets/fd0d2f71-f5af-44ee-8ae8-98863acbeb63
+
+https://github.com/user-attachments/assets/306ef593-c42e-4a88-b396-861f39779443
+
+https://github.com/user-attachments/assets/a5790c36-0d5b-4768-b735-cdd4d3346d37
 
 
 
