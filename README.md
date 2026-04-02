@@ -3,6 +3,17 @@
 
 # Mandelbrot set. 32-bit TrueColor. 60 FPS. 80-bit long double. OpenMP. Supersampling 2x2 (4 passes). Color rotation
 
+## Technical Architecture of the GUI
+The is designed for high-performance interactive fractal navigation. Key implementation details:
+
+* **Calculation Thread**: Leverages OpenMP for parallel processing of the iteration map. It populates a high-resolution buffer 
+using 80-bit long double precision, supporting zooms up to $10^{18}$.
+* **Visualization Thread**: Decoupled from the calculation logic to maintain a consistent 60 FPS UI. 
+It performs real-time color mapping and palette rotation using WinAPI DIBSections and BitBlt for direct pixel access.
+* **High-Quality Rendering**: 2x2 Supersampling (SSAA): Each visible pixel is an average of 4 calculated points, 
+effectively eliminating aliasing and "sparkling" artifacts in high-density areas.
+
+
 ## True 32-bit BGRA
 Migrated to full 32-bit BGRA color output, enabling smooth gradients and millions of unique shades.
 By utilizing a native 32-bit BGRA pipeline, the engine can render millions of intermediate colors.
@@ -167,6 +178,17 @@ the structure of galaxies-be nothing more than the result of a very simple algor
 
 <a name="russian"></a>
 # Множество Мандельброта. 32-бит TrueColor. 60 FPS. 80-бит long double. OpenMP. Суперсэмплинг 2x2 (4 прохода). Смена цветов
+
+##Техническая архитектура графического интерфейса пользователя (GUI)
+Он разработан для высокопроизводительной интерактивной навигации по фракталам. Ключевые детали реализации:
+
+* **Поток вычислений**: Использует OpenMP для параллельной обработки карты итераций. Он заполняет буфер высокого разрешения с 
+использованием 80-битной длинной двойной точности, поддерживая масштабирование до $10^{18}$.
+* **Поток визуализации**: Отделен от логики вычислений для поддержания стабильной частоты 60 кадров в секунду. 
+Он выполняет отображение цвета в реальном времени и вращение палитры с использованием WinAPI DIBSections и BitBlt для прямого доступа к пикселям.
+* **Высококачественный рендеринг**: 2x2 суперсэмплинг (SSAA): Каждый видимый пиксель представляет собой среднее значение 
+4 вычисленных точек, эффективно устраняя артефакты сглаживания и <искрящегося> изображения в областях с высокой плотностью.
+
 
 ## True 32-bit BGRA
 Переход на полную 32-битную цветопередачу BGRA, обеспечивающую плавные градиенты.
