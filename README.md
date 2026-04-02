@@ -20,8 +20,8 @@ By utilizing a native 32-bit BGRA pipeline, the engine can render millions of in
 
 
 ## Synchronization with DwmFlush
-The engine achieves perfect visual smoothness by synchronizing directly with the Windows Desktop Window Manager (DWM):
-*   **Adaptive Refresh Rate:** The application uses DwmFlush(). This pauses code execution until the DWM has finished compositing the screen.
+The engine achieves perfect visual smoothness by synchronizing directly with the Windows Desktop Window Manager (DWM).
+*   **Adaptive Refresh Rate:** The application uses DwmFlush. This pauses code execution until the DWM has finished compositing the screen.
 *   **Monitor-Dependent FPS:** 
     - If your monitor is set to **60 Hz**, you get **60 FPS**.
     - If you are using a gaming monitor at **144 Hz**, the function triggers 144 times per second, delivering **144 FPS**.
@@ -179,7 +179,7 @@ the structure of galaxies-be nothing more than the result of a very simple algor
 <a name="russian"></a>
 # Множество Мандельброта. 32-бит TrueColor. 60 FPS. 80-бит long double. OpenMP. Суперсэмплинг 2x2 (4 прохода). Смена цветов
 
-##Техническая архитектура графического интерфейса пользователя (GUI)
+## Техническая архитектура графического интерфейса пользователя (GUI)
 Он разработан для высокопроизводительной интерактивной навигации по фракталам. Ключевые детали реализации:
 
 * **Поток вычислений**: Использует OpenMP для параллельной обработки карты итераций. Он заполняет буфер высокого разрешения с 
@@ -198,12 +198,13 @@ the structure of galaxies-be nothing more than the result of a very simple algor
 
 
 ## DwmFlush
-А DwmFlush - синхронизация с монитором, как обычно 60 fps. DwmFlush() приостанавливает выполнение вашего кода
-до тех пор, пока диспетчер окон (DWM) не обновит экран. Если ваш монитор работает на 144 Гц,
-функция будет срабатывать 144 раза в секунду, обеспечивая 144 FPS.
-Функция ориентируется на текущую частоту обновления монитора, установленную в настройках Windows.
-Если в системе стоит 60 Гц, вы получите 60 FPS. Если монитор поддерживает 240 Гц и это выбрано в настройках - вы
-получите 240 FPS. Она даст 60 FPS только если ваш монитор настроен на 60 Гц; на игровых мониторах FPS будет выше, согласно их герцовке. 
+Движок обеспечивает идеальную визуальную плавность за счет прямой синхронизации с диспетчером окон рабочего стола Windows (DWM). 
+
+* **Адаптивная частота обновления**: приложение использует DwmFlush. Это приостанавливает выполнение кода до тех пор, пока DWM не завершит композицию экрана. 
+* **Зависимый от монитора FPS**: 
+  - Если ваш монитор настроен на 60 Гц, вы получите 60 кадров в секунду. 
+  - Если вы используете игровой монитор с частотой 144 Гц, функция срабатывает 144 раза в секунду, обеспечивая 144 кадра в секунду. 
+  - На высококачественных дисплеях с частотой 240 Гц вы увидите плавную картинку со скоростью 240 кадров в секунду.
 
 
 ## Высокоточная отрисовка (80-бит)
