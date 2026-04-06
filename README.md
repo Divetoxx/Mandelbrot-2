@@ -113,16 +113,18 @@ const long double PRESETS[9][3] = {
 *   **BACKSPACE (VK_BACK):** Import coordinates. Reads the three values from **Mandelbrot.txt** and instantly renders that location.
 
 
+## The videos - they show the program! 
 
-## The videos are small - they show the program! 
-
-
-
-
-
-
-
-
+https://github.com/user-attachments/assets/722fb111-9d33-419f-a2df-f29c48e20ca6
+https://github.com/user-attachments/assets/c53dd08e-ac79-4a45-837c-44ba9cba0fe8
+https://github.com/user-attachments/assets/4d89c50b-09b3-42c7-8678-7fb8de1eaf17
+https://github.com/user-attachments/assets/7f0f1a01-ba1a-4421-bd66-886a631287ba
+https://github.com/user-attachments/assets/c2df5756-5065-453b-aa95-154f7c347d09
+https://github.com/user-attachments/assets/6f537681-481b-4c17-b233-4d9ac8559f2f
+https://github.com/user-attachments/assets/bbb67bf7-1aa7-40fd-8a68-051db945844b
+https://github.com/user-attachments/assets/a601940a-82bb-463d-83f0-d79c57cc0c4a
+https://github.com/user-attachments/assets/0598bc2a-286b-441c-8cfa-32c365ee5437
+https://github.com/user-attachments/assets/9a4077e9-e492-4155-92b6-8016ce43e752
 
 
 **[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
@@ -281,21 +283,21 @@ const long double PRESETS[9][3] = {
 *   А VK_BACK (это та самая клавиша НАД Enter, Backspace) - читает Mandelbrot.txt (читаем три строки из файла) и запускает на экран.
 
 
-## Видео маленькие - показывает программу!
+## Видео - показывает программу!
 
-
-
-
-
-
-
-
-
-
+https://github.com/user-attachments/assets/722fb111-9d33-419f-a2df-f29c48e20ca6
+https://github.com/user-attachments/assets/c53dd08e-ac79-4a45-837c-44ba9cba0fe8
+https://github.com/user-attachments/assets/4d89c50b-09b3-42c7-8678-7fb8de1eaf17
+https://github.com/user-attachments/assets/7f0f1a01-ba1a-4421-bd66-886a631287ba
+https://github.com/user-attachments/assets/c2df5756-5065-453b-aa95-154f7c347d09
+https://github.com/user-attachments/assets/6f537681-481b-4c17-b233-4d9ac8559f2f
+https://github.com/user-attachments/assets/bbb67bf7-1aa7-40fd-8a68-051db945844b
+https://github.com/user-attachments/assets/a601940a-82bb-463d-83f0-d79c57cc0c4a
+https://github.com/user-attachments/assets/0598bc2a-286b-441c-8cfa-32c365ee5437
+https://github.com/user-attachments/assets/9a4077e9-e492-4155-92b6-8016ce43e752
 
 
 **[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
-
 
 
 ## Множество Мандельброта: Математический абсолют
