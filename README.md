@@ -5,12 +5,11 @@
 
 ## Technical Architecture of the GUI
 The is designed for high-performance interactive fractal navigation. Key implementation details:
-
-* **Calculation Thread**: Leverages OpenMP for parallel processing of the iteration map. It populates a high-resolution buffer 
+*   **Calculation Thread**: Leverages OpenMP for parallel processing of the iteration map. It populates a high-resolution buffer 
 using 80-bit long double precision, supporting zooms up to $10^{18}$.
-* **Visualization Thread**: Decoupled from the calculation logic to maintain a consistent 60 FPS UI. 
+*   **Visualization Thread**: Decoupled from the calculation logic to maintain a consistent 60 FPS UI. 
 It performs real-time color mapping and palette rotation using WinAPI DIBSections and BitBlt for direct pixel access.
-* **High-Quality Rendering**: 2x2 Supersampling (SSAA): Each visible pixel is an average of 4 calculated points, 
+*   **High-Quality Rendering**: 2x2 Supersampling (SSAA): Each visible pixel is an average of 4 calculated points, 
 effectively eliminating aliasing and "sparkling" artifacts in high-density areas.
 
 
@@ -31,9 +30,9 @@ The engine achieves perfect visual smoothness by synchronizing directly with the
 ## High-Precision Rendering (80-bit)
 Most Mandelbrot explorers use standard **64-bit double precision**, which leads to "pixelation" at zoom levels around $10^{14}$. 
 This project leverages **80-bit Extended Precision Arithmetic** (`long double`) to push the boundaries of the fractal:
-
 *   **My Implementation (80-bit):** Provides **4 extra decimal digits** of precision, allowing you to explore **10,000x deeper** ($10^{18}$ range).
 *   **Hardware Optimized:** Directly utilizes the **x87 FPU registers** for maximum mathematical depth.
+
 
 ## OpenMP
 OpenMP is a standard that tells the compiler, "Take this loop and distribute the iterations among the different processor cores."
@@ -51,7 +50,6 @@ Averaging iterations produces visual noise and artifacts. By accumulating 32-bit
 The result is a clean, sharp image where high-frequency details are perfectly reconstructed, not blurred away.
 True SSAA 2x2 (4 independent samples per pixel) allows for the reconstruction of micro-filaments smaller than a single screen pixel.
 Technical Note:
-
 *    Standard Way: Color( (iter1 + iter2 + iter3 + iter4) / 4 ) - Gives Noise/Artifacts.
 *    Your Way: (Color(iter1) + Color(iter2) + Color(iter3) + Color(iter4)) / 4 - Gives Pure Detail.
 
@@ -65,13 +63,12 @@ This eliminates artifacts and reveals the true structural geometry of the Mandel
 ## Why is there noise without Supersampling?
 It is a great question! As it turns out, noise without supersampling isn't a CPU error - it is a fundamental phenomenon in digital graphics known as Aliasing.
 The Mandelbrot set is infinitely complex. At its boundaries, there are "filaments" and details millions of times smaller than a single pixel on your monitor.
-
 *    Without Supersampling: The processor acts like a "needle," sampling only one single point at the exact center of a pixel. If it hits a microscopic filament, the pixel turns red. If it misses by even a micron, the pixel stays black.
 *    The Result: Neighboring pixels "grab" random fragments of micro-details. This creates mathematical noise (aliasing artifacts), which looks like grain or dirt on the image.
 
-How SSAA 2x2 "Heals" the Image
-Instead of guessing what lies within a pixel, this engine takes 4 independent samples at different corners of the pixel area.
+How SSAA 2x2 "Heals" the Image?
 
+Instead of guessing what lies within a pixel, this engine takes 4 independent samples at different corners of the pixel area.
 *    True Color Computation: The engine calculates 4 real colors for each sample point.
 *    RGB Blending: These colors are blended together in a 32-bit color space.
 *    The Magic of Precision: If a thin filament falls within a pixel, it no longer "screams" with a single harsh color or disappears entirely. Instead, it becomes a clean, semi-transparent line that accurately represents the true fractal geometry.
@@ -81,6 +78,7 @@ Instead of guessing what lies within a pixel, this engine takes 4 independent sa
 The Red, Green, and Blue channels are calculated using sine and cosine waves to create smooth color transitions:
 127 + 127 * cos(2 * PI * a / 255) and 127 + 127 * sin(2 * PI * a / 255).
 
+
 ## Controls & Hotkeys
 The application provides intuitive mouse and keyboard controls for exploring the fractal:
 
@@ -89,18 +87,19 @@ The application provides intuitive mouse and keyboard controls for exploring the
 *   **Right Click (WM_RBUTTONDOWN):** Zoom out (2x) from the current view.
 
 ### Keyboard Navigation
-*   **1 - 8 Keys:** Instantly jump to 8 predefined iconic locations within the Mandelbrot set.
+*   **1 - 9 Keys:** Instantly jump to 9 predefined iconic locations within the Mandelbrot set.
 
 ```C++
-const long double PRESETS[8][3] = {
-    {-0.550345905862346513L, 0.625931416301985337L, 0.0000000000000029L},
-    {-0.88380294401099034L, -0.23531813998049201L, 0.0000000000000019L},
-    {-1.94053809966024986L, -0.00000120260253359L, 0.000000000000019L},
-    {-1.26392609056234794L, -0.17578764215262827L, 0.000000000000023L},
-    {-1.7857726777623849143L, 0.0000005345140451516L, 0.00000000000000053L},
-    {-0.593716453800438302L, -0.496153063339799092L, 0.0000000000000045L},
+const long double PRESETS[9][3] = {
+    {-1.749949182103598356L, -0.000000005697456381L, 0.0000000000000082L},
+    {-0.1544283964364377L, -1.03085800754665175L, 0.000000000000027L},
+    {-1.749675773048651182L, -0.000001140170813768L, 0.0000000000000021L},
+    {-1.74907816150389628L, 0.00000550988750089L, 0.0000000000000015L},
+    {-1.785772653736032933L, 0.000000500077787345L, 0.0000000000000077L},
+    {-1.26707805914812303L, -0.12378821520962631L, 0.000000000000001L},
     {-1.78577278039667471L, -0.00000075696313293L, 0.0000000000000022L},
-    {-1.40353608594492038L, -0.02929181552009826L, 0.00000000000008L}
+    {-1.47907765132343401L, -0.01074925010269163L, 0.000000000000033L},
+    {-0.840953329790493429L, -0.230995969905604638L, 0.0000000000000019L}
 };
 ```
 
@@ -118,23 +117,12 @@ const long double PRESETS[8][3] = {
 ## The videos are small - they show the program! 
 
 
-https://github.com/user-attachments/assets/5dc5ac1b-e89c-43e0-b37f-f457e203ebeb
 
-https://github.com/user-attachments/assets/c7b07a9d-768b-4a5d-915d-7aef8534ab9e
 
-https://github.com/user-attachments/assets/340ee230-f572-484b-aac9-05e6fba653ff
 
-https://github.com/user-attachments/assets/b3eac0d4-6f38-458a-b81a-a759b66ee017
 
-https://github.com/user-attachments/assets/d1a67c94-900e-467e-b5cf-8892f494b32a
 
-https://github.com/user-attachments/assets/8822f74f-77cb-4e1f-bc07-5898dff83471
 
-https://github.com/user-attachments/assets/fd0d2f71-f5af-44ee-8ae8-98863acbeb63
-
-https://github.com/user-attachments/assets/306ef593-c42e-4a88-b396-861f39779443
-
-https://github.com/user-attachments/assets/a5790c36-0d5b-4768-b735-cdd4d3346d37
 
 
 **[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
@@ -149,7 +137,6 @@ It transcends everything, bypassing billions of light-years.
 
 This is not a human invention, but a mathematical discovery. It belongs to the category of "eternal truths" 
 that Plato referred to as the Realm of Ideas. This is why it remains constant for any observer in the universe:
-
 *   **Pure Logic**: It is generated by a simple formula. The rules of arithmetic are universal. Any intelligence would inevitably arrive at the exact same fractal boundaries.
 *   **Substrate Independence**: This set doesn't need a computer or a human brain to exist. It is an abstract structure woven into the very logic of the cosmos.
 *   **Fractal Constancy**: Even if physical constants were different in another galaxy, the mathematical topology of this object would remain unshakable.
@@ -179,14 +166,14 @@ the structure of galaxies-be nothing more than the result of a very simple algor
 <a name="russian"></a>
 # Множество Мандельброта. 32-бит TrueColor. 60 FPS. 80-бит long double. OpenMP. Суперсэмплинг 2x2 (4 прохода). Смена цветов
 
+
 ## Техническая архитектура графического интерфейса пользователя (GUI)
 Он разработан для высокопроизводительной интерактивной навигации по фракталам. Ключевые детали реализации:
-
-* **Поток вычислений**: Использует OpenMP для параллельной обработки карты итераций. Он заполняет буфер высокого разрешения с 
+*   **Поток вычислений**: Использует OpenMP для параллельной обработки карты итераций. Он заполняет буфер высокого разрешения с 
 использованием 80-битной длинной двойной точности, поддерживая масштабирование до $10^{18}$.
-* **Поток визуализации**: Отделен от логики вычислений для поддержания стабильной частоты 60 кадров в секунду. 
+*   **Поток визуализации**: Отделен от логики вычислений для поддержания стабильной частоты 60 кадров в секунду. 
 Он выполняет отображение цвета в реальном времени и вращение палитры с использованием WinAPI DIBSections и BitBlt для прямого доступа к пикселям.
-* **Высококачественный рендеринг**: 2x2 суперсэмплинг (SSAA): Каждый видимый пиксель представляет собой среднее значение 
+*   **Высококачественный рендеринг**: 2x2 суперсэмплинг (SSAA): Каждый видимый пиксель представляет собой среднее значение 
 4 вычисленных точек, эффективно устраняя артефакты сглаживания и <искрящегося> изображения в областях с высокой плотностью.
 
 
@@ -196,24 +183,21 @@ the structure of galaxies-be nothing more than the result of a very simple algor
 Наш движок работает в честном 32-битном цветовом пространстве, может отображать миллионы промежуточных цветов.
 
 
-
 ## DwmFlush
 Движок обеспечивает идеальную визуальную плавность за счет прямой синхронизации с диспетчером окон рабочего стола Windows (DWM). 
-
-* **Адаптивная частота обновления**: приложение использует DwmFlush. Это приостанавливает выполнение кода до тех пор, пока DWM не завершит композицию экрана. 
-* **Зависимый от монитора FPS**: 
-  - Если ваш монитор настроен на 60 Гц, вы получите 60 кадров в секунду. 
-  - Если вы используете игровой монитор с частотой 144 Гц, функция срабатывает 144 раза в секунду, обеспечивая 144 кадра в секунду. 
-  - На высококачественных дисплеях с частотой 240 Гц вы увидите плавную картинку со скоростью 240 кадров в секунду.
+*   **Адаптивная частота обновления**: приложение использует DwmFlush. Это приостанавливает выполнение кода до тех пор, пока DWM не завершит композицию экрана. 
+*   **Зависимый от монитора FPS**: 
+    - Если ваш монитор настроен на 60 Гц, вы получите 60 кадров в секунду. 
+    - Если вы используете игровой монитор с частотой 144 Гц, функция срабатывает 144 раза в секунду, обеспечивая 144 кадра в секунду. 
+    - На высококачественных дисплеях с частотой 240 Гц вы увидите плавную картинку со скоростью 240 кадров в секунду.
 
 
 ## Высокоточная отрисовка (80-бит)
 Большинство исследователей фрактала Мандельброта используют стандартную **64-битную двойную точность**,
 что приводит к "пикселизации" при масштабировании около $10^{14}$.
 В этом проекте используется **80-битная арифметика с расширенной точностью** (<long double>) для расширения границ фрактала:
-
-* **Моя реализация (80-бит):** Обеспечивает **4 дополнительных десятичных знака** точности, позволяя исследовать **в 10 000 раз глубже** (диапазон $10^{18}$).
-* **Аппаратная оптимизация:** Непосредственно использует **регистры FPU x87** для максимальной глубины математических вычислений.
+*   **Моя реализация (80-бит):** Обеспечивает **4 дополнительных десятичных знака** точности, позволяя исследовать **в 10 000 раз глубже** (диапазон $10^{18}$).
+*   **Аппаратная оптимизация:** Непосредственно использует **регистры FPU x87** для максимальной глубины математических вычислений.
 
 
 ## OpenMP
@@ -231,7 +215,6 @@ OpenMP - масштабируемость: ваш код будет одинак
 мы полностью устраняем этот шум. В результате получается чистое и четкое изображение, в котором высокочастотные детали идеально воссозданы, а не размыты.
 True SSAA 2x2 (4 независимых образца на пиксель) позволяет восстанавливать микронити размером меньше одного пикселя экрана.  
 Техническое примечание: 
-
 *    Стандартный способ: Color( (iter1 + iter2 + iter3 + iter4) / 4) - дает шум/артефакты. 
 *    Ваш способ: (Цвет(iter1) + Цвет(iter2) + Цвет(iter3) + Цвет(iter4)) / 4 - дает чистую детализацию.
 
@@ -242,18 +225,17 @@ True SSAA 2x2 (4 независимых образца на пиксель) по
 Это устраняет артефакты и раскрывает истинную структурную геометрию множества Мандельброта, которая в противном случае маскируется шумом.
 
 
-
 ## Почему шум без суперсэмплинга?
 Это отличный вопрос! Оказывается, шум без суперсэмплинга - это не ошибка процессора, а фундаментальное явление
 в цифровой графике, которое называется Алиасинг (Aliasing).
 Фрактал Мандельброта бесконечно сложен. На границах его множества существуют "нити" и детали, которые в миллионы раз меньше, чем один пиксель вашего монитора.
-
 *    Без суперсэмплинга: Процессор тыкает "иголкой" (лучом) ровно в одну точку центра пикселя. Если он попал в тонкую нить - пиксель стал красным.
 Если промахнулся на микрон - пиксель стал черным.
 *    Результат: Соседние пиксели "хватают" случайные куски микро-деталей. Это создает математический шум.
 
-Как ваш SSAA 2x2 "лечит" это: Вместо того чтобы гадать, что находится в пикселе, ваш код берет 4 пробы в разных углах этого пикселя.
+Как ваш SSAA 2x2 "лечит" это?
 
+Вместо того чтобы гадать, что находится в пикселе, ваш код берет 4 пробы в разных углах этого пикселя.
 *    Вычисляются 4 реальных цвета для каждой пробы.
 *    Эти цвета смешиваются.
 *    Магия: Если в пиксель попала тонкая нить, она не будет "кричать" одним ярким цветом или исчезать.
@@ -265,7 +247,6 @@ True SSAA 2x2 (4 независимых образца на пиксель) по
 127 + 127 * cos(2 * PI * a / 255) и 127 + 127 * sin(2 * PI * a / 255).
 
 
-
 ## Горячие клавиши
 
 ### Управление мышью
@@ -273,18 +254,19 @@ True SSAA 2x2 (4 независимых образца на пиксель) по
 *   WM_RBUTTONDOWN (Правая кнопка) - уменьшаем масштаб в 2 раза и центрируем новую область вокруг точки клика.
 
 ### Навигация с помощью клавиатуры
-*   В 1 - 8 - восемь мест Множество Мандельброта на экран.
+*   В 1 - 9 - девять мест Множество Мандельброта на экран.
 
 ```C++
-const long double PRESETS[8][3] = {
-    {-0.550345905862346513L, 0.625931416301985337L, 0.0000000000000029L},
-    {-0.88380294401099034L, -0.23531813998049201L, 0.0000000000000019L},
-    {-1.94053809966024986L, -0.00000120260253359L, 0.000000000000019L},
-    {-1.26392609056234794L, -0.17578764215262827L, 0.000000000000023L},
-    {-1.7857726777623849143L, 0.0000005345140451516L, 0.00000000000000053L},
-    {-0.593716453800438302L, -0.496153063339799092L, 0.0000000000000045L},
+const long double PRESETS[9][3] = {
+    {-1.749949182103598356L, -0.000000005697456381L, 0.0000000000000082L},
+    {-0.1544283964364377L, -1.03085800754665175L, 0.000000000000027L},
+    {-1.749675773048651182L, -0.000001140170813768L, 0.0000000000000021L},
+    {-1.74907816150389628L, 0.00000550988750089L, 0.0000000000000015L},
+    {-1.785772653736032933L, 0.000000500077787345L, 0.0000000000000077L},
+    {-1.26707805914812303L, -0.12378821520962631L, 0.000000000000001L},
     {-1.78577278039667471L, -0.00000075696313293L, 0.0000000000000022L},
-    {-1.40353608594492038L, -0.02929181552009826L, 0.00000000000008L}
+    {-1.47907765132343401L, -0.01074925010269163L, 0.000000000000033L},
+    {-0.840953329790493429L, -0.230995969905604638L, 0.0000000000000019L}
 };
 ```
 
@@ -299,27 +281,16 @@ const long double PRESETS[8][3] = {
 *   А VK_BACK (это та самая клавиша НАД Enter, Backspace) - читает Mandelbrot.txt (читаем три строки из файла) и запускает на экран.
 
 
-
 ## Видео маленькие - показывает программу!
 
 
-https://github.com/user-attachments/assets/5dc5ac1b-e89c-43e0-b37f-f457e203ebeb
 
-https://github.com/user-attachments/assets/c7b07a9d-768b-4a5d-915d-7aef8534ab9e
 
-https://github.com/user-attachments/assets/340ee230-f572-484b-aac9-05e6fba653ff
 
-https://github.com/user-attachments/assets/b3eac0d4-6f38-458a-b81a-a759b66ee017
 
-https://github.com/user-attachments/assets/d1a67c94-900e-467e-b5cf-8892f494b32a
 
-https://github.com/user-attachments/assets/8822f74f-77cb-4e1f-bc07-5898dff83471
 
-https://github.com/user-attachments/assets/fd0d2f71-f5af-44ee-8ae8-98863acbeb63
 
-https://github.com/user-attachments/assets/306ef593-c42e-4a88-b396-861f39779443
-
-https://github.com/user-attachments/assets/a5790c36-0d5b-4768-b735-cdd4d3346d37
 
 
 
@@ -336,10 +307,9 @@ https://github.com/user-attachments/assets/a5790c36-0d5b-4768-b735-cdd4d3346d37
 
 Это не человеческое изобретение, а математическое открытие. Оно принадлежит к категории <вечных истин>,
 которые Платон называл Царством Идей. Вот почему оно остается неизменным для любого наблюдателя во Вселенной:
-
-* **Чистая логика**: Оно порождается простой формулой. Правила арифметики универсальны. Любой разум неизбежно придет к одним и тем же фрактальным границам.
-* **Независимость от субстрата**: Для существования этого множества не нужен компьютер или человеческий мозг. Это абстрактная структура, вплетенная в саму логику космоса.
-* **Фрактальная постоянство**: Даже если физические константы в другой галактике будут другими, математическая топология этого объекта останется непоколебимой.
+*   **Чистая логика**: Оно порождается простой формулой. Правила арифметики универсальны. Любой разум неизбежно придет к одним и тем же фрактальным границам.
+*   **Независимость от субстрата**: Для существования этого множества не нужен компьютер или человеческий мозг. Это абстрактная структура, вплетенная в саму логику космоса.
+*   **Фрактальная постоянство**: Даже если физические константы в другой галактике будут другими, математическая топология этого объекта останется непоколебимой.
 
 Это поистине один из немногих объектов, который связывает нас с чем-то абсолютно объективным и бесконечным,
 превосходящим биологию и историю. Даже если бы вся наша Вселенная и все её атомы исчезли завтра,
@@ -360,7 +330,5 @@ https://github.com/user-attachments/assets/a5790c36-0d5b-4768-b735-cdd4d3346d37
 Но мы знаем, что в её основе лежит формула из трех символов. Это заставляет задуматься: 
 а не является ли весь хаос нашей Вселенной - турбулентность воды, рост облаков, структура 
 галактик - лишь результатом работы очень простого алгоритма, который мы ещё не вычислили?
-
-
 
 
