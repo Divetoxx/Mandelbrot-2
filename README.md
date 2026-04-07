@@ -1,12 +1,14 @@
 # Mandelbrot set. 60 FPS. 80-bit long double. OpenMP. Supersampling 2x2 (4 passes). Color rotation
 
-[![English](https://shields.io)](#english) [![Русский](https://shields.io)](#russian)
+[![English](https://img.shields.io/badge/Language-English-blue)](#english)
+[![Русский](https://img.shields.io/badge/Язык-Русский-red)](#russian)
 
-![Language](https://shields.io)
-![Platform](https://shields.io)
-![Precision](https://shields.io)
-![Engine](https://shields.io)
-![Graphics](https://shields.io)
+![Language](https://img.shields.io/badge/Language-CPP-blue)
+![Platform](https://img.shields.io/badge/Platform-Windows-0078D4)
+![Precision](https://img.shields.io/badge/Precision-80--bit-red)
+![Engine](https://img.shields.io/badge/Engine-OpenMP-orange)
+![Graphics](https://img.shields.io/badge/Graphics-SSAA-brightgreen)
+
 
 <a name="english"></a>
 
