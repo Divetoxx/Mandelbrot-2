@@ -10,6 +10,7 @@
 ![Graphics](https://img.shields.io/badge/Graphics-SSAA-brightgreen)
 
 [![Download](https://img.shields.io/badge/Download-Mandelbrot--2.exe-brightgreen?logo=windows)](https://github.com/Divetoxx/Mandelbrot-2/releases/latest/download/Mandelbrot-2.exe)
+[![Source Code](https://img.shields.io/badge/Source_Code-ZIP-orange?logo=github)](https://github.com/Divetoxx/Mandelbrot-2/archive/refs/heads/main.zip)
 
 
 <a name="english"></a>
@@ -293,7 +294,7 @@ const long double PRESETS[9][3] = {
 ## Высокоточная отрисовка (80-бит)
 Большинство исследователей фрактала Мандельброта используют стандартную **64-битную двойную точность**,
 что приводит к "пикселизации" при масштабировании около $10^{14}$.
-В этом проекте используется **80-битная арифметика с расширенной точностью** (<long double>) для расширения границ фрактала:
+В этом проекте используется **80-битная арифметика с расширенной точностью** (`long double`) для расширения границ фрактала:
 *   **Моя реализация (80-бит):** Обеспечивает **4 дополнительных десятичных знака** точности, позволяя исследовать **в 10 000 раз глубже** (диапазон $10^{18}$).
 *   **Аппаратная оптимизация:** Непосредственно использует **регистры FPU x87** для максимальной глубины математических вычислений.
 
