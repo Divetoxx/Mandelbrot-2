@@ -1,21 +1,86 @@
-[English](#english) | [Русский](#russian)
+# Mandelbrot set. 60 FPS. 80-bit long double. OpenMP. Supersampling 2x2 (4 passes). Color rotation
+
+[![English](https://shields.io)](#english) [![Русский](https://shields.io)](#russian)
+
+![Language](https://shields.io)
+![Platform](https://shields.io)
+![Precision](https://shields.io)
+![Engine](https://shields.io)
+![Graphics](https://shields.io)
+
 <a name="english"></a>
 
-# Mandelbrot set. 32-bit TrueColor. 60 FPS. 80-bit long double. OpenMP. Supersampling 2x2 (4 passes). Color rotation
+## ???? English Version
+## Purpose & Core Features of the GUI
+This application is a specialized tool for the interactive exploration of the infinite complexity within the Mandelbrot set. 
+It is designed for those who appreciate the perfect synergy of mathematical precision, high performance, and visual aesthetics.
 
-## Technical Architecture of the GUI
-The is designed for high-performance interactive fractal navigation. Key implementation details:
-*   **Calculation Thread**: Leverages OpenMP for parallel processing of the iteration map. It populates a high-resolution buffer 
-using 80-bit long double precision, supporting zooms up to $10^{18}$.
-*   **Visualization Thread**: Decoupled from the calculation logic to maintain a consistent 60 FPS UI. 
-It performs real-time color mapping and palette rotation using WinAPI DIBSections and BitBlt for direct pixel access.
-*   **High-Quality Rendering**: 2x2 Supersampling (SSAA): Each visible pixel is an average of 4 calculated points, 
-effectively eliminating aliasing and "sparkling" artifacts in high-density areas.
+### Deep Exploration of the Fractal Micro-world
 
+The program allows you to dive into "depths" far beyond the reach of standard 32-bit or 64-bit calculations. By utilizing 80-bit 
+precision (`long double`), you can zoom in billions of times to discover unique structures: Mandelbrot "mini-copies," 
+intricate spirals, and fractal "stars" like the one shown in the screenshot.
 
-## True 32-bit BGRA
-Migrated to full 32-bit BGRA color output, enabling smooth gradients and millions of unique shades.
-By utilizing a native 32-bit BGRA pipeline, the engine can render millions of intermediate colors.
+### Uncompromising Image Quality
+
+Unlike basic visualizers, this project implements True SSAA 2x2 (Super Sampling Anti-Aliasing). Each final pixel is the result 
+of averaging four virtual sub-pixels. This technique completely eliminates "jaggies" (aliasing) and visual noise on the thin 
+boundaries of the set, delivering a crisp, cinematic image.
+
+### Dynamic Aesthetics and Animation
+
+The app features a Color Cycling (palette rotation) technique. While the heavy mathematical lifting is done once, the color 
+scheme "rotates" continuously in a dedicated background thread. This creates a "living" fractal effect, allowing for endless 
+observation of shifting colors without additional CPU load.
+
+### A Tool for Fractal Art
+
+With built-in coordinate saving and loading (ENTER / BACKSPACE) and a set of presets, the program serves as a powerful 
+environment for finding and capturing the most beautiful fractal locations. It is a ready-to-use tool for generating high-quality 
+fractal wallpapers and real-time psychedelic video art.
+
+**[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
+
+## Controls & Hotkeys
+The application provides intuitive mouse and keyboard controls for exploring the fractal:
+
+### Mouse Controls
+*   **Left Click (WM_LBUTTONDOWN):** Zoom in (2x) and center the view around the clicked point.
+*   **Right Click (WM_RBUTTONDOWN):** Zoom out (2x) from the current view.
+
+### Keyboard Navigation
+*   **LEFT / RIGHT Arrows:** Fine-tuned zoom in/out by a factor of **1.1x**.
+*   **1 - 9 Keys:** Instantly jump to 9 predefined iconic locations within the Mandelbrot set.
+
+```C++
+const long double PRESETS[9][3] = {
+    {-1.749949182103598356L, -0.000000005697456381L, 0.0000000000000082L},
+    {-0.1544283964364377L, -1.03085800754665175L, 0.000000000000027L},
+    {-1.749675773048651182L, -0.000001140170813768L, 0.0000000000000021L},
+    {-1.74907816150389628L, 0.00000550988750089L, 0.0000000000000015L},
+    {-1.785772653736032933L, 0.000000500077787345L, 0.0000000000000077L},
+    {-1.26707805914812303L, -0.12378821520962631L, 0.000000000000001L},
+    {-1.78577278039667471L, -0.00000075696313293L, 0.0000000000000022L},
+    {-1.47907765132343401L, -0.01074925010269163L, 0.000000000000033L},
+    {-0.840953329790493429L, -0.230995969905604638L, 0.0000000000000019L}
+};
+```
+
+### Data Management
+*   **ENTER (VK_RETURN):** Export current coordinates. The program saves the exact `absc`, `ordi`, and `size_val` to **Mandelbrot.txt**.
+
+![Mandelbrot txt](Mandelbrot.png)
+
+*   **BACKSPACE (VK_BACK):** Import coordinates. Reads the three values from **Mandelbrot.txt** and instantly renders that location.
+
+| Action | Input | Description |
+| :--- | :--- | :--- |
+| **Zoom In** | `L-Mouse Click` | Zooms **2x** into the point under cursor. |
+| **Zoom Out** | `R-Mouse Click` | Zooms **2x** out from the center. |
+| **Fine Zoom** | `LEFT / RIGHT` | Precision zoom by a factor of **1.1x**. |
+| **Presets** | `1` - `9` | Jump to 9 iconic fractal locations. |
+| **Save Loc** | `ENTER` | Exports coordinates to `Mandelbrot.txt`. |
+| **Load Loc** | `BACKSPACE` | Imports coordinates and renders. |
 
 
 ## Synchronization with DwmFlush
@@ -79,40 +144,6 @@ The Red, Green, and Blue channels are calculated using sine and cosine waves to 
 127 + 127 * cos(2 * PI * a / 255) and 127 + 127 * sin(2 * PI * a / 255).
 
 
-## Controls & Hotkeys
-The application provides intuitive mouse and keyboard controls for exploring the fractal:
-
-### Mouse Controls
-*   **Left Click (WM_LBUTTONDOWN):** Zoom in (2x) and center the view around the clicked point.
-*   **Right Click (WM_RBUTTONDOWN):** Zoom out (2x) from the current view.
-
-### Keyboard Navigation
-*   **1 - 9 Keys:** Instantly jump to 9 predefined iconic locations within the Mandelbrot set.
-
-```C++
-const long double PRESETS[9][3] = {
-    {-1.749949182103598356L, -0.000000005697456381L, 0.0000000000000082L},
-    {-0.1544283964364377L, -1.03085800754665175L, 0.000000000000027L},
-    {-1.749675773048651182L, -0.000001140170813768L, 0.0000000000000021L},
-    {-1.74907816150389628L, 0.00000550988750089L, 0.0000000000000015L},
-    {-1.785772653736032933L, 0.000000500077787345L, 0.0000000000000077L},
-    {-1.26707805914812303L, -0.12378821520962631L, 0.000000000000001L},
-    {-1.78577278039667471L, -0.00000075696313293L, 0.0000000000000022L},
-    {-1.47907765132343401L, -0.01074925010269163L, 0.000000000000033L},
-    {-0.840953329790493429L, -0.230995969905604638L, 0.0000000000000019L}
-};
-```
-
-*   **LEFT / RIGHT Arrows:** Fine-tuned zoom in/out by a factor of **1.1x**.
-
-### Data Management
-*   **ENTER (VK_RETURN):** Export current coordinates. The program saves the exact `absc`, `ordi`, and `size_val` to **Mandelbrot.txt**.
-
-![Mandelbrot txt](Mandelbrot.png)
-
-*   **BACKSPACE (VK_BACK):** Import coordinates. Reads the three values from **Mandelbrot.txt** and instantly renders that location.
-
-
 ## The videos - they show the program! 
 
 https://github.com/user-attachments/assets/722fb111-9d33-419f-a2df-f29c48e20ca6
@@ -135,8 +166,6 @@ https://github.com/user-attachments/assets/0598bc2a-286b-441c-8cfa-32c365ee5437
 
 https://github.com/user-attachments/assets/9a4077e9-e492-4155-92b6-8016ce43e752
 
-
-**[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 
 
 ## The Mandelbrot Set: A Mathematical Absolute
@@ -175,23 +204,71 @@ the structure of galaxies-be nothing more than the result of a very simple algor
 
 
 <a name="russian"></a>
-# Множество Мандельброта. 32-бит TrueColor. 60 FPS. 80-бит long double. OpenMP. Суперсэмплинг 2x2 (4 прохода). Смена цветов
+## ???? Русская версия
+# Множество Мандельброта. 60 FPS. 80-бит long double. OpenMP. Суперсэмплинг 2x2 (4 прохода). Смена цветов
 
+## Назначение и основные функции графического интерфейса пользователя (GUI)
+Это приложение - специализированный инструмент для интерактивного исследования бесконечной сложности множества Мандельброта. 
+Оно разработано для тех, кто ценит идеальное сочетание математической точности, высокой производительности и визуальной эстетики.
 
-## Техническая архитектура графического интерфейса пользователя (GUI)
-Он разработан для высокопроизводительной интерактивной навигации по фракталам. Ключевые детали реализации:
-*   **Поток вычислений**: Использует OpenMP для параллельной обработки карты итераций. Он заполняет буфер высокого разрешения с 
-использованием 80-битной длинной двойной точности, поддерживая масштабирование до $10^{18}$.
-*   **Поток визуализации**: Отделен от логики вычислений для поддержания стабильной частоты 60 кадров в секунду. 
-Он выполняет отображение цвета в реальном времени и вращение палитры с использованием WinAPI DIBSections и BitBlt для прямого доступа к пикселям.
-*   **Высококачественный рендеринг**: 2x2 суперсэмплинг (SSAA): Каждый видимый пиксель представляет собой среднее значение 
-4 вычисленных точек, эффективно устраняя артефакты сглаживания и <искрящегося> изображения в областях с высокой плотностью.
+### Глубокое исследование фрактального микромира
 
+Программа позволяет погрузиться в <глубины>, недоступные для стандартных 32-битных или 64-битных вычислений. Используя 80-битную 
+точность (`long double`), вы можете увеличивать масштаб в миллиарды раз, чтобы обнаружить уникальные структуры: <мини-копии> Мандельброта, 
+замысловатые спирали и фрактальные <звезды>, подобные той, что показана на скриншоте.
 
-## True 32-bit BGRA
-Переход на полную 32-битную цветопередачу BGRA, обеспечивающую плавные градиенты.
-Это позволяет отображать миллионы оттенков.
-Наш движок работает в честном 32-битном цветовом пространстве, может отображать миллионы промежуточных цветов.
+### Бескомпромиссное качество изображения
+
+В отличие от базовых визуализаторов, этот проект использует истинное сглаживание SSAA 2x2 (Super Sampling Anti-Aliasing). 
+Каждый конечный пиксель является результатом усреднения четырех виртуальных субпикселей. Эта техника полностью устраняет <лесенки> (сглаживание) 
+и визуальный шум на тонких границах изображения, обеспечивая четкое, кинематографическое изображение.
+
+### Динамическая эстетика и анимация
+
+Приложение использует технику циклической смены цветов (вращение палитры). Хотя основная математическая обработка выполняется 
+один раз, цветовая схема непрерывно <вращается> в специальном фоновом потоке. Это создает <живой> фрактальный эффект, 
+позволяющий бесконечно наблюдать за изменением цветов без дополнительной нагрузки на процессор.
+
+### Инструмент для фрактального искусства
+
+Благодаря встроенной функции сохранения и загрузки координат (ENTER / BACKSPACE) и набору предустановок, программа служит 
+мощной средой для поиска и запечатления самых красивых фрактальных мест. Это готовый к использованию инструмент для создания 
+высококачественных фрактальных обоев и психоделического видеоарта в реальном времени.
+
+**[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
+
+## Горячие клавиши
+
+### Управление мышью
+*   WM_LBUTTONDOWN (Левая кнопка) - увеличиваем масштаб в 2 раза и центрируем новую область вокруг точки клика.
+*   WM_RBUTTONDOWN (Правая кнопка) - уменьшаем масштаб в 2 раза и центрируем новую область вокруг точки клика.
+
+### Навигация с помощью клавиатуры
+*   VK_LEFT (Стрелка ВЛЕВО) и VK_RIGHT (Стрелка ВПРАВО) - увеличиваем и уменьшаем в 1.1 раза но без точки клика. 
+*   В 1 - 9 - девять мест Множество Мандельброта на экран.
+
+```C++
+const long double PRESETS[9][3] = {
+    {-1.749949182103598356L, -0.000000005697456381L, 0.0000000000000082L},
+    {-0.1544283964364377L, -1.03085800754665175L, 0.000000000000027L},
+    {-1.749675773048651182L, -0.000001140170813768L, 0.0000000000000021L},
+    {-1.74907816150389628L, 0.00000550988750089L, 0.0000000000000015L},
+    {-1.785772653736032933L, 0.000000500077787345L, 0.0000000000000077L},
+    {-1.26707805914812303L, -0.12378821520962631L, 0.000000000000001L},
+    {-1.78577278039667471L, -0.00000075696313293L, 0.0000000000000022L},
+    {-1.47907765132343401L, -0.01074925010269163L, 0.000000000000033L},
+    {-0.840953329790493429L, -0.230995969905604638L, 0.0000000000000019L}
+};
+```
+
+### Управление данными
+*   Очень важно VK_RETURN (Enter, Ввод) - у вас сейчас на экран какое-то Множество Мандельброта.
+И сейчас оно запишется в файл! Mandelbrot.txt вот таком виде:
+
+![Mandelbrot txt](Mandelbrot.png)
+
+*   А VK_BACK (это та самая клавиша НАД Enter, Backspace) - читает Mandelbrot.txt (читаем три строки из файла) и запускает на экран.
+
 
 
 ## DwmFlush
@@ -258,40 +335,6 @@ True SSAA 2x2 (4 независимых образца на пиксель) по
 127 + 127 * cos(2 * PI * a / 255) и 127 + 127 * sin(2 * PI * a / 255).
 
 
-## Горячие клавиши
-
-### Управление мышью
-*   WM_LBUTTONDOWN (Левая кнопка) - увеличиваем масштаб в 2 раза и центрируем новую область вокруг точки клика.
-*   WM_RBUTTONDOWN (Правая кнопка) - уменьшаем масштаб в 2 раза и центрируем новую область вокруг точки клика.
-
-### Навигация с помощью клавиатуры
-*   В 1 - 9 - девять мест Множество Мандельброта на экран.
-
-```C++
-const long double PRESETS[9][3] = {
-    {-1.749949182103598356L, -0.000000005697456381L, 0.0000000000000082L},
-    {-0.1544283964364377L, -1.03085800754665175L, 0.000000000000027L},
-    {-1.749675773048651182L, -0.000001140170813768L, 0.0000000000000021L},
-    {-1.74907816150389628L, 0.00000550988750089L, 0.0000000000000015L},
-    {-1.785772653736032933L, 0.000000500077787345L, 0.0000000000000077L},
-    {-1.26707805914812303L, -0.12378821520962631L, 0.000000000000001L},
-    {-1.78577278039667471L, -0.00000075696313293L, 0.0000000000000022L},
-    {-1.47907765132343401L, -0.01074925010269163L, 0.000000000000033L},
-    {-0.840953329790493429L, -0.230995969905604638L, 0.0000000000000019L}
-};
-```
-
-*   VK_LEFT (Стрелка ВЛЕВО) и VK_RIGHT (Стрелка ВПРАВО) - увеличиваем и уменьшаем в 1.1 раза но без точки клика. 
-
-### Управление данными
-*   Очень важно VK_RETURN (Enter, Ввод) - у вас сейчас на экран какое-то Множество Мандельброта.
-И сейчас оно запишется в файл! Mandelbrot.txt вот таком виде:
-
-![Mandelbrot txt](Mandelbrot.png)
-
-*   А VK_BACK (это та самая клавиша НАД Enter, Backspace) - читает Mandelbrot.txt (читаем три строки из файла) и запускает на экран.
-
-
 ## Видео - показывает программу!
 
 https://github.com/user-attachments/assets/722fb111-9d33-419f-a2df-f29c48e20ca6
@@ -314,8 +357,6 @@ https://github.com/user-attachments/assets/0598bc2a-286b-441c-8cfa-32c365ee5437
 
 https://github.com/user-attachments/assets/9a4077e9-e492-4155-92b6-8016ce43e752
 
-
-**[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 
 
 ## Множество Мандельброта: Математический абсолют
