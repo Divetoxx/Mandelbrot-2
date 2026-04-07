@@ -10,7 +10,7 @@
 
 <a name="english"></a>
 
-## ???? English Version
+## 🇺🇸 English Version
 ## Purpose & Core Features of the GUI
 This application is a specialized tool for the interactive exploration of the infinite complexity within the Mandelbrot set. 
 It is designed for those who appreciate the perfect synergy of mathematical precision, high performance, and visual aesthetics.
@@ -204,7 +204,7 @@ the structure of galaxies-be nothing more than the result of a very simple algor
 
 
 <a name="russian"></a>
-## ???? Русская версия
+## 🇷🇺 Русская версия
 # Множество Мандельброта. 60 FPS. 80-бит long double. OpenMP. Суперсэмплинг 2x2 (4 прохода). Смена цветов
 
 ## Назначение и основные функции графического интерфейса пользователя (GUI)
