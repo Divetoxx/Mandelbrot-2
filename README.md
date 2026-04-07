@@ -70,10 +70,9 @@ const long double PRESETS[9][3] = {
 
 ### Data Management
 *   **ENTER (VK_RETURN):** Export current coordinates. The program saves the exact `absc`, `ordi`, and `size_val` to **Mandelbrot.txt**.
+*   **BACKSPACE (VK_BACK):** Import coordinates. Reads the three values from **Mandelbrot.txt** and instantly renders that location.
 
 ![Mandelbrot txt](Mandelbrot.png)
-
-*   **BACKSPACE (VK_BACK):** Import coordinates. Reads the three values from **Mandelbrot.txt** and instantly renders that location.
 
 | Action | Input | Description |
 | :--- | :--- | :--- |
@@ -266,11 +265,18 @@ const long double PRESETS[9][3] = {
 ### Управление данными
 *   Очень важно VK_RETURN (Enter, Ввод) - у вас сейчас на экран какое-то Множество Мандельброта.
 И сейчас оно запишется в файл! Mandelbrot.txt вот таком виде:
+*   А VK_BACK (это та самая клавиша НАД Enter, Backspace) - читает Mandelbrot.txt (читаем три строки из файла) и запускает на экран.
 
 ![Mandelbrot txt](Mandelbrot.png)
 
-*   А VK_BACK (это та самая клавиша НАД Enter, Backspace) - читает Mandelbrot.txt (читаем три строки из файла) и запускает на экран.
-
+| Действие | Ввод | Описание |
+| :--- | :--- | :--- |
+| **Приблизить** | `ЛКМ` | Увеличение в **2 раза** в точке под курсором мыши. |
+| **Отдалить** | `ПКМ` | Уменьшение в **2 раза** от текущего центра. |
+| **Точный зум** | `Стрелки влево / вправо` | Плавное изменение масштаба с коэффициентом **1.1x**. |
+| **Пресеты** | Клавиши `1` - `9` | Мгновенный переход к 9 предустановленным локациям. |
+| **Сохранить** | `ENTER` | Экспорт текущих координат и масштаба в файл `Mandelbrot.txt`. |
+| **Загрузить** | `BACKSPACE` | Импорт координат из файла и мгновенный переход к месту. |
 
 
 ## DwmFlush
