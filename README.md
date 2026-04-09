@@ -75,6 +75,14 @@ const long double PRESETS[9][3] = {
 *   **ENTER (VK_RETURN):** Export current coordinates. The program saves the exact `absc`, `ordi`, and `size_val` to **Mandelbrot.txt**.
 *   **BACKSPACE (VK_BACK):** Import coordinates. Reads the three values from **Mandelbrot.txt** and instantly renders that location.
 
+Mandelbrot.txt File Structure
+
+To load custom coordinates create a Mandelbrot.txt file in the application folder. 
+The file must contain three numbers separated by a newline:
+*    Abscissa (Center X coordinate)
+*    Ordinate (Center Y coordinate)
+*    Size (Zoom level/Area size)
+
 ![Mandelbrot txt](Mandelbrot.png)
 
 | Action | Input | Description |
@@ -265,10 +273,16 @@ const long double PRESETS[9][3] = {
 };
 ```
 
-### Управление данными
+### Управление данными и структура файла Mandelbrot.txt
 *   Очень важно VK_RETURN (Enter, Ввод) - у вас сейчас на экран какое-то Множество Мандельброта.
-И сейчас оно запишется в файл! Mandelbrot.txt вот таком виде:
+И сейчас оно запишется в файл! Mandelbrot.txt
 *   А VK_BACK (это та самая клавиша НАД Enter, Backspace) - читает Mandelbrot.txt (читаем три строки из файла) и запускает на экран.
+
+Для загрузки пользовательских координат создайте текстовый файл Mandelbrot.txt в папке с программой. 
+Файл должен содержать три числа, разделенных переносом строки:
+*    Abscissa (Координата X центра)
+*    Ordinate (Координата Y центра)
+*    Size (Масштаб/Размер области)
 
 ![Mandelbrot txt](Mandelbrot.png)
 
