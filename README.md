@@ -83,6 +83,8 @@ The file must contain three numbers separated by a newline:
 
 ![Mandelbrot txt](Mandelbrot.png)
 
+### Controls & Hotkeys
+
 | Action | Input | Description |
 | :--- | :--- | :--- |
 | **Zoom In** | `L-Mouse Click` | Zooms **2x** into the point under cursor. |
@@ -283,6 +285,8 @@ const long double PRESETS[9][3] = {
 *    Size (Масштаб/Размер области)
 
 ![Mandelbrot txt](Mandelbrot.png)
+
+### Горячие клавиши
 
 | Действие | Ввод | Описание |
 | :--- | :--- | :--- |
