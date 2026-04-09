@@ -71,11 +71,9 @@ const long double PRESETS[9][3] = {
 };
 ```
 
-### Data Management
+### Data Management Mandelbrot.txt and File Structure
 *   **ENTER (VK_RETURN):** Export current coordinates. The program saves the exact `absc`, `ordi`, and `size_val` to **Mandelbrot.txt**.
 *   **BACKSPACE (VK_BACK):** Import coordinates. Reads the three values from **Mandelbrot.txt** and instantly renders that location.
-
-Mandelbrot.txt File Structure
 
 To load custom coordinates create a Mandelbrot.txt file in the application folder. 
 The file must contain three numbers separated by a newline:
