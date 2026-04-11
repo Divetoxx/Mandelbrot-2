@@ -92,46 +92,54 @@ void thread_mandelbrot_calc() {
 void thread_palette_rotator(HDC hdc_win, HDC hdc_m, RGBQUAD* pixels) {
     RGBQUAD pal[PALETTE_SIZE];
     generate_full_palette(pal);
-    double offset = 0;
+    
+    std::vector<RGBQUAD> color_cache(50001);
+    float offset = 0;
 
     while (true) {
-        #pragma omp parallel for schedule(static, 256)
+        for (int i = 0; i <= 50000; ++i) {
+            if (i >= 50000) {
+                color_cache[i] = {255, 255, 255, 0};
+            } else {
+                int idx = (int)(50000 - i + (int)offset) % PALETTE_SIZE;
+                if (idx < 0) idx += PALETTE_SIZE;
+                color_cache[i] = pal[idx];
+            }
+        }
+
+        #pragma omp parallel for schedule(static, 128)
         for (int y = 0; y < HEIGHT; ++y) {
             for (int x = 0; x < WIDTH; ++x) {
-                uint32_t sumR = 0, sumG = 0, sumB = 0;
+                uint32_t i0 = g_ss_buffer[(y * 2 + 0) * SS_W + (x * 2 + 0)];
+                uint32_t i1 = g_ss_buffer[(y * 2 + 0) * SS_W + (x * 2 + 1)];
+                uint32_t i2 = g_ss_buffer[(y * 2 + 1) * SS_W + (x * 2 + 0)];
+                uint32_t i3 = g_ss_buffer[(y * 2 + 1) * SS_W + (x * 2 + 1)];
 
-                for (int sy = 0; sy < 2; ++sy) {
-                    for (int sx = 0; sx < 2; ++sx) {
-                        int ss_idx = (y * 2 + sy) * SS_W + (x * 2 + sx);
-                        uint32_t it = g_ss_buffer[ss_idx];
+                RGBQUAD c0 = color_cache[i0];
+                RGBQUAD c1 = color_cache[i1];
+                RGBQUAD c2 = color_cache[i2];
+                RGBQUAD c3 = color_cache[i3];
 
-                        if (it >= 50000) {
-                            sumR += 255; sumG += 255; sumB += 255;
-                        } else {
-                            int inverted_it = 50000 - it; 
-                            int idx = (int)(inverted_it + offset) % PALETTE_SIZE;
-                            if (idx < 0) idx += PALETTE_SIZE;
-
-                            sumR += pal[idx].rgbRed;
-                            sumG += pal[idx].rgbGreen;
-                            sumB += pal[idx].rgbBlue;
-                        }
-                    }
-                }
+                uint32_t r = (uint32_t)c0.rgbRed   + c1.rgbRed   + c2.rgbRed   + c3.rgbRed;
+                uint32_t g = (uint32_t)c0.rgbGreen + c1.rgbGreen + c2.rgbGreen + c3.rgbGreen;
+                uint32_t b = (uint32_t)c0.rgbBlue  + c1.rgbBlue  + c2.rgbBlue  + c3.rgbBlue;
 
                 int pix_idx = y * WIDTH + x;
-                pixels[pix_idx].rgbRed   = (uint8_t)(sumR >> 2);
-                pixels[pix_idx].rgbGreen = (uint8_t)(sumG >> 2);
-                pixels[pix_idx].rgbBlue  = (uint8_t)(sumB >> 2);
+                pixels[pix_idx].rgbRed   = (uint8_t)(r >> 2);
+                pixels[pix_idx].rgbGreen = (uint8_t)(g >> 2);
+                pixels[pix_idx].rgbBlue  = (uint8_t)(b >> 2);
                 pixels[pix_idx].rgbReserved = 0;
             }
         }
 
-        offset = fmod(offset - 1.0, (double)PALETTE_SIZE);
+        offset -= 1.0f;
+        if (offset < 0) offset += PALETTE_SIZE;
+
         BitBlt(hdc_win, 0, 0, WIDTH, HEIGHT, hdc_m, 0, 0, SRCCOPY);
         DwmFlush();
     }
 }
+
 
 
 
