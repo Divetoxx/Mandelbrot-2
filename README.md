@@ -3,12 +3,6 @@
 [![Language](https://img.shields.io/badge/Language-English-blue)](#english)
 [![Язык](https://img.shields.io/badge/Язык-Русский-red)](#russian)
 
-![Platform](https://img.shields.io/badge/Platform-Windows-0078D4)
-![Language](https://img.shields.io/badge/Language-CPP-blue)
-![Precision](https://img.shields.io/badge/Precision-80--bit-red)
-![Engine](https://img.shields.io/badge/Engine-OpenMP-orange)
-![Graphics](https://img.shields.io/badge/Graphics-SSAA-brightgreen)
-
 [![Download](https://img.shields.io/badge/Download-Windows-brightgreen?logo=windows)](https://github.com/Divetoxx/Mandelbrot-2/releases/latest/download/Mandelbrot-2.exe)
 [![Source Code](https://img.shields.io/badge/Source_Code-ZIP-orange?logo=github)](https://github.com/Divetoxx/Mandelbrot-2/archive/refs/heads/main.zip)
 [![Source Code](https://img.shields.io/badge/Source_Code-TAR.GZ-lightgrey?logo=github)](https://github.com/Divetoxx/Mandelbrot-2/archive/refs/heads/main.tar.gz)
