@@ -201,6 +201,18 @@ Example file content:
 
 ## The videos - they show the program! 
 
+https://github.com/user-attachments/assets/075bc0cc-51ae-4629-a51c-cf9c2a3d7b9f
+
+https://github.com/user-attachments/assets/c1b5ecce-0a72-4779-8d2f-dd19b17e40b8
+
+https://github.com/user-attachments/assets/8b92b364-9ab2-4d8f-91e7-6e972471416c
+
+https://github.com/user-attachments/assets/703af9bf-8a5c-4f8b-b0c4-e7ee8d28fa66
+
+https://github.com/user-attachments/assets/09379acf-adef-48d9-88e1-7b17af3eba4a
+
+https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e
+
 
 
 **[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
@@ -424,7 +436,17 @@ OpenMP - масштабируемость: ваш код будет одинак
 
 ## Видео - показывает программу!
 
+https://github.com/user-attachments/assets/075bc0cc-51ae-4629-a51c-cf9c2a3d7b9f
 
+https://github.com/user-attachments/assets/c1b5ecce-0a72-4779-8d2f-dd19b17e40b8
+
+https://github.com/user-attachments/assets/8b92b364-9ab2-4d8f-91e7-6e972471416c
+
+https://github.com/user-attachments/assets/703af9bf-8a5c-4f8b-b0c4-e7ee8d28fa66
+
+https://github.com/user-attachments/assets/09379acf-adef-48d9-88e1-7b17af3eba4a
+
+https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e
 
 
 **[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
