@@ -1,4 +1,4 @@
-name: Create Release Windows Only
+name: C++ Mandelbrot Build 
 
 on:
   push:
@@ -15,44 +15,55 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
-          install: mingw-w64-x86_64-gcc mingw-w64-x86_64-binutils
+          msystem: UCRT64
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-binutils
+            mingw-w64-ucrt-x86_64-mpfr
+            mingw-w64-ucrt-x86_64-gmp
           update: true
 
-      - name: Compile Windows Version
+      - name: Compile Windows Versions (AVX2 and SSE3)
         shell: msys2 {0}
         run: |
-          windres resource.rc -o resource.o
-          g++ -O3 main.cpp resource.o -o Mandelbrot-2.exe \
-          -lgdi32 -luser32 -ldwmapi -fopenmp -static -mwindows \
-          -D__USE_MINGW_ANSI_STDIO=1
-          strip Mandelbrot-2.exe
+          if [ -f resource.rc ]; then
+            windres resource.rc -o resource.o
+            RESOURCE_OBJ="resource.o"
+          else
+            RESOURCE_OBJ=""
+          fi
+
+          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_AVX2.exe -mavx2 -fopenmp -static-libstdc++ -static-libgcc -lgdi32 -luser32 -ldwmapi -mwindows -Wl,-Bstatic -lmpfr -lgmp -Wl,-Bdynamic
+          strip Mandelbrot_AVX2.exe
+
+          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_SSE3.exe -msse3 -fopenmp -static-libstdc++ -static-libgcc -lgdi32 -luser32 -ldwmapi -mwindows -Wl,-Bstatic -lmpfr -lgmp -Wl,-Bdynamic
+          strip Mandelbrot_SSE3.exe
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.MY_RELEASE_PAT }}
-          name: "Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation ${{ github.ref_name }}"
+          name: "Mandelbrot GUI: Visualizer with 1000-Digit Precision and Perturbation Theory ${{ github.ref_name }}"
           body: |
-            ## Mandelbrot set. 32-bit. 60 FPS. 80-bit. OpenMP. Supersampling 2x2. Color rotation 
-            <video src="https://github.com/user-attachments/assets/722fb111-9d33-419f-a2df-f29c48e20ca6" controls width="900"></video>
-            <video src="https://github.com/user-attachments/assets/c53dd08e-ac79-4a45-837c-44ba9cba0fe8" controls width="900"></video>
-            <video src="https://github.com/user-attachments/assets/4d89c50b-09b3-42c7-8678-7fb8de1eaf17" controls width="900"></video>
-            <video src="https://github.com/user-attachments/assets/7f0f1a01-ba1a-4421-bd66-886a631287ba" controls width="900"></video>
-            <video src="https://github.com/user-attachments/assets/c2df5756-5065-453b-aa95-154f7c347d09" controls width="900"></video>
-            <video src="https://github.com/user-attachments/assets/6f537681-481b-4c17-b233-4d9ac8559f2f" controls width="900"></video>
-            <video src="https://github.com/user-attachments/assets/bbb67bf7-1aa7-40fd-8a68-051db945844b" controls width="900"></video>
-            <video src="https://github.com/user-attachments/assets/a601940a-82bb-463d-83f0-d79c57cc0c4a" controls width="900"></video>
-            <video src="https://github.com/user-attachments/assets/0598bc2a-286b-441c-8cfa-32c365ee5437" controls width="900"></video>
-            <video src="https://github.com/user-attachments/assets/9a4077e9-e492-4155-92b6-8016ce43e752" controls width="900"></video>
+            ## Mandelbrot GUI: Visualizer with 1000-Digit Precision and Perturbation Theory
 
-            - True 32-bit BGRA
-            - Synchronization with DwmFlush
-            - High-Precision Rendering (80-bit)
-            - Multi-threaded performance (OpenMP)
-            - True SSAA 2x2 (4 independent samples per pixel) direct RGB-space integration
-            - The Red, Green, and Blue channels are calculated using sine and cosine waves
-          files: Mandelbrot-2.exe
+            ### Available versions:
+            * **Mandelbrot_AVX2.exe** — Maximum speed. For modern processors (4th generation Intel Core+ / AMD Ryzen+).
+            * **Mandelbrot_SSE3.exe** — Compatible version. For older processors (including **AMD Phenom II**).
+ 
+            ### Features:
+            * **High-Precision Reference:** The 5000-bit reference trajectory is computed exactly once per zoom layer.
+            * **Hardware-Native Performance:** Blazing-fast math for millions of pixels utilizing hardware-native double registers.
+            * **Innovative Algorithm:** Revolutionary *Reference Reset to Zero* implementation.
+            * **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
+            * **OpenMP Multi-threading:** High-speed parallel computing to maximize CPU utilization.
+            * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.
+            * **Dynamic Palette Rotation:** Classic, ultra-smooth fractal color-cycling effects with zero performance overhead.
+
+          files: |
+            Mandelbrot_AVX2.exe
+            Mandelbrot_SSE3.exe
