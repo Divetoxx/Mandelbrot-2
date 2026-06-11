@@ -11,7 +11,7 @@
 
 # 🇺🇸 English Version
 
-# Mandelbrot GUI: Visualizer with 5000-bit and Perturbation Theory
+# Mandelbrot GUI: Visualizer with Perturbation Theory (with a $10^{-308}$ hardware limit)
 
 ## Credits & Acknowledgments
 
@@ -25,6 +25,7 @@ from the Fractal Forums, whose collaborative work made this engine possible:
 ## Key Features:
 * **High-Precision Reference:** The 5000-bit reference trajectory is computed exactly once per zoom layer.
 * **Hardware-Native Performance:** Blazing-fast math for millions of pixels utilizing hardware-native double registers.
+* When using double-precision floating-point numbers (on the order of $10^{-15}$), perturbation theory only allows you to zoom down to the **$10^{-308}$ level-no further.**
 * **Innovative Algorithm:** Revolutionary *Reference Reset to Zero* implementation.
 * **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
 * **OpenMP Multi-threading:** High-speed parallel computing to maximize CPU utilization.
@@ -225,7 +226,7 @@ https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e
 <a name="russian"></a>
 # 🇷🇺 Русская версия
 
-# Графический интерфейс Мандельброта: Визуализатор с 5000-бит и методом возмущений
+# Графический интерфейс Мандельброта: Визуализатор с методом возмущений и предела $10^{-308}$
 
 ## Благодарности (Credits)
 
@@ -240,6 +241,7 @@ https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e
 ## Ключевые особенности:
 * Расчёт опорной траектории на 5000 бит всего один раз.
 * Реактивный расчёт миллионов пикселей на аппаратном double.
+* При использовании чисел с плавающей запятой двойной точности (порядка $10^{-15}$) теория возмущений позволяет приблизиться к уровню **$10^{-308}$ - не дальше.**
 * Революционный алгоритм Reference Reset to Zero.
 * Настоящий SSAA 2x2 для идеально сглаженного изображения без алиасинга.
 * Параллелизм OpenMP для высокоскоростного многопоточного рендеринга.
