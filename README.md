@@ -38,7 +38,7 @@ The engine is completely free from the hardware limitations of standard 64-bit (
 which inevitably lose significance and produce pixelated blocks at depths beyond $10^{-15}$ and $10^{-34}$ respectively.
 * **MPFR/GMP Integration**: All high-precision navigation, mouse clicking, and keyboard arrow zooming are handled within a deep binary memory 
 structure configured to **5000-bit precision**.
-* **308-Digit Decimal Coordinate Cache (Hardware Double Wall):** Viewport coordinates are stored in `Mandelbrot.txt`. While the MPFR 
+* **308-Digit Decimal:** Viewport coordinates are stored in `Mandelbrot.txt`. While the MPFR 
 reference radar computes the center at 5000-bit precision, the hardware native `double` exponent limits the fast pixel engine to a maximum 
 depth of $10^{-308}$, providing pristine clarity up to this physical silicon barrier.
 
@@ -255,7 +255,7 @@ https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e
 пиксельные квадраты на глубинах более $10^{-15}$ и $10^{-34}$.
 * **Интеграция MPFR/GMP**: Вся высокоточная навигация, пересчёт масштаба при кликах мыши и движении стрелочками клавиатуры ведутся 
 внутри сверхглубокой бинарной памяти с точностью **5000 бит**!
-* **308 десятичных знаков в текстовом кэше (Hardware Double Wall)**: 
+* **308 десятичных знаков**: 
 Координаты кадра сохраняются и считываются из файла `Mandelbrot.txt`. Навигация и радар MPFR работают на глубине до 5000 бит, 
 однако скоростной пиксельный дельта-движок ограничен аппаратной экспонентой `double`, что позволяет исследовать безупречно четкие 
 структуры на запредельных масштабах **вплоть до $10^{-308}$ знаков**.
