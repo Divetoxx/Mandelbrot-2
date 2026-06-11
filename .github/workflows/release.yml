@@ -47,9 +47,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.MY_RELEASE_PAT }}
-          name: "Mandelbrot GUI: Visualizer with 5000-bit and Perturbation Theory ${{ github.ref_name }}"
+          name: "Mandelbrot GUI: Visualizer with Perturbation Theory (with a $10^{-308}$ hardware limit) ${{ github.ref_name }}"
           body: |
-            ## Mandelbrot GUI: Visualizer with 5000-bit and Perturbation Theory
+            ## Mandelbrot GUI: Visualizer with Perturbation Theory (with a $10^{-308}$ hardware limit)
 
             ### Available versions:
             * **Mandelbrot_AVX2.exe** — Maximum speed. For modern processors (4th generation Intel Core+ / AMD Ryzen+).
