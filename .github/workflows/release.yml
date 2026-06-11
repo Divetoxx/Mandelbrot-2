@@ -47,9 +47,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.MY_RELEASE_PAT }}
-          name: "Mandelbrot GUI: Visualizer with Perturbation Theory (with a $10^{-308}$ hardware limit) ${{ github.ref_name }}"
+          name: "Mandelbrot GUI: Visualizer with Perturbation Theory (with a 1e-308 hardware limit) ${{ github.ref_name }}"
           body: |
-            ## Mandelbrot GUI: Visualizer with Perturbation Theory (with a $10^{-308}$ hardware limit)
+            ## Mandelbrot GUI: Visualizer with Perturbation Theory (with a 1e-308 hardware limit)
 
             ### Available versions:
             * **Mandelbrot_AVX2.exe** — Maximum speed. For modern processors (4th generation Intel Core+ / AMD Ryzen+).
@@ -58,6 +58,7 @@ jobs:
             ### Features:
             * **High-Precision Reference:** The 5000-bit reference trajectory is computed exactly once per zoom layer.
             * **Hardware-Native Performance:** Blazing-fast math for millions of pixels utilizing hardware-native double registers.
+            * When using double-precision floating-point numbers (on the order of 1e-15, perturbation theory only allows you to zoom down to the **1e-308 level-no further.**
             * **Innovative Algorithm:** Revolutionary *Reference Reset to Zero* implementation.
             * **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
             * **OpenMP Multi-threading:** High-speed parallel computing to maximize CPU utilization.
