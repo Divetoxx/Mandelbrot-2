@@ -455,9 +455,9 @@ https://github.com/user-attachments/assets/09379acf-adef-48d9-88e1-7b17af3eba4a
 
 https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e
 
-<p align="center">
-  [![](https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e?raw=true)](https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e?raw=true)
-</p>
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e" width="600" loop muted autoplay playsinline></video>
+</div>
 
 
 
