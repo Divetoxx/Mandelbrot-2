@@ -455,6 +455,11 @@ https://github.com/user-attachments/assets/09379acf-adef-48d9-88e1-7b17af3eba4a
 
 https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e
 
+<p align="center">
+<video src="https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e" width="600" autoplay loop muted playsinline></video>
+</p>
+
+
 
 **[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
 
