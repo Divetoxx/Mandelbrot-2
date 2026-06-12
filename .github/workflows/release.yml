@@ -49,8 +49,6 @@ jobs:
           token: ${{ secrets.MY_RELEASE_PAT }}
           name: "Mandelbrot GUI: Visualizer with Perturbation Theory (with a 1e-308 hardware limit) ${{ github.ref_name }}"
           body: |
-            ## Mandelbrot GUI: Visualizer with Perturbation Theory (with a 1e-308 hardware limit)
-
             ### Available versions:
             * **Mandelbrot_AVX2.exe** — Maximum speed. For modern processors (4th generation Intel Core+ / AMD Ryzen+).
             * **Mandelbrot_SSE3.exe** — Compatible version. For older processors (including **AMD Phenom II**).
