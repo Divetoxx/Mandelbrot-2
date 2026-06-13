@@ -37,7 +37,7 @@ jobs:
             RESOURCE_OBJ=""
           fi
 
-          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_AVX2.exe -mavx2 -fopenmp -static -static-libgcc -static-libstdc++ -static-libgomp -lgdi32 -luser32 -ldwmapi -mwindows -Wl,-Bstatic -lmpfr -lgmp -Wl,-Bdynamic
+          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_AVX2.exe -mavx2 -static-libgcc -static-libstdc++ -lgdi32 -luser32 -ldwmapi -mwindows -Wl,-Bstatic -l:libgomp.a -l:libwinpthread.a -lmpfr -lgmp -Wl,-Bdynamic
           strip Mandelbrot_AVX2.exe
 
           g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_SSE3.exe -msse3 -fopenmp -static-libstdc++ -static-libgcc -lgdi32 -luser32 -ldwmapi -mwindows -Wl,-Bstatic -lmpfr -lgmp -Wl,-Bdynamic
