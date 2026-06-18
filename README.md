@@ -25,7 +25,7 @@ from the Fractal Forums, whose collaborative work made this engine possible:
 ## Key Features:
 * **High-Precision Reference:** The 5000-bit reference trajectory is computed exactly once per zoom layer.
 * **Hardware-Native Performance:** Blazing-fast math for millions of pixels utilizing hardware-native double registers.
-* When using double-precision floating-point numbers (on the order of $10^{-15}$), perturbation theory only allows you to zoom down to the **$10^{-308}$ level-no further.**
+* **When** using double-precision floating-point numbers (on the order of $10^{-15}$), perturbation theory only allows you to zoom down to the **$10^{-308}$ level-no further.**
 * **Innovative Algorithm:** Revolutionary *Reference Reset to Zero* implementation.
 * **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
 * **OpenMP Multi-threading:** High-speed parallel computing to maximize CPU utilization.
