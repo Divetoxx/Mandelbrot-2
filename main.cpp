@@ -283,9 +283,9 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
         g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
 
         char out_x[2048], out_y[2048], out_sz[2048];
-        mpfr_snprintf(out_x, sizeof(out_x), "%.1000Rf", clicked_x);
-        mpfr_snprintf(out_y, sizeof(out_y), "%.1000Rf", clicked_y);
-        mpfr_snprintf(out_sz, sizeof(out_sz), "%.1000Rf", sz);
+        mpfr_snprintf(out_x, sizeof(out_x), "%.300Rf", clicked_x);
+        mpfr_snprintf(out_y, sizeof(out_y), "%.300Rf", clicked_y);
+        mpfr_snprintf(out_sz, sizeof(out_sz), "%.300Rf", sz);
 
         g_params.center_re_str = out_x;
         g_params.center_im_str = out_y;
@@ -302,9 +302,9 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             std::lock_guard<std::mutex> lock(g_params_mutex);
 
             if (wp == '1') {
-                g_params.center_re_str = "-1.7490781615052017316791245451566330412";
-                g_params.center_im_str = "0.0000055099190662909660251309856720635";
-                g_params.size_str      = "0.000000000000000000000000000000000215";
+                g_params.center_re_str = "-1.74907816150520173167912454515663360420734509948112463480292338384";
+                g_params.center_im_str = "-0.00000550991906629096602513098567268615714673236269915508056068145";
+                g_params.size_str      = "0.0000000000000000000000000000000000000000000000000000000000000153";
             }
             if (wp == '2') {
                 g_params.center_re_str = "-1.748943661768663337207355215321150725806353337382441467976";
@@ -312,9 +312,9 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 g_params.size_str      = "0.0000000000000000000000000000000000000000000000000000001";
             }
             if (wp == '3') {
-                g_params.center_re_str = "-1.7489740586384718864866264297253934254";
-                g_params.center_im_str = "-0.0002265965897111407857153825623868331";
-                g_params.size_str      = "0.00000000000000000000000000000000007";
+                g_params.center_re_str = "-1.74897405863847188648662642972539353558468953280537920349121529575637926";
+                g_params.center_im_str = "-0.00022659658971114078571538256238674986531705363002747653205138703857069";
+                g_params.size_str      = "0.000000000000000000000000000000000000000000000000000000000000000000613";
             }
             if (wp == '4') {
                 g_params.center_re_str = "-1.7499458649755745940752606707005571";
@@ -324,7 +324,7 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             if (wp == '5') {
                 g_params.center_re_str = "-1.267078059171397835210199054200436920994876769284288837862647";
                 g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
-                g_params.size_str      = "0.0000000000000000000000000000000000000000000000000000000023";
+                g_params.size_str      = "0.0000000000000000000000000000000000000000000000000000000024";
             }
 
             mpfr_t sz, st;
@@ -355,7 +355,7 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
             g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
             char out_sz[2048]; 
-            mpfr_snprintf(out_sz, sizeof(out_sz), "%.1000Rf", sz);
+            mpfr_snprintf(out_sz, sizeof(out_sz), "%.300Rf", sz);
             g_params.size_str = out_sz;
             mpfr_clears(sz, st, NULL);
             SetEvent(g_render_event);
