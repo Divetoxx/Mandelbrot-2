@@ -154,7 +154,7 @@ void thread_mandelbrot_calc() {
             }
 
             mpfr_add(tmp, zr2, zi2, MPFR_RNDN);
-            if (mpfr_cmp_d(tmp, 4.0) >= 0) {
+            if (mpfr_cmp_d(tmp, 4000.0) >= 0) {
                 escaped = true; 
             }
             ref_i++;
@@ -190,7 +190,7 @@ void thread_mandelbrot_calc() {
 
                 while (i < p.iter_max) {
                     
-                    if ((z_re * z_re + z_im * z_im) >= 4.0) {
+                    if ((z_re * z_re + z_im * z_im) >= 4000.0) {
                         break;
                     }
 
@@ -200,7 +200,7 @@ void thread_mandelbrot_calc() {
                         } else {
                             double ld_cx = ref_rec_d + delta_rec;
                             double ld_cy = ref_imc_d - delta_imc;
-                            while (i < p.iter_max && (z_re * z_re + z_im * z_im) < 4.0) {
+                            while (i < p.iter_max && (z_re * z_re + z_im * z_im) < 4000.0) {
                                 double old_re = z_re;
                                 double old_im = z_im;
                                 z_re = old_re * old_re - old_im * old_im + ld_cx;
@@ -304,27 +304,27 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             if (wp == '1') {
                 g_params.center_re_str = "-1.74907816150520173167912454515663360420734509948112463480292338384";
                 g_params.center_im_str = "-0.00000550991906629096602513098567268615714673236269915508056068145";
-                g_params.size_str      = "0.0000000000000000000000000000000000000000000000000000000000000153";
+                g_params.size_str      = "1.53e-62";
             }
             if (wp == '2') {
-                g_params.center_re_str = "-1.748943661768663337207355215321150725806353337382441467976";
-                g_params.center_im_str = "-0.0000073748967541889836640985849393311615399776865199722998";
-                g_params.size_str      = "0.0000000000000000000000000000000000000000000000000000001";
+                g_params.center_re_str = "-1.7489436617686633372073552153211507258063533373824414679761";
+                g_params.center_im_str = "-0.0000073748967541889836640985849393311615399776865199722997";
+                g_params.size_str      = "1.01e-55";
             }
             if (wp == '3') {
-                g_params.center_re_str = "-1.74897405863847188648662642972539353558468953280537920349121529575637926";
-                g_params.center_im_str = "-0.00022659658971114078571538256238674986531705363002747653205138703857069";
-                g_params.size_str      = "0.000000000000000000000000000000000000000000000000000000000000000000613";
+                g_params.center_re_str = "-1.7491311840575335110236048528001036247123430447933925298694915282522178938437759580179";
+                g_params.center_im_str = "-0.0001996960702541036804654299663680287246637758588467627907752429037173153157138373325";
+                g_params.size_str      = "2.84e-82";
             }
             if (wp == '4') {
-                g_params.center_re_str = "-1.7499458649755745940752606707005571";
+                g_params.center_re_str = "-1.74994586497557459407526067070055710001";
                 g_params.center_im_str = "-0.0000000852088539604644334731909824511";
-                g_params.size_str      = "0.0000000000000000000000000000000000071";
+                g_params.size_str      = "7.17e-36";
             }
             if (wp == '5') {
                 g_params.center_re_str = "-1.267078059171397835210199054200436920994876769284288837862647";
                 g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
-                g_params.size_str      = "0.0000000000000000000000000000000000000000000000000000000024";
+                g_params.size_str      = "2.4e-57";
             }
 
             mpfr_t sz, st;
@@ -438,7 +438,7 @@ SelectObject(hdc_mem, h_bmp);
 g_params.iter_max = 50000;
 g_params.center_re_str = "-1.7491976289657893741942376816272921165326158557416159";
 g_params.center_im_str = "-0.00000042530777152440422725855012159249401150956515248";
-g_params.size_str      = "0.0000000000000000000000000000000000000000000000000043";
+g_params.size_str      = "4.31e-51";
     
 mpfr_t sz, st;
 mpfr_inits2(MPFR_BITS, sz, st, NULL);
@@ -459,4 +459,3 @@ DispatchMessage(&msg);
 }
 return 0;
 }
-
