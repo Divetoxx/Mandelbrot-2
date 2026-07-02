@@ -1,0 +1,75 @@
+name: C++ Mandelbrot Build 
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Windows App
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-binutils
+            mingw-w64-ucrt-x86_64-mpfr
+            mingw-w64-ucrt-x86_64-gmp
+          update: true
+
+      - name: Compile Windows Versions (AVX2 and SSE3)
+        shell: msys2 {0}
+        run: |
+          if [ -f resource.rc ]; then
+            windres resource.rc -o resource.o
+            RESOURCE_OBJ="resource.o"
+          else
+            RESOURCE_OBJ=""
+          fi
+
+          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_AVX2.exe -mavx2 -fopenmp -static -static-libgcc -static-libstdc++ -Wl,--start-group -lmpfr -lgmp -lgomp -lwinpthread -lgdi32 -luser32 -ldwmapi -Wl,--end-group -mwindows
+          strip Mandelbrot_AVX2.exe
+
+          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_SSE3.exe -msse3 -fopenmp -static-libstdc++ -static-libgcc -lgdi32 -luser32 -ldwmapi -mwindows -Wl,-Bstatic -lmpfr -lgmp -Wl,-Bdynamic
+          strip Mandelbrot_SSE3.exe
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.MY_RELEASE_PAT }}
+          name: "Mandelbrot GUI: Visualizer with Perturbation Theory (with a 1e-308 hardware limit) ${{ github.ref_name }}"
+          body: |
+            ### Available versions:
+            * **Mandelbrot_AVX2.exe** — Maximum speed. For modern processors (4th generation Intel Core+ / AMD Ryzen+).
+            * **Mandelbrot_SSE3.exe** — Compatible version. For older processors (including **AMD Phenom II**).
+ 
+            ### Features:
+            * **High-Precision Reference:** The 5000-bit reference trajectory is computed exactly once per zoom layer.
+            * **Hardware-Native Performance:** Blazing-fast math for millions of pixels utilizing hardware-native double registers.
+            * When using double-precision floating-point numbers (on the order of 1e-15, perturbation theory only allows you to zoom down to the **1e-308 level-no further.**
+            * **Innovative Algorithm:** Revolutionary *Reference Reset to Zero* implementation.
+            * **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
+            * **OpenMP Multi-threading:** High-speed parallel computing to maximize CPU utilization.
+            * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.
+            * **Dynamic Palette Rotation:** Classic, ultra-smooth fractal color-cycling effects with zero performance overhead.
+
+            <video src="https://github.com/user-attachments/assets/075bc0cc-51ae-4629-a51c-cf9c2a3d7b9f" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/c1b5ecce-0a72-4779-8d2f-dd19b17e40b8" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/cb2f6b68-d1eb-43c1-9204-e90783ea8b33" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/8b631d52-4222-4e2d-b2b9-12375f718c3e" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/09379acf-adef-48d9-88e1-7b17af3eba4a" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e" controls width="1000"></video>
+
+          files: |
+            Mandelbrot_AVX2.exe
+            Mandelbrot_SSE3.exe
