@@ -297,7 +297,7 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     }
 
     case WM_KEYDOWN: {
-        if (wp >= '1' && wp <= '5') {
+        if (wp >= '1' && wp <= '6') {
             g_abort = true;
             std::lock_guard<std::mutex> lock(g_params_mutex);
 
@@ -326,7 +326,12 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
                 g_params.size_str      = "2.4e-57";
             }
-
+            if (wp == '6') {
+                g_params.center_re_str = "-1.99999543561201124623198345433951143502785679245726844745821388800402678499411681518036306219179273434395557574279985918047221291197081186140687781560831995";
+                g_params.center_im_str = "-0.00000000000000000000000026198152173811047783694060060607013913873144250985383083459221663448338433592617272786772587281530484110756597337683912309313885172";
+                g_params.size_str      = "2.6e-141";
+            }
+         
             mpfr_t sz, st;
             mpfr_inits2(MPFR_BITS, sz, st, NULL);
             mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
