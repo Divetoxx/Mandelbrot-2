@@ -211,6 +211,8 @@ https://github.com/user-attachments/assets/09379acf-adef-48d9-88e1-7b17af3eba4a
 
 https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e
 
+https://github.com/user-attachments/assets/8ee34d4b-bc5b-481f-95ee-7b0df994d7d0
+
 
 
 **[Download Latest Version Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
@@ -443,6 +445,8 @@ https://github.com/user-attachments/assets/7e3dd648-65e6-49ae-9236-8e1edc4d43a9
 https://github.com/user-attachments/assets/09379acf-adef-48d9-88e1-7b17af3eba4a
 
 https://github.com/user-attachments/assets/c9dda736-e948-47f9-94c5-321b5c30700e
+
+https://github.com/user-attachments/assets/8ee34d4b-bc5b-481f-95ee-7b0df994d7d0
 
 
 **[Скачать последнюю версию Windows](https://github.com/Divetoxx/Mandelbrot-2/releases)**
