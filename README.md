@@ -23,10 +23,11 @@ from the Fractal Forums, whose collaborative work made this engine possible:
 * **Claude Heiland-Allen** - for extensive deep zoom research and the creation of the MDZ project.
 
 ## Key Features:
-* **High-Precision Reference:** The 5000-bit reference trajectory is computed exactly once per zoom layer.
+* **High-Precision Reference:** The 1000-bit reference trajectory is computed exactly once per zoom layer.
 * **Hardware-Native Performance:** Blazing-fast math for millions of pixels utilizing hardware-native double registers.
 * **When** using double-precision floating-point numbers (on the order of $10^{-15}$), perturbation theory only allows you to zoom down to the **$10^{-308}$ level-no further.**
 * **Innovative Algorithm:** Revolutionary *Reference Reset to Zero* implementation.
+* **Bilinear approximation:** The calculation can be performed significantly faster by using bilinear approximation.
 * **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
 * **OpenMP Multi-threading:** High-speed parallel computing to maximize CPU utilization.
 * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.
@@ -37,9 +38,9 @@ from the Fractal Forums, whose collaborative work made this engine possible:
 The engine is completely free from the hardware limitations of standard 64-bit (`double`) and 128-bit (`__float128`) data types, 
 which inevitably lose significance and produce pixelated blocks at depths beyond $10^{-15}$ and $10^{-34}$ respectively.
 * **MPFR/GMP Integration**: All high-precision navigation, mouse clicking, and keyboard arrow zooming are handled within a deep binary memory 
-structure configured to **5000-bit precision**.
+structure configured to **1000-bit precision**.
 * **308-Digit Decimal:** Viewport coordinates are stored in `Mandelbrot.txt`. While the MPFR 
-reference radar computes the center at 5000-bit precision, the hardware native `double` exponent limits the fast pixel engine to a maximum 
+reference radar computes the center at 1000-bit precision, the hardware native `double` exponent limits the fast pixel engine to a maximum 
 depth of $10^{-308}$, providing pristine clarity up to this physical silicon barrier.
 
 
@@ -236,10 +237,11 @@ https://github.com/user-attachments/assets/8ee34d4b-bc5b-481f-95ee-7b0df994d7d0
 
 
 ## Ключевые особенности:
-* Расчёт опорной траектории на 5000 бит всего один раз.
+* Расчёт опорной траектории на 1000 бит всего один раз.
 * Реактивный расчёт миллионов пикселей на аппаратном double.
 * При использовании чисел с плавающей запятой двойной точности (порядка $10^{-15}$) теория возмущений позволяет приблизиться к уровню **$10^{-308}$ - не дальше.**
 * Революционный алгоритм Reference Reset to Zero.
+* Расчет можно выполнить существенно быстрее, если использовать билинейную аппроксимацию.
 * Настоящий SSAA 2x2 для идеально сглаженного изображения без алиасинга.
 * Параллелизм OpenMP для высокоскоростного многопоточного рендеринга.
 * Синхронизация через DwmFlush для плавного вывода кадров без микрофризов.
@@ -251,9 +253,8 @@ https://github.com/user-attachments/assets/8ee34d4b-bc5b-481f-95ee-7b0df994d7d0
 Движок полностью избавлен от аппаратных ограничений 64-битных (`double`) и 128-битных (`__float128`) чисел, которые неизбежно слепнут и выдают 
 пиксельные квадраты на глубинах более $10^{-15}$ и $10^{-34}$.
 * **Интеграция MPFR/GMP**: Вся высокоточная навигация, пересчёт масштаба при кликах мыши и движении стрелочками клавиатуры ведутся 
-внутри сверхглубокой бинарной памяти с точностью **5000 бит**!
-* **308 десятичных знаков**: 
-Координаты кадра сохраняются и считываются из файла `Mandelbrot.txt`. Навигация и радар MPFR работают на глубине до 5000 бит, 
+внутри сверхглубокой бинарной памяти с точностью **1000 бит**!
+* **308 десятичных знаков**: Координаты кадра сохраняются и считываются из файла `Mandelbrot.txt`. Навигация и радар MPFR работают на глубине до 1000 бит, 
 однако скоростной пиксельный дельта-движок ограничен аппаратной экспонентой `double`, что позволяет исследовать безупречно четкие 
 структуры на запредельных масштабах **вплоть до $10^{-308}$ знаков**.
 
