@@ -58,6 +58,7 @@ jobs:
             * **Hardware-Native Performance:** Blazing-fast math for millions of pixels utilizing hardware-native double registers.
             * When using double-precision floating-point numbers (on the order of 1e-15, perturbation theory only allows you to zoom down to the **1e-308 level-no further.**
             * **Innovative Algorithm:** Revolutionary *Reference Reset to Zero* implementation.
+            * **Bilinear approximation:** The calculation can be performed significantly faster by using bilinear approximation.
             * **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
             * **OpenMP Multi-threading:** High-speed parallel computing to maximize CPU utilization.
             * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.

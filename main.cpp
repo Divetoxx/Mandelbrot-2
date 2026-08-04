@@ -22,7 +22,7 @@ const int HEIGHT = 1000;
 const int SS_W = 2000;
 const int SS_H = 2000;
 const int PALETTE_SIZE = 1024;
-const mpfr_prec_t MPFR_BITS = 5000;
+const mpfr_prec_t MPFR_BITS = 1000;
 
 struct FractalParams { 
     double step_d;            
@@ -53,7 +53,6 @@ void generate_full_palette(RGBQUAD* pal) {
         pal[i].rgbReserved = 0;
     }
 }
-
 
 void thread_palette_rotator(HDC hdc_win, HDC hdc_m, RGBQUAD* pixels) {
     RGBQUAD pal[PALETTE_SIZE];
@@ -106,10 +105,12 @@ void thread_palette_rotator(HDC hdc_win, HDC hdc_m, RGBQUAD* pixels) {
     }
 }
 
-
-
 void thread_mandelbrot_calc() {
     std::vector<ComplexDouble> ref_orbit_double;
+    
+    std::vector<ComplexDouble> coeff_A;
+    std::vector<ComplexDouble> coeff_B;
+    std::vector<double> rad_R;
 
     while (true) {
         WaitForSingleObject(g_render_event, INFINITE);
@@ -125,7 +126,11 @@ void thread_mandelbrot_calc() {
         mpfr_set_str(rx, p.center_re_str.c_str(), 10, MPFR_RNDN);
         mpfr_set_str(ry, p.center_im_str.c_str(), 10, MPFR_RNDN);
 
-        ref_orbit_double.resize(p.iter_max + 5);
+        uint32_t allocated_size = p.iter_max + 200;
+        ref_orbit_double.resize(allocated_size);
+        coeff_A.assign(allocated_size, {1.0, 0.0});
+        coeff_B.assign(allocated_size, {0.0, 0.0});
+        rad_R.assign(allocated_size, 2.0);
 
         mpfr_set_ui(zr, 0, MPFR_RNDN);
         mpfr_set_ui(zi, 0, MPFR_RNDN);
@@ -134,7 +139,7 @@ void thread_mandelbrot_calc() {
         uint32_t ref_i = 0;
 
         bool escaped = false;
-        while (ref_i < p.iter_max) {
+        while (ref_i < p.iter_max + 150) {
             ref_orbit_double[ref_i].re = mpfr_get_d(zr, MPFR_RNDN);
             ref_orbit_double[ref_i].im = mpfr_get_d(zi, MPFR_RNDN);
 
@@ -148,7 +153,7 @@ void thread_mandelbrot_calc() {
             mpfr_mul(zr2, zr, zr, MPFR_RNDN);
             mpfr_mul(zi2, zi, zi, MPFR_RNDN);
 
-            if (escaped) {
+            if (escaped && ref_i > p.iter_max) {
                 ref_i++;
                 break;
             }
@@ -169,6 +174,30 @@ void thread_mandelbrot_calc() {
 
         mpfr_clears(rx, ry, zr, zi, zr2, zi2, tmp, NULL);
 
+        #pragma omp parallel for
+        for (int i = 0; i < (int)p.iter_max; ++i) {
+            double min_r = 2.0;
+            for (int k = 0; k < 100; ++k) {
+                if (i + k >= (int)max_valid_ref_iter) break;
+                double r_re = ref_orbit_double[i + k].re;
+                double r_im = ref_orbit_double[i + k].im;
+                double abs_s = std::sqrt(r_re * r_re + r_im * r_im);
+                double aS = (abs_s < 2.0) ? abs_s : 0.0;
+                if (aS < min_r) min_r = aS;
+
+                double next_A_re = 2.0 * (r_re * coeff_A[i].re - r_im * coeff_A[i].im);
+                double next_A_im = 2.0 * (r_re * coeff_A[i].im + r_im * coeff_A[i].re);
+                double next_B_re = 2.0 * (r_re * coeff_B[i].re - r_im * coeff_B[i].im) + 1.0;
+                double next_B_im = 2.0 * (r_re * coeff_B[i].im + r_im * coeff_B[i].re);
+
+                coeff_A[i].re = next_A_re; coeff_A[i].im = next_A_im;
+                coeff_B[i].re = next_B_re; coeff_B[i].im = next_B_im;
+            }
+            rad_R[i] = min_r;
+        }
+
+        const double limit_epsilon_squared = 1e-60;
+
         #pragma omp parallel for schedule(dynamic)
         for (int ss_y = 0; ss_y < SS_H; ++ss_y) {
             if (g_abort) continue;
@@ -185,11 +214,9 @@ void thread_mandelbrot_calc() {
 
                 uint32_t i = 0;
                 const ComplexDouble* ref_ptr = ref_orbit_double.data();
-
                 bool has_re_based = false; 
 
                 while (i < p.iter_max) {
-                    
                     if ((z_re * z_re + z_im * z_im) >= 4000.0) {
                         break;
                     }
@@ -211,36 +238,59 @@ void thread_mandelbrot_calc() {
                         }
                     }
 
-                    if ((z_re * z_re + z_im * z_im) < (delta_re * delta_re + delta_im * delta_im)) {
-                        index = 0; 
-                        delta_re = z_re;
-                        delta_im = z_im;
-                        has_re_based = true;
-                    }
+                    double eps_abs2 = delta_re * delta_re + delta_im * delta_im;
+                    double limit_r2 = limit_epsilon_squared * rad_R[index] * rad_R[index];
 
-                    for (int step = 0; step < 2; ++step) {
-                        double Ur = ref_ptr[index].re;
-                        double Ui = ref_ptr[index].im;
+                    if (eps_abs2 < limit_r2 && (index + 100 < (int)max_valid_ref_iter) && (i + 100 < p.iter_max)) {
+                        double backup_deltaRe = delta_re; double backup_deltaIm = delta_im;
+                        int backup_refIdx = index;
+                        int backup_iter = i;
 
-                        double next_delta_im = 2.0 * Ur * delta_im + 2.0 * Ui * delta_re + 2.0 * delta_re * delta_im + delta_imc;
-                        delta_re = 2.0 * Ur * delta_re - 2.0 * Ui * delta_im + delta_re * delta_re - delta_im * delta_im + delta_rec;
-                        delta_im = next_delta_im;
+                        double next_eps_re = (coeff_A[index].re * delta_re - coeff_A[index].im * delta_im) + 
+                                             (coeff_B[index].re * delta_rec - coeff_B[index].im * delta_imc);
+                        double next_eps_im = (coeff_A[index].re * delta_im + coeff_A[index].im * delta_re) + 
+                                             (coeff_B[index].re * delta_imc + coeff_B[index].im * delta_rec);
+                        
+                        delta_re = next_eps_re; delta_im = next_eps_im;
+                        index += 100; i += 100;
 
-                        index++;
-                    }
+                        z_re = ref_ptr[index].re + delta_re;
 
-                    z_re = ref_ptr[index].re + delta_re;
-                    z_im = ref_ptr[index].im + delta_im;
-                    
-                    i += 2; 
-                }
+z_im = ref_ptr[index].im + delta_im;
 
-                g_ss_buffer[ss_y * SS_W + ss_x] = i;
-            }
-        }
-    }
+if (z_re * z_re + z_im * z_im >= 4000.0) {
+delta_re = backup_deltaRe; delta_im = backup_deltaIm;
+index = backup_refIdx; i = backup_iter;
+} else {
+continue;
+}
 }
 
+if ((z_re * z_re + z_im * z_im) < eps_abs2) {
+index = 0;
+delta_re = z_re;
+delta_im = z_im;
+has_re_based = true;
+}
+
+const double aa = 2.0 * ref_ptr[index].re + delta_re;
+const double bb = 2.0 * ref_ptr[index].im + delta_im;
+const double nextDeltaRe = aa * delta_re - bb * delta_im + delta_rec;
+delta_im = aa * delta_im + bb * delta_re + delta_imc;
+delta_re = nextDeltaRe;
+
+index++;
+i++;
+
+z_re = ref_ptr[index].re + delta_re;
+z_im = ref_ptr[index].im + delta_im;
+}
+
+g_ss_buffer[ss_y * SS_W + ss_x] = i;
+}
+}
+}
+}
 
 LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     switch (msg) {
