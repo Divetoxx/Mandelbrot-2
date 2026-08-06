@@ -89,7 +89,6 @@ BitBlt(hdc_win, 0, 0, WIDTH, HEIGHT, hdc_m, 0, 0, SRCCOPY);
 DwmFlush();
 }
 }
-
 void thread_mandelbrot_calc() {
     std::vector<ComplexDouble> ref_orbit_double;
     std::vector<ComplexDouble> coeff_A;
@@ -101,10 +100,12 @@ void thread_mandelbrot_calc() {
         g_abort = false;
         FractalParams p;
         { std::lock_guard<std::mutex> lock(g_params_mutex); p = g_params; }
-        mpfr_t rx, ry, zr, zi, zr2, zi2, tmp;
-        mpfr_inits2(MPFR_BITS, rx, ry, zr, zi, zr2, zi2, tmp, NULL);
+        mpfr_t rx, ry, zr, zi, zr2, zi2, tmp, sz, st;
+        mpfr_inits2(MPFR_BITS, rx, ry, zr, zi, zr2, zi2, tmp, sz, st, NULL);
         mpfr_set_str(rx, p.center_re_str.c_str(), 10, MPFR_RNDN);
         mpfr_set_str(ry, p.center_im_str.c_str(), 10, MPFR_RNDN);
+        mpfr_set_str(sz, p.size_str.c_str(), 10, MPFR_RNDN);
+        mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
         uint32_t allocated_size = p.iter_max + 200;
         ref_orbit_double.clear();
         ref_orbit_double.reserve(allocated_size);
@@ -135,14 +136,22 @@ void thread_mandelbrot_calc() {
         double ref_rec_d = mpfr_get_d(rx, MPFR_RNDN);
         double ref_imc_d = mpfr_get_d(ry, MPFR_RNDN);
         double ss_step_d = p.step_d;
-        mpfr_clears(rx, ry, zr, zi, zr2, zi2, tmp, NULL);
+        double limit_epsilon_squared;
+        mpfr_exp_t current_binary_exp = mpfr_get_exp(st);
+        if (current_binary_exp > -244) {
+            limit_epsilon_squared = 1e-20;
+        } else {
+            limit_epsilon_squared = 1e-60;
+        }
+        mpfr_clears(rx, ry, zr, zi, zr2, zi2, tmp, sz, st, NULL);
         std::vector<double> aS_squared(max_valid_ref_iter, 0.0);
         for (size_t i = 0; i < max_valid_ref_iter; ++i) {
             double r2 = ref_orbit_double[i].re * ref_orbit_double[i].re + ref_orbit_double[i].im * ref_orbit_double[i].im;
             aS_squared[i] = (r2 < 4.0) ? r2 : 0.0;
         }
+        const int loop_limit = std::min(static_cast<int>(p.iter_max), static_cast<int>(max_valid_ref_iter) - 105);
         #pragma omp parallel for
-        for (int i = 0; i < (int)p.iter_max; ++i) {
+        for (int i = 0; i < loop_limit; ++i) {
             double min_r2 = 4.0;
             for (int k = 0; k < 100; ++k) {
                 if (i + k >= (int)max_valid_ref_iter) break;
@@ -161,7 +170,6 @@ void thread_mandelbrot_calc() {
                 coeff_B[i].re = next_B_re; coeff_B[i].im = next_B_im;
             }
         }
-        const double limit_epsilon_squared = 1e-60;
         const ComplexDouble* ref_ptr = ref_orbit_double.data();
         #pragma omp parallel for schedule(dynamic)
         for (int ss_y = 0; ss_y < SS_H; ++ss_y) {
