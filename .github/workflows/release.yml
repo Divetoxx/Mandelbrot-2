@@ -54,7 +54,7 @@ jobs:
             * **Mandelbrot_SSE3.exe** — Compatible version. For older processors (including **AMD Phenom II**).
  
             ### Features:
-            * **High-Precision Reference:** The 5000-bit reference trajectory is computed exactly once per zoom layer.
+            * **High-Precision Reference:** The 1000-bit reference trajectory is computed exactly once per zoom layer.
             * **Hardware-Native Performance:** Blazing-fast math for millions of pixels utilizing hardware-native double registers.
             * When using double-precision floating-point numbers (on the order of 1e-15, perturbation theory only allows you to zoom down to the **1e-308 level-no further.**
             * **Innovative Algorithm:** Revolutionary *Reference Reset to Zero* implementation.
