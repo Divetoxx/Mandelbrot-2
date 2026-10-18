@@ -50,14 +50,14 @@ pal[i].rgbReserved = 0;
 void thread_palette_rotator(HDC hdc_win, HDC hdc_m, RGBQUAD* pixels) {
 RGBQUAD pal[PALETTE_SIZE];
 generate_full_palette(pal);
-std::vector<RGBQUAD> color_cache(50001);
+std::vector<RGBQUAD> color_cache(500001);
 float offset = 0;
 while (true) {
-for (int i = 0; i <= 50000; ++i) {
-if (i >= 50000) {
+for (int i = 0; i <= 500000; ++i) {
+if (i >= 500000) {
 color_cache[i] = {255, 255, 255, 0};
 } else {
-int idx = (int)(50000 - i + (int)offset) % PALETTE_SIZE;
+int idx = (int)(500000 - i + (int)offset) % PALETTE_SIZE;
 if (idx < 0) idx += PALETTE_SIZE;
 color_cache[i] = pal[idx];
 }
@@ -288,7 +288,7 @@ SetEvent(g_render_event);
 return 0;
 }
 case WM_KEYDOWN: {
-if (wp >= '1' && wp <= '6') {
+if (wp >= '1' && wp <= '8') {
 g_abort = true;
 std::lock_guard<std::mutex> lock(g_params_mutex);
 if (wp == '1') {
@@ -320,6 +320,16 @@ if (wp == '6') {
 g_params.center_re_str = "-1.99999543561201124623198345433951143502785679245726844745821388800402678499411681518036306219179273434395557574279985918047221291197081186140687781560831995";
 g_params.center_im_str = "-0.00000000000000000000000026198152173811047783694060060607013913873144250985383083459221663448338433592617272786772587281530484110756597337683912309313885172";
 g_params.size_str  = "1.15e-119";
+}
+if (wp == '7') {
+g_params.center_re_str = "-0.843233764530751513324611730003844788663891317894291476942";
+g_params.center_im_str = "0.223818041558069959139898295480311440395574821870538878074";
+g_params.size_str  = "2.66e-52";
+}
+if (wp == '8') {
+g_params.center_re_str = "-0.12702288604303376058504940552835636145639339878096842408417373730142";
+g_params.center_im_str = "-0.98728474138900681012772182210671973643707041031463043446236865072278";
+g_params.size_str  = "6.18e-64";
 }
 mpfr_t sz, st;
 mpfr_inits2(MPFR_BITS, sz, st, NULL);
@@ -414,10 +424,10 @@ bmi.bmiHeader.biCompression = BI_RGB;
 RGBQUAD* screen_pixels = nullptr;
 HBITMAP h_bmp = CreateDIBSection(hdc_mem, &bmi, DIB_RGB_COLORS, (void**)&screen_pixels, NULL, 0);
 SelectObject(hdc_mem, h_bmp);
-g_params.iter_max = 50000;
-g_params.center_re_str = "-1.7491976289657893741942376816272921165326158557416159";
-g_params.center_im_str = "-0.00000042530777152440422725855012159249401150956515248";
-g_params.size_str  = "4.31e-51";
+g_params.iter_max = 500000;
+g_params.center_re_str = "-1.74919762896578937419423768162729211653261585574161734756645570271259437106847945278504682550816934045282325615313706";
+g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
+g_params.size_str  = "1.34e-113";
 mpfr_t sz, st;
 mpfr_inits2(MPFR_BITS, sz, st, NULL);
 mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
