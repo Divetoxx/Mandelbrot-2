@@ -178,7 +178,7 @@ Example file content:
 | **Zoom In** | `L-Mouse Click` | Zooms **2x** into the point under cursor. |
 | **Zoom Out** | `R-Mouse Click` | Zooms **2x** out from the center. |
 | **Fine Zoom** | `UP / DOWN` | Precision zoom by a factor of **1.05x**. |
-| **Presets** | `1` - `6` | Jump to 6 iconic fractal locations. |
+| **Presets** | `1` - `8` | Jump to 8 iconic fractal locations. |
 | **Save Loc** | `ENTER` | Exports coordinates to `Mandelbrot.txt`. |
 | **Load Loc** | `BACKSPACE` | Imports coordinates and renders. |
 
@@ -461,7 +461,7 @@ https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
 | **Приблизить** | `ЛКМ` | Увеличение в **2 раза** в точке под курсором мыши. |
 | **Отдалить** | `ПКМ` | Уменьшение в **2 раза** от текущего центра. |
 | **Точный зум** | `Стрелки вверх / вниз` | Плавное изменение масштаба с коэффициентом **1.05x**. |
-| **Пресеты** | Клавиши `1` - `6` | Мгновенный переход к 6 предустановленным локациям. |
+| **Пресеты** | Клавиши `1` - `8` | Мгновенный переход к 8 предустановленным локациям. |
 | **Сохранить** | `ENTER` | Экспорт текущих координат и масштаба в файл `Mandelbrot.txt`. |
 | **Загрузить** | `BACKSPACE` | Импорт координат из файла и мгновенный переход к месту. |
 
