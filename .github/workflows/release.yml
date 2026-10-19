@@ -26,7 +26,6 @@ jobs:
             mingw-w64-ucrt-x86_64-binutils
             mingw-w64-ucrt-x86_64-mpfr
             mingw-w64-ucrt-x86_64-gmp
-            mingw-w64-ucrt-x86_64-openmp
 
       - name: Compile Windows Versions (AVX2 and SSE3)
         shell: msys2 {0}
