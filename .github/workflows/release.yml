@@ -20,20 +20,13 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           msystem: UCRT64
-          # cache: false стирает старые зависшие образы на сервере GitHub
-          cache: false
           update: true
-          # Мы убрали 'mingw-w64-ucrt-x86_64-gcc' и заменили его на жестко зафиксированный стабильный 'gcc-compat'
           install: >-
-            mingw-w64-ucrt-x86_64-gcc-compat
+            mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-binutils
             mingw-w64-ucrt-x86_64-mpfr
             mingw-w64-ucrt-x86_64-gmp
-
-      # Проверочный шаг, чтобы вы лично в логах увидели стабильную версию (GCC 14.x)
-      - name: Check Compiler Version
-        shell: msys2 {0}
-        run: g++ --version
+            mingw-w64-ucrt-x86_64-openmp
 
       - name: Compile Windows Versions (AVX2 and SSE3)
         shell: msys2 {0}
@@ -45,11 +38,10 @@ jobs:
             RESOURCE_OBJ=""
           fi
 
-          # На чистом стабильном компиляторе ваши классические статические сборки пройдут за секунды
-          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_AVX2.exe -mavx2 -fopenmp -static -static-libgcc -static-libstdc++ -Wl,--start-group -lmpfr -lgmp -lgomp -lwinpthread -lgdi32 -luser32 -ldwmapi -Wl,--end-group -mwindows
+          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_AVX2.exe -mavx2 -fopenmp -static-libgcc -static-libstdc++ -lmpfr -lgmp -lgdi32 -luser32 -ldwmapi -mwindows
           strip Mandelbrot_AVX2.exe
 
-          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_SSE3.exe -msse3 -fopenmp -static -static-libgcc -static-libstdc++ -Wl,--start-group -lmpfr -lgmp -lgomp -lwinpthread -lgdi32 -luser32 -ldwmapi -Wl,--end-group -mwindows
+          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_SSE3.exe -msse3 -fopenmp -static-libgcc -static-libstdc++ -lmpfr -lgmp -lgdi32 -luser32 -ldwmapi -mwindows
           strip Mandelbrot_SSE3.exe
 
       - name: Create Release
