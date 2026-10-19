@@ -11,7 +11,7 @@
 
 # 🇺🇸 English Version
 
-# Mandelbrot GUI: Visualizer with Perturbation Theory (with a $10^{-308}$ hardware limit)
+# Mandelbrot GUI: Visualizer with Perturbation Theory and Bilinear approximation
 
 ## Credits & Acknowledgments
 
@@ -272,7 +272,7 @@ https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
 <a name="russian"></a>
 # 🇷🇺 Русская версия
 
-# Графический интерфейс Мандельброта: Визуализатор с методом возмущений и предела $10^{-308}$
+# Графический интерфейс Мандельброта: Визуализатор с методом возмущений и билинейную аппроксимацию.
 
 ## Благодарности (Credits)
 
