@@ -60,7 +60,7 @@ jobs:
             * **Dynamic Reference Relocalization:** Professional *Reset to Zero* implementation ensuring flawless orbit re-basing without precision loss.
             * **Bilinear approximation:** The calculation can be performed significantly faster by using bilinear approximation.
             * **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
-            * **Pure C++11 Multi-threading:** High-speed parallel computing built directly into the language standard. Scales transparently across architectures—delivering flawless 100% CPU utilization whether running on a 4-core laptop or a 128-core high-performance server without external dependencies.
+            * **Pure C++11 Multi-threading:** High-speed parallel computing built directly into the language standard.
             * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.
             * **Dynamic Palette Rotation:** Classic, ultra-smooth fractal color-cycling effects with zero performance overhead.
 
