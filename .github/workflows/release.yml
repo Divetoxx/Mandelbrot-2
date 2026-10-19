@@ -37,10 +37,18 @@ jobs:
             RESOURCE_OBJ=""
           fi
 
-          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_AVX2.exe -mavx2 -fopenmp -static-libgcc -static-libstdc++ -lmpfr -lgmp -lgdi32 -luser32 -ldwmapi -mwindows
+          # Шаг 1: Компилируем исходный код в объектный файл. Флаг -fopenmp здесь ОБЯЗАТЕЛЕН, 
+          # чтобы компилятор правильно обработал ваши параллельные циклы #pragma omp.
+          g++ -O3 -c main.cpp -o main_avx2.o -mavx2 -fopenmp
+          
+          # Шаг 2: Линкуем финальный .exe БЕЗ флага -fopenmp! GCC больше скрытно не подставит -lgomp.
+          # Чтобы OpenMP работал динамически через стандартную Windows DLL, мы передаем флаг потоков напрямую.
+          g++ main_avx2.o $RESOURCE_OBJ -o Mandelbrot_AVX2.exe -static-libgcc -static-libstdc++ -Wl,-Bstatic -lmpfr -lgmp -Wl,-Bdynamic -lwinpthread -lgdi32 -luser32 -ldwmapi -mwindows
           strip Mandelbrot_AVX2.exe
 
-          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_SSE3.exe -msse3 -fopenmp -static-libgcc -static-libstdc++ -lmpfr -lgmp -lgdi32 -luser32 -ldwmapi -mwindows
+          # Повторяем ту же беспроигрышную схему для версии SSE3
+          g++ -O3 -c main.cpp -o main_sse3.o -msse3 -fopenmp
+          g++ main_sse3.o $RESOURCE_OBJ -o Mandelbrot_SSE3.exe -static-libgcc -static-libstdc++ -Wl,-Bstatic -lmpfr -lgmp -Wl,-Bdynamic -lwinpthread -lgdi32 -luser32 -ldwmapi -mwindows
           strip Mandelbrot_SSE3.exe
 
       - name: Create Release
