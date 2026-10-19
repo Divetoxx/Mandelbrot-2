@@ -8,7 +8,6 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
-#include <omp.h>
 #include <fstream>
 #include <string>
 #include <iostream>
@@ -47,75 +46,110 @@ pal[i].rgbGreen = (uint8_t)(127.0 + 127.0 * std::sin(angle * 4));
 pal[i].rgbReserved = 0;
 }
 }
+
+
 void thread_palette_rotator(HDC hdc_win, HDC hdc_m, RGBQUAD* pixels) {
-RGBQUAD pal[PALETTE_SIZE];
-generate_full_palette(pal);
-std::vector<RGBQUAD> color_cache(500001);
-float offset = 0;
-while (true) {
-for (int i = 0; i <= 500000; ++i) {
-if (i >= 500000) {
-color_cache[i] = {255, 255, 255, 0};
-} else {
-int idx = (int)(500000 - i + (int)offset) % PALETTE_SIZE;
-if (idx < 0) idx += PALETTE_SIZE;
-color_cache[i] = pal[idx];
+    RGBQUAD pal[PALETTE_SIZE];
+    generate_full_palette(pal);
+    std::vector<RGBQUAD> color_cache(500001);
+    float offset = 0;
+
+    unsigned int num_threads = std::thread::hardware_concurrency();
+    if (num_threads == 0) num_threads = 4;
+
+    while (true) {
+        for (int i = 0; i <= 500000; ++i) {
+            if (i >= 500000) {
+                color_cache[i] = {255, 255, 255, 0};
+            } else {
+                int idx = (int)(500000 - i + (int)offset) % PALETTE_SIZE;
+                if (idx < 0) idx += PALETTE_SIZE;
+                color_cache[i] = pal[idx];
+            }
+        }
+
+        std::atomic<int> current_y{0};
+        std::vector<std::thread> workers;
+        workers.reserve(num_threads);
+
+        for (unsigned int t = 0; t < num_threads; ++t) {
+            workers.emplace_back([&]() {
+                while (true) {
+                    int y = current_y++;
+                    if (y >= HEIGHT) break;
+
+                    for (int x = 0; x < WIDTH; ++x) {
+                        uint32_t i0 = g_ss_buffer[(y * 2 + 0) * SS_W + (x * 2 + 0)];
+                        uint32_t i1 = g_ss_buffer[(y * 2 + 0) * SS_W + (x * 2 + 1)];
+                        uint32_t i2 = g_ss_buffer[(y * 2 + 1) * SS_W + (x * 2 + 0)];
+                        uint32_t i3 = g_ss_buffer[(y * 2 + 1) * SS_W + (x * 2 + 1)];
+
+                        RGBQUAD c0 = color_cache[i0];
+                        RGBQUAD c1 = color_cache[i1];
+                        RGBQUAD c2 = color_cache[i2];
+                        RGBQUAD c3 = color_cache[i3];
+
+                        uint32_t r = (uint32_t)c0.rgbRed   + c1.rgbRed   + c2.rgbRed   + c3.rgbRed;
+                        uint32_t g = (uint32_t)c0.rgbGreen + c1.rgbGreen + c2.rgbGreen + c3.rgbGreen;
+                        uint32_t b = (uint32_t)c0.rgbBlue  + c1.rgbBlue  + c2.rgbBlue  + c3.rgbBlue;
+
+                        int pix_idx = y * WIDTH + x;
+                        pixels[pix_idx].rgbRed   = (uint8_t)(r >> 2);
+                        pixels[pix_idx].rgbGreen = (uint8_t)(g >> 2);
+                        pixels[pix_idx].rgbBlue  = (uint8_t)(b >> 2);
+                        pixels[pix_idx].rgbReserved = 0;
+                    }
+                }
+            });
+        }
+
+        for (auto &worker : workers) {
+            if (worker.joinable()) worker.join();
+        }
+
+        offset -= 1.0f;
+        if (offset < 0) offset += PALETTE_SIZE;
+        BitBlt(hdc_win, 0, 0, WIDTH, HEIGHT, hdc_m, 0, 0, SRCCOPY);
+        DwmFlush();
+    }
 }
-}
-#pragma omp parallel for schedule(static, 128)
-for (int y = 0; y < HEIGHT; ++y) {
-for (int x = 0; x < WIDTH; ++x) {
-uint32_t i0 = g_ss_buffer[(y * 2 + 0) * SS_W + (x * 2 + 0)];
-uint32_t i1 = g_ss_buffer[(y * 2 + 0) * SS_W + (x * 2 + 1)];
-uint32_t i2 = g_ss_buffer[(y * 2 + 1) * SS_W + (x * 2 + 0)];
-uint32_t i3 = g_ss_buffer[(y * 2 + 1) * SS_W + (x * 2 + 1)];
-RGBQUAD c0 = color_cache[i0];
-RGBQUAD c1 = color_cache[i1];
-RGBQUAD c2 = color_cache[i2];
-RGBQUAD c3 = color_cache[i3];
-uint32_t r = (uint32_t)c0.rgbRed   + c1.rgbRed   + c2.rgbRed   + c3.rgbRed;
-uint32_t g = (uint32_t)c0.rgbGreen + c1.rgbGreen + c2.rgbGreen + c3.rgbGreen;
-uint32_t b = (uint32_t)c0.rgbBlue  + c1.rgbBlue  + c2.rgbBlue  + c3.rgbBlue;
-int pix_idx = y * WIDTH + x;
-pixels[pix_idx].rgbRed   = (uint8_t)(r >> 2);
-pixels[pix_idx].rgbGreen = (uint8_t)(g >> 2);
-pixels[pix_idx].rgbBlue  = (uint8_t)(b >> 2);
-pixels[pix_idx].rgbReserved = 0;
-}
-}
-offset -= 1.0f;
-if (offset < 0) offset += PALETTE_SIZE;
-BitBlt(hdc_win, 0, 0, WIDTH, HEIGHT, hdc_m, 0, 0, SRCCOPY);
-DwmFlush();
-}
-}
+
+
 void thread_mandelbrot_calc() {
     std::vector<ComplexDouble> ref_orbit_double;
     std::vector<ComplexDouble> coeff_A;
     std::vector<ComplexDouble> coeff_B;
     std::vector<double> rad_R;
+
+    unsigned int num_threads = std::thread::hardware_concurrency();
+    if (num_threads == 0) num_threads = 4;
+
     while (true) {
         WaitForSingleObject(g_render_event, INFINITE);
         ResetEvent(g_render_event);
         g_abort = false;
         FractalParams p;
         { std::lock_guard<std::mutex> lock(g_params_mutex); p = g_params; }
+        
         mpfr_t rx, ry, zr, zi, zr2, zi2, tmp, sz, st;
         mpfr_inits2(MPFR_BITS, rx, ry, zr, zi, zr2, zi2, tmp, sz, st, NULL);
         mpfr_set_str(rx, p.center_re_str.c_str(), 10, MPFR_RNDN);
         mpfr_set_str(ry, p.center_im_str.c_str(), 10, MPFR_RNDN);
         mpfr_set_str(sz, p.size_str.c_str(), 10, MPFR_RNDN);
         mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
+        
         uint32_t allocated_size = p.iter_max + 200;
         ref_orbit_double.clear();
         ref_orbit_double.reserve(allocated_size);
         coeff_A.assign(allocated_size, {1.0, 0.0});
         coeff_B.assign(allocated_size, {0.0, 0.0});
         rad_R.assign(allocated_size, 2.0);
+        
         mpfr_set_ui(zr, 0, MPFR_RNDN);
         mpfr_set_ui(zi, 0, MPFR_RNDN);
         mpfr_set_ui(zr2, 0, MPFR_RNDN);
         mpfr_set_ui(zi2, 0, MPFR_RNDN);
+        
         for (uint32_t iter = 0; iter < allocated_size - 1; ++iter) {
             ComplexDouble z{mpfr_get_d(zr, MPFR_RNDN), mpfr_get_d(zi, MPFR_RNDN)};
             ref_orbit_double.push_back(z);
@@ -133,10 +167,12 @@ void thread_mandelbrot_calc() {
         }
         ref_orbit_double.push_back({mpfr_get_d(zr, MPFR_RNDN), mpfr_get_d(zi, MPFR_RNDN)});
         uint32_t max_valid_ref_iter = static_cast<uint32_t>(ref_orbit_double.size());
+        
         double ref_rec_d = mpfr_get_d(rx, MPFR_RNDN);
         double ref_imc_d = mpfr_get_d(ry, MPFR_RNDN);
         double ss_step_d = p.step_d;
         double limit_epsilon_squared;
+        
         mpfr_exp_t current_binary_exp = mpfr_get_exp(st);
         if (current_binary_exp > -244) {
             limit_epsilon_squared = 1e-30;
@@ -144,107 +180,146 @@ void thread_mandelbrot_calc() {
             limit_epsilon_squared = 1e-60;
         }
         mpfr_clears(rx, ry, zr, zi, zr2, zi2, tmp, sz, st, NULL);
+        
         std::vector<double> aS_squared(max_valid_ref_iter, 0.0);
         for (size_t i = 0; i < max_valid_ref_iter; ++i) {
             double r2 = ref_orbit_double[i].re * ref_orbit_double[i].re + ref_orbit_double[i].im * ref_orbit_double[i].im;
             aS_squared[i] = (r2 < 4.0) ? r2 : 0.0;
         }
+        
         const int loop_limit = std::min(static_cast<int>(p.iter_max), static_cast<int>(max_valid_ref_iter) - 105);
-        #pragma omp parallel for
-        for (int i = 0; i < loop_limit; ++i) {
-            double min_r2 = 4.0;
-            for (int k = 0; k < 100; ++k) {
-                if (i + k >= (int)max_valid_ref_iter) break;
-                if (aS_squared[i + k] < min_r2) min_r2 = aS_squared[i + k];
+
+        {
+            std::atomic<int> current_i{0};
+            std::vector<std::thread> BLA_workers;
+            BLA_workers.reserve(num_threads);
+
+            for (unsigned int t = 0; t < num_threads; ++t) {
+                BLA_workers.emplace_back([&]() {
+                    while (true) {
+                        int i = current_i++;
+                        if (i >= loop_limit) break;
+
+                        double min_r2 = 4.0;
+                        for (int k = 0; k < 100; ++k) {
+                            if (i + k >= (int)max_valid_ref_iter) break;
+                            if (aS_squared[i + k] < min_r2) min_r2 = aS_squared[i + k];
+                        }
+                        rad_R[i] = std::sqrt(min_r2); 
+                        
+                        for (int k = 0; k < 100; ++k) {
+                            if (i + k >= (int)max_valid_ref_iter) break;
+                            double r_re = ref_orbit_double[i + k].re;
+                            double r_im = ref_orbit_double[i + k].im;
+                            double next_A_re = 2.0 * (r_re * coeff_A[i].re - r_im * coeff_A[i].im);
+                            double next_A_im = 2.0 * (r_re * coeff_A[i].im + r_im * coeff_A[i].re);
+                            double next_B_re = 2.0 * (r_re * coeff_B[i].re - r_im * coeff_B[i].im) + 1.0;
+                            double next_B_im = 2.0 * (r_re * coeff_B[i].im + r_im * coeff_B[i].re);
+                            coeff_A[i].re = next_A_re; coeff_A[i].im = next_A_im;
+                            coeff_B[i].re = next_B_re; coeff_B[i].im = next_B_im;
+                        }
+                    }
+                });
             }
-            rad_R[i] = std::sqrt(min_r2); 
-            for (int k = 0; k < 100; ++k) {
-                if (i + k >= (int)max_valid_ref_iter) break;
-                double r_re = ref_orbit_double[i + k].re;
-                double r_im = ref_orbit_double[i + k].im;
-                double next_A_re = 2.0 * (r_re * coeff_A[i].re - r_im * coeff_A[i].im);
-                double next_A_im = 2.0 * (r_re * coeff_A[i].im + r_im * coeff_A[i].re);
-                double next_B_re = 2.0 * (r_re * coeff_B[i].re - r_im * coeff_B[i].im) + 1.0;
-                double next_B_im = 2.0 * (r_re * coeff_B[i].im + r_im * coeff_B[i].re);
-                coeff_A[i].re = next_A_re; coeff_A[i].im = next_A_im;
-                coeff_B[i].re = next_B_re; coeff_B[i].im = next_B_im;
+            for (auto &worker : BLA_workers) {
+                if (worker.joinable()) worker.join();
             }
         }
+
         const ComplexDouble* ref_ptr = ref_orbit_double.data();
-        #pragma omp parallel for schedule(dynamic)
-        for (int ss_y = 0; ss_y < SS_H; ++ss_y) {
-            if (g_abort) continue;
-            for (int ss_x = 0; ss_x < SS_W; ++ss_x) {
-                double delta_rec = (double)(ss_x - (SS_W / 2)) * ss_step_d;
-                double delta_imc = (double)((SS_H / 2) - ss_y) * ss_step_d;
-                uint32_t index = 0;    
-                double delta_re = 0.0; 
-                double delta_im = 0.0;
-                double z_re = 0.0;     
-                double z_im = 0.0;
-                uint32_t i = 0;
-                bool has_re_based = false; 
-                while (i < p.iter_max) {
-                    if ((z_re * z_re + z_im * z_im) >= 4000.0) {
-                        break;
-                    }
-                    if (index >= max_valid_ref_iter) {
-                        if (!has_re_based) {
-                            break;
-                        } else {
-                            double ld_cx = ref_rec_d + delta_rec;
-                            double ld_cy = ref_imc_d - delta_imc;
-                            while (i < p.iter_max && (z_re * z_re + z_im * z_im) < 4000.0) {
-                                double old_re = z_re;
-                                double old_im = z_im;
-                                z_re = old_re * old_re - old_im * old_im + ld_cx;
-                                z_im = 2.0 * old_re * old_im + ld_cy;
-                                i++;
-                            }
-                            break;
-                        }
-                    }
-                    double eps_abs2 = delta_re * delta_re + delta_im * delta_im;
-                    double limit_r2 = limit_epsilon_squared * rad_R[index] * rad_R[index];
-                    if (eps_abs2 < limit_r2 && (i + 100 < p.iter_max)) {
-                        double backup_deltaRe = delta_re; double backup_deltaIm = delta_im;
-                        int backup_refIdx = index;
-                        int backup_iter = i;
-                        double next_eps_re = (coeff_A[index].re * delta_re - coeff_A[index].im * delta_im) + 
-                                             (coeff_B[index].re * delta_rec - coeff_B[index].im * delta_imc);
-                        double next_eps_im = (coeff_A[index].re * delta_im + coeff_A[index].im * delta_re) + 
-                                             (coeff_B[index].re * delta_imc + coeff_B[index].im * delta_rec);
-                        delta_re = next_eps_re; delta_im = next_eps_im;
-                        index += 100; i += 100;
-                        z_re = ref_ptr[index].re + delta_re;
-                        z_im = ref_ptr[index].im + delta_im;
-                        if (z_re * z_re + z_im * z_im >= 4000.0) {
-                            delta_re = backup_deltaRe; delta_im = backup_deltaIm;
-                            index = backup_refIdx; i = backup_iter;
-                        } else {
-                            continue; 
-                        }
-                    }
-                    if ((z_re * z_re + z_im * z_im) < eps_abs2) {
-                        index = 0; 
-                        delta_re = z_re;
-                        delta_im = z_im;
-                        has_re_based = true;
-                    }
-                    const double aa = 2.0 * ref_ptr[index].re + delta_re;
-                    const double bb = 2.0 * ref_ptr[index].im + delta_im;
-                    const double nextDeltaRe = aa * delta_re - bb * delta_im + delta_rec;
-                    delta_im = aa * delta_im + bb * delta_re + delta_imc;
-                    delta_re = nextDeltaRe;
-                    index++;
-                    i++;
-                    z_re = ref_ptr[index].re + delta_re;
-                    z_im = ref_ptr[index].im + delta_im;
-                }
-                g_ss_buffer[ss_y * SS_W + ss_x] = i;
-            }
-        }
-    }
+
+        {
+            std::atomic<int> current_ss_y{0};
+            std::vector<std::thread> render_workers;
+            render_workers.reserve(num_threads);
+
+            for (unsigned int t = 0; t < num_threads; ++t) {
+                render_workers.emplace_back([&]() {
+                    while (true) {
+                        int ss_y = current_ss_y++;
+                        if (ss_y >= SS_H || g_abort) break;
+
+                        for (int ss_x = 0; ss_x < SS_W; ++ss_x) {
+                            double delta_rec = (double)(ss_x - (SS_W / 2)) * ss_step_d;
+                            double delta_imc = (double)((SS_H / 2) - ss_y) * ss_step_d;
+                            uint32_t index = 0;    
+                            double delta_re = 0.0; 
+                            double delta_im = 0.0;
+                            double z_re = 0.0;     
+                            double z_im = 0.0;
+                            uint32_t i = 0;
+                            bool has_re_based = false; 
+                            
+                            while (i < p.iter_max) {
+                                if ((z_re * z_re + z_im * z_im) >= 4000.0) {
+                                    break;
+                                }
+                                if (index >= max_valid_ref_iter) {
+                                    if (!has_re_based) {
+                                        break;
+                                    } else {
+                                        double ld_cx = ref_rec_d + delta_rec;
+                                        double ld_cy = ref_imc_d - delta_imc;
+                                        while (i < p.iter_max && (z_re * z_re + z_im * z_im) < 4000.0) {
+                                            double old_re = z_re;
+                                            double old_im = z_im;
+                                            z_re = old_re * old_re - old_im * old_im + ld_cx;
+                                            z_im = 2.0 * old_re * old_im + ld_cy;
+                                            i++;
+                                        }
+                                        break;
+                                    }
+                                }
+                                
+                                double eps_abs2 = delta_re * delta_re + delta_im * delta_im;
+                                double limit_r2 = limit_epsilon_squared * rad_R[index] * rad_R[index];
+                                
+                                if (eps_abs2 < limit_r2 && (i + 100 < p.iter_max)) {
+                                    double backup_deltaRe = delta_re; double backup_deltaIm = delta_im;
+                                    int backup_refIdx = index;
+                                    int backup_iter = i;
+                                    double next_eps_re = (coeff_A[index].re * delta_re - coeff_A[index].im * delta_im) + 
+                                                         (coeff_B[index].re * delta_rec - coeff_B[index].im * delta_imc);
+                                    double next_eps_im = (coeff_A[index].re * delta_im + coeff_A[index].im * delta_re) + 
+                                                         (coeff_B[index].re * delta_imc + coeff_B[index].im * delta_rec);
+                                    delta_re = next_eps_re; delta_im = next_eps_im;
+                                    index += 100; i += 100;
+                                    z_re = ref_ptr[index].re + delta_re;
+                                    z_im = ref_ptr[index].im + delta_im;
+                                    if (z_re * z_re + z_im * z_im >= 4000.0) {
+                                        delta_re = backup_deltaRe; delta_im = backup_deltaIm;
+                                        index = backup_refIdx; i = backup_iter;
+                                    } else {
+                                        continue; 
+                                    }
+                                }
+                                
+                                if ((z_re * z_re + z_im * z_im) < eps_abs2) {
+                                    index = 0; 
+                                    delta_re = z_re;
+                                    delta_im = z_im;
+                                    has_re_based = true;
+                                }
+const double aa = 2.0 * ref_ptr[index].re + delta_re;
+const double bb = 2.0 * ref_ptr[index].im + delta_im;
+const double nextDeltaRe = aa * delta_re - bb * delta_im + delta_rec;
+delta_im = aa * delta_im + bb * delta_re + delta_imc;
+delta_re = nextDeltaRe;
+index++;
+i++;
+z_re = ref_ptr[index].re + delta_re;
+z_im = ref_ptr[index].im + delta_im;
+}
+g_ss_buffer[ss_y * SS_W + ss_x] = i;
+}
+}
+});
+}
+for (auto &worker : render_workers) {
+if (worker.joinable()) worker.join();
+}
+}
+}
 }
 
 LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {

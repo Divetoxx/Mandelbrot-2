@@ -20,12 +20,13 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           msystem: UCRT64
-          update: true
+          cache: false
           install: >-
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-binutils
             mingw-w64-ucrt-x86_64-mpfr
             mingw-w64-ucrt-x86_64-gmp
+          update: true
 
       - name: Compile Windows Versions (AVX2 and SSE3)
         shell: msys2 {0}
@@ -37,30 +38,11 @@ jobs:
             RESOURCE_OBJ=""
           fi
 
-          # 1. Компилируем исходный код в объектные файлы с флагами OpenMP
-          g++ -O3 -c main.cpp -o main_avx2.o -mavx2 -fopenmp
-          g++ -O3 -c main.cpp -o main_sse3.o -msse3 -fopenmp
-          
-          # 2. Линкуем БЕЗ флага -fopenmp, но передаем -lgomp вручную в динамическом режиме (-Wl,-Bdynamic)
-          # Это предотвратит поиск сломанного статического .a файла и закроет все undefined reference!
-          g++ main_avx2.o $RESOURCE_OBJ -o Mandelbrot_AVX2.exe -static-libgcc -static-libstdc++ -Wl,-Bstatic -lmpfr -lgmp -Wl,-Bdynamic -lgomp -lwinpthread -lgdi32 -luser32 -ldwmapi -mwindows
+          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_AVX2.exe -mavx2 -static -static-libgcc -static-libstdc++ -Wl,--start-group -lmpfr -lgmp -lwinpthread -lgdi32 -luser32 -ldwmapi -Wl,--end-group -mwindows
           strip Mandelbrot_AVX2.exe
 
-          g++ main_sse3.o $RESOURCE_OBJ -o Mandelbrot_SSE3.exe -static-libgcc -static-libstdc++ -Wl,-Bstatic -lmpfr -lgmp -Wl,-Bdynamic -lgomp -lwinpthread -lgdi32 -luser32 -ldwmapi -mwindows
+          g++ -O3 main.cpp $RESOURCE_OBJ -o Mandelbrot_SSE3.exe -msse3 -static -static-libgcc -static-libstdc++ -Wl,--start-group -lmpfr -lgmp -lwinpthread -lgdi32 -luser32 -ldwmapi -Wl,--end-group -mwindows
           strip Mandelbrot_SSE3.exe
-
-          # 3. Собираем дистрибутивы в папки и добавляем туда оригинальную DLL OpenMP, чтобы все запускалось на любом ПК
-          mkdir -p dist_avx2 dist_sse3
-          mv Mandelbrot_AVX2.exe dist_avx2/
-          mv Mandelbrot_SSE3.exe dist_sse3/
-
-          cp /ucrt64/bin/libgomp-1.dll dist_avx2/ && cp /ucrt64/bin/libgomp-1.dll dist_sse3/
-          cp /ucrt64/bin/libwinpthread-1.dll dist_avx2/ 2>/dev/null || true
-          cp /ucrt64/bin/libwinpthread-1.dll dist_sse3/ 2>/dev/null || true
-
-          # Упаковываем в ZIP-архивы для релиза (также обновите секцию files внизу вашего YAML на .zip)
-          zip -j Mandelbrot_AVX2.zip dist_avx2/*
-          zip -j Mandelbrot_SSE3.zip dist_sse3/*
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -68,22 +50,22 @@ jobs:
           token: ${{ secrets.MY_RELEASE_PAT }}
           name: "Mandelbrot GUI: Visualizer with Perturbation Theory and Bilinear approximation ${{ github.ref_name }}"
           body: |
-            ### Available versions:
+            ### Available versions (Fully Static Exe):
             * **Mandelbrot_AVX2.exe** — Maximum speed. For modern processors (4th generation Intel Core+ / AMD Ryzen+).
             * **Mandelbrot_SSE3.exe** — Compatible version. For older processors (including **AMD Phenom II**).
  
             ### Features:
             * **High-Precision Reference:** The 1000-bit reference trajectory is computed exactly once per zoom layer.
             * **Hardware-Native Performance:** Blazing-fast math for millions of pixels utilizing hardware-native double registers.
-            * When using double-precision floating-point numbers (on the order of 1e-15), perturbation theory only allows you to zoom down to the **1e-308 level—no further.**
             * **Dynamic Reference Relocalization:** Professional *Reset to Zero* implementation ensuring flawless orbit re-basing without precision loss.
             * **Bilinear approximation:** The calculation can be performed significantly faster by using bilinear approximation.
             * **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
-            * **OpenMP Multi-threading:** High-speed parallel computing to maximize CPU utilization.
+            * **Pure C++11 Multi-threading:** High-speed parallel computing built directly into the language standard. Scales transparently across architectures—delivering flawless 100% CPU utilization whether running on a 4-core laptop or a 128-core high-performance server without external dependencies.
             * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.
             * **Dynamic Palette Rotation:** Classic, ultra-smooth fractal color-cycling effects with zero performance overhead.
 
+
+
           files: |
-            Mandelbrot_AVX2.zip
-            Mandelbrot_SSE3.zip
-            
+            Mandelbrot_AVX2.exe
+            Mandelbrot_SSE3.exe
