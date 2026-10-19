@@ -152,7 +152,7 @@ The application provides intuitive mouse and keyboard controls for exploring the
   * `Center Im:` `-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767`
   * `Size:` `1.34e-113`
 
-* **Keys `1` to `8`:** Press any of these keys while running to instantly teleport to one of six other pre-configured 
+* **Keys `1` to `8`:** Press any of these keys while running to instantly teleport to one of eight other pre-configured 
 scenic locations across the Mandelbrot set.
 
 *   **UP / DOWN Arrows:** Fine-tuned zoom in/out by a factor of **1.05x**.
@@ -434,7 +434,7 @@ https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
   * `Size:` `1.34e-113`
 
 * **Клавиши `1` - `8`:** Нажмите любую из этих клавиш во время работы программы, чтобы мгновенно переключиться на одну 
-из шести других предустановленных точек множества Мандельброта.
+из восьми других предустановленных точек множества Мандельброта.
 
 *   VK_UP (Стрелка ВВЕРХ) и VK_DOWN (Стрелка ВНИЗ) - увеличиваем и уменьшаем в 1.05 раза но без точки клика.
 
