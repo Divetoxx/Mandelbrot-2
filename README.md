@@ -29,7 +29,7 @@ from the Fractal Forums, whose collaborative work made this engine possible:
 * **Dynamic Reference Relocalization** (Orbit Re-basing).
 * **Bilinear approximation:** The calculation can be performed significantly faster by using bilinear approximation.
 * **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
-* **OpenMP Multi-threading:** High-speed parallel computing to maximize CPU utilization.
+* **Pure C++11 Multi-threading:** High-speed parallel computing built directly into the language standard.
 * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.
 * **Dynamic Palette Rotation:** Classic, ultra-smooth fractal color-cycling effects with zero performance overhead.
 
@@ -85,12 +85,12 @@ The engine achieves perfect visual smoothness by synchronizing directly with the
     - If you are using a gaming monitor at **144 Hz**, the function triggers 144 times per second, delivering **144 FPS**.
     - On high-end **240 Hz** displays, you will see a buttery-smooth **240 FPS**.
 
-## OpenMP
 
-OpenMP is a standard that tells the compiler, "Take this loop and distribute the iterations among the different processor cores."
-Yes, using OpenMP you are doing parallel programming at the Multithreading level.
-Everything is powered by **OpenMP** parallel loops for maximum performance.
-OpenMP - Scalability: Your code will run equally efficiently on a 4-core laptop and a 128-core server.
+## Pure C++11 Multi-threading
+
+High-speed parallel computing built directly into the language standard. Scales transparently across architectures-delivering 
+flawless 100% CPU utilization whether running on a 4-core laptop or a 128-core high-performance server without external dependencies.
+
 
 ## True 2x2 SSAA (Direct RGB Integration)
 
@@ -291,7 +291,7 @@ https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
 * Динамическая релокализация опорной точки (Перебазирование орбиты).
 * Расчет можно выполнить существенно быстрее, если использовать билинейную аппроксимацию.
 * Настоящий SSAA 2x2 для идеально сглаженного изображения без алиасинга.
-* Параллелизм OpenMP для высокоскоростного многопоточного рендеринга.
+* Многопоточность на чистом C++11 (Pure C++11 Multi-threading).
 * Синхронизация через DwmFlush для плавного вывода кадров без микрофризов.
 * Динамическое вращение палитры для создания классического эффекта <переливающихся> цветов.
 
@@ -350,12 +350,12 @@ https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
     - На высококачественных дисплеях с частотой 240 Гц вы увидите плавную картинку со скоростью 240 кадров в секунду.
 
 
-## OpenMP
+## Многопоточность на чистом C++11 (Pure C++11 Multi-threading)
 
-OpenMP - это стандарт, который говорит компилятору: "Возьми этот цикл и сам раздай итерации разным ядрам процессора".
-Используя OpenMP, вы занимаетесь параллельным программированием на уровне многопоточности (Multithreading).
-OpenMP - масштабируемость: ваш код будет одинаково эффективно работать как на 4-ядерном ноутбуке,
-так и на 128-ядерном сервере.
+Высокоскоростные параллельные вычисления, встроенные напрямую в стандарт языка. 
+Алгоритм прозрачно масштабируется на любые архитектуры, обеспечивая безупречную 
+100%-ю загрузку процессора как на 4-ядерном ноутбуке, так и на 128-ядерном 
+высокопроизводительном сервере - абсолютно без внешних зависимостей.
 
 
 ## True SSAA 2x2 (Прямая интеграция в RGB)
