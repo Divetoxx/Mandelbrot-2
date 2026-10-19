@@ -64,7 +64,15 @@ jobs:
             * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.
             * **Dynamic Palette Rotation:** Classic, ultra-smooth fractal color-cycling effects with zero performance overhead.
 
-
+            <video src="https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/019a873e-55bb-4616-a92a-cf9825672798" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/1111a250-20d9-46f7-8d87-e4ea843c48d5" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/ec5accfe-b53e-48d6-a971-10af14999527" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/545b722a-a2a5-4ec2-ba5c-8a5c9d052a32" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/37a76cb8-992b-4d08-84dd-c8b5138eec1a" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/74aa5a47-8197-4c16-a7c5-4bffc1204ea0" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/14efdbea-797f-420d-9694-72625f2b0e0a" controls width="1000"></video>
+            <video src="https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61" controls width="1000"></video>
 
           files: |
             Mandelbrot_AVX2.exe
