@@ -43,12 +43,12 @@ and advanced palette conversion algorithms.
 
 The engine is completely free from the hardware limitations of standard data types—such as the native 64-bit (`double`) 
 and the extended 80-bit (`long double`) floats—which inevitably lose significance and produce pixelated 
-blocks at precision depths beyond \(10^{-15}\) and \(10^{-19}\) respectively.
+blocks at precision depths beyond $10^{-15}$ and $10^{-19}$ respectively.
 
 * **MPFR/GMP Integration:** All high-precision coordinate navigation, mouse-click viewport targeting, and grid step 
 calculations are handled within an isolated binary memory structure configured to a pristine **1000-bit precision**.
 * **308-Digit Decimal Silicon Barrier:** The dynamic exponent range of the hardware-native `double` register limits 
-the high-speed delta pixel engine to a maximum theoretical depth of **\(10^{-308}\) digits**. Current viewport coordinates 
+the high-speed delta pixel engine to a maximum theoretical depth of **$10^{-308}$ digits**. Current viewport coordinates 
 are safely stored and retrieved via the `Mandelbrot.txt` configuration file, guaranteeing flawless structural clarity 
 of mathematical micro-filaments right up to this physical silicon boundary.
 
@@ -327,15 +327,14 @@ double процессора.
 
 Движок полностью избавлен от аппаратных ограничений стандартных типов данных — нативного 64-битного (`double`) 
 и расширенного 80-битного (`long double`), которые неизбежно теряют значащие разряды и приводят к пикселизации 
-кадра («эффекту квадратов») на масштабах приближения глубже \(10^{-15}\) и \(10^{-19}\).
+кадра («эффекту квадратов») на масштабах приближения глубже $10^{-15}$ и $10^{-19}$.
 
 * **Интеграция MPFR/GMP:** Вся высокоточная координатная навигация, масштабирование при кликах мыши и расчет шага 
 сетки осуществляются внутри изолированной бинарной памяти с точностью **1000 бит**.
 * **Физический лимит в 308 знаков:** Экспоненциальный диапазон аппаратного регистра `double` ограничивает скоростной 
-дельта-движок максимальной теоретической глубиной погружения в **\(10^{-308}\) знаков**. Текущие координаты кадра 
+дельта-движок максимальной теоретической глубиной погружения в **$10^{-308}$ знаков**. Текущие координаты кадра 
 сохраняются и считываются через файл `Mandelbrot.txt`, гарантируя безупречную четкость математических микроструктур 
 на пороге кремниевого барьера.
-
 
 
 ## Реактивный метод возмущений (Perturbation Theory)
