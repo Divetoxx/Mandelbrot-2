@@ -15,44 +15,54 @@
 
 ## Credits & Acknowledgments
 
-This project implements advanced orbit phase management paradigms and perturbation algorithms 
-developed by the fractal research community. Special thanks to the following authors and pioneers 
-from the Fractal Forums, whose collaborative work made this engine possible:
-* **Kevin Martin** - for pioneering loop optimization and edge-case escape techniques.
-* **Zhuoran Yu** - for developing the dynamic orbit re-basing paradigm.
-* **Claude Heiland-Allen** - for extensive deep zoom research and the creation of the MDZ project.
+This project implements advanced orbit phase management paradigms and perturbation algorithms developed 
+by the fractal research community. Special thanks to the following authors and pioneers from the Fractal Forums, 
+whose collaborative work made this engine possible:
+
+* **Kevin Martin** — for pioneering loop optimization and edge-case escape techniques.
+* **Zhuoran Yu** — for developing the dynamic reference relocalization and orbit re-basing paradigm.
+* **James Ward Martin (JWM)** — for the creation of the pioneering MDZ (Mandelbrot Deep Zoom) project utilizing MPFR/GMP libraries.
+* **Claude Heiland-Allen** — for extensive deep zoom mathematical research, preservation of fractal software legacy, 
+and advanced palette conversion algorithms.
+
 
 ## Key Features:
-* **High-Precision Reference:** The 1000-bit reference trajectory is computed exactly once per zoom layer.
+
+* **High-Precision Reference:** The 1000-bit reference trajectory is computed exactly once per zoom layer using GNU MPFR.
 * **Hardware-Native Performance:** Blazing-fast math for millions of pixels utilizing hardware-native double registers.
-* **When** using double-precision floating-point numbers (on the order of $10^{-15}$), perturbation theory only allows you to zoom down to the **$10^{-308}$ level-no further.**
+* When using double-precision floating-point numbers (on the order of $10^{-15}$), perturbation theory only allows you to zoom down to the **$10^{-308}$ level—no further.**
 * **Dynamic Reference Relocalization** (Orbit Re-basing).
-* **Bilinear approximation:** The calculation can be performed significantly faster by using bilinear approximation.
-* **True 2x2 SSAA:** Pristine, anti-aliased image quality with 4 independent samples per pixel.
-* **Pure C++11 Multi-threading:** High-speed parallel computing built directly into the language standard.
+* **Bilinear approximation (BLA Skip-100):** The calculation can be performed significantly faster by skipping 100 iterations at once on smooth areas.
+* **True 2x2 SSAA (Direct RGB Integration):** Pristine, anti-aliased image quality with 4 independent samples per pixel blended directly in RGB color space to eliminate chromatic noise.
+* **Pure C++11 Multi-threading:** High-speed parallel computing built directly into the language standard, scaling transparently across CPU architectures.
 * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.
 * **Dynamic Palette Rotation:** Classic, ultra-smooth fractal color-cycling effects with zero performance overhead.
 
+
 ## Arbitrary Precision Arithmetic (Infinite Depth)
 
-The engine is completely free from the hardware limitations of standard 64-bit (`double`) and 128-bit (`__float128`) data types, 
-which inevitably lose significance and produce pixelated blocks at depths beyond $10^{-15}$ and $10^{-34}$ respectively.
-* **MPFR/GMP Integration**: All high-precision navigation, mouse clicking, and keyboard arrow zooming are handled within a deep binary memory 
-structure configured to **1000-bit precision**.
-* **308-Digit Decimal:** Viewport coordinates are stored in `Mandelbrot.txt`. While the MPFR 
-reference radar computes the center at 1000-bit precision, the hardware native `double` exponent limits the fast pixel engine to a maximum 
-depth of $10^{-308}$, providing pristine clarity up to this physical silicon barrier.
+The engine is completely free from the hardware limitations of standard data types—such as the native 64-bit (`double`) 
+and the extended 80-bit (`long double`) floats—which inevitably lose significance and produce pixelated 
+blocks at precision depths beyond \(10^{-15}\) and \(10^{-19}\) respectively.
+
+* **MPFR/GMP Integration:** All high-precision coordinate navigation, mouse-click viewport targeting, and grid step 
+calculations are handled within an isolated binary memory structure configured to a pristine **1000-bit precision**.
+* **308-Digit Decimal Silicon Barrier:** The dynamic exponent range of the hardware-native `double` register limits 
+the high-speed delta pixel engine to a maximum theoretical depth of **\(10^{-308}\) digits**. Current viewport coordinates 
+are safely stored and retrieved via the `Mandelbrot.txt` configuration file, guaranteeing flawless structural clarity 
+of mathematical micro-filaments right up to this physical silicon boundary.
 
 
-## Blazing Fast Perturbation Theory
 
-Deep fractal rendering no longer requires heavy "long-division-style" arbitrary precision math for every individual pixel, which 
-historically slowed down deep zoom software by thousands of times.
-* **Single-Pass Reference Calculation**: The ultra-heavy MPFR BigFloat radar calculates the precise reference trajectory 
-for **only one central pixel per frame and strictly ONCE** at the beginning of the render.
-* **Hardware-Accelerated Double Math**: The rest of the viewport (millions of super-sampled pixels) is processed concurrently at the 
-native speed of the CPU's hardware `double` registers, calculating only tiny deviations (deltas) from the central axis. 
-This optimization boosts rendering speeds by up to 1000x!
+## High-Speed Perturbation Theory
+
+Rendering extreme close-ups no longer requires arbitrary-precision arithmetic for each individual pixel.
+
+* **High-Precision Reference Orbit:** MPFR BigFloat computes the exact trajectory for **one central pixel once** per frame.
+* **Hardware-Accelerated Computation:** The rest of the screen is processed via hardware `double` registers by 
+calculating relative deviations (deltas), accelerating frame generation up to 1000x.
+
+
 
 ## Dynamic Reference Relocalization (Orbit Re-basing)
 
@@ -69,11 +79,19 @@ This precise boundary definition guarantees flawless orbit re-basing.
 iteration loop. By minimizing heavy branching and avoiding complex nested conditions where possible, the code improves 
 branch prediction efficiency and allows the CPU pipeline to execute the core mathematics with maximum throughput.
 
+
 ## Bilinear Approximation
 
-The computation can be performed significantly faster by utilizing Bilinear Approximation (BLA Skip-100). 
-The code precomputes coefficient transformation matrices for steps of 100 iterations. If the current point is close 
-enough to the reference orbit, the algorithm skips 100 iterations at once in a single mathematical step, minimizing the CPU load.
+The rendering engine achieves a massive performance leap by integrating the Bilinear Approximation 
+method (**BLA Skip-100**).
+
+* **Coefficient Matrix Precomputation:** The algorithm precomputes the transformation matrices for intervals of exactly 
+100 iterations.
+* **Massive Iteration Skipping:** If the current deviation (delta) point lies safely within the computed radius 
+of convergence relative to the reference orbit, the execution thread skips 100 iterations at once in a single mathematical 
+step. This drastically minimizes CPU clock cycles and delivers an exponential speedup across the smooth, 
+uniform filaments of the Mandelbrot set.
+
 
 
 ## Synchronization with DwmFlush
@@ -92,29 +110,26 @@ High-speed parallel computing built directly into the language standard. Scales 
 flawless 100% CPU utilization whether running on a 4-core laptop or a 128-core high-performance server without external dependencies.
 
 
-## True 2x2 SSAA (Direct RGB Integration)
+## True 2x2 SSAA: Direct RGB Integration Space
 
-This project implements "true" 2x2 Super-Sample Anti-Aliasing (SSAA). Each screen pixel is computed from four independent sub-pixel fractal coordinates.
-### The Problem with the Standard Approach
+The engine implements **True 2x2 Super-Sampling Anti-Aliasing (SSAA)** using four independent 
+sub-pixel fractal coordinates per final pixel to eliminate aliasing along the Mandelbrot set's complex 
+boundaries.
 
-A common mistake when anti-aliasing fractals is averaging the raw iteration counts (palette indices) before coloring:
-* **Standard way:** `Color( (iter1 + iter2 + iter3 + iter4) / 4 )`
+### Mathematical Fallacy of the Standard Approach
+Traditional rendering methods incorrectly average raw palette indices before coloring:
+* **Standard Way:** `Color( (iter1 + iter2 + iter3 + iter4) / 4 )`
 
-Mathematically, this is incorrect because fractal color palettes are **non-linear**. Averaging indices $A$ and $B$ often points to a completely unrelated color $C$. This causes severe visual noise, artifacts, and false chromatic contours.
+Because fractal color palettes are strictly non-linear, averaging color indices \(A\) and \(B\) yields an unrelated 
+color \(C\), resulting in chromatic contours and high-contrast noise.
 
-### Our Solution: Integration in RGB Space
+### Engineering Solution: Optical Integration in RGB Space
+Our engine computes exact 32-bit colors for each sub-pixel before merging their channel intensities:
+* **Direct RGB Integration Algorithm:** `(Color(iter1) + Color(iter2) + Color(iter3) + Color(iter4)) / 4`
 
-Instead of averaging algorithm iterations, we first compute the 32-bit color for each sub-pixel and then perform a weighted average of their RGB intensities:
-* **Our way:** `(Color(iter1) + Color(iter2) + Color(iter3) + Color(iter4)) / 4`
+This computes independent RGB components prior to downsampling to ensure a true optical blend, eradicating 
+visual noise and reconstructing sub-pixel microstructures into smooth lines.
 
-Computing individual RGB components prior to downsampling guarantees that the resulting color is a true optical blend. This completely eliminates noise, restores micro-filaments smaller than a single pixel, and reveals the true structural geometry of the Mandelbrot set.
-
-## Why Does Noise Occur Without Super-Sampling?
-
-The noise seen in fractal rendering is not a bug—it is a fundamental phenomenon in digital graphics known as **aliasing**.
-The Mandelbrot set is infinitely complex. At its boundaries, there are structures millions of times smaller than a physical monitor pixel.
-* **Without Super-Sampling:** The algorithm samples exactly one point (the pixel center). If it hits a thin filament, the pixel turns bright; if it misses by a micron, the pixel turns black. As a result, adjacent pixels randomly "grab" disconnected pieces of micro-details, creating a noisy grid of pixels.
-* **With 2x2 SSAA:** The engine takes four samples at different offsets within the pixel, computes their actual colors, and blends them. If an ultra-thin filament passes through a pixel, it neither disappears nor flickers—it blends into a smooth, semi-transparent line that accurately preserves the fractal's true shape.
 
 ## Visual Aesthetics. Color rotation
 
@@ -274,71 +289,97 @@ https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
 
 # Графический интерфейс Мандельброта: Визуализатор с методом возмущений и билинейную аппроксимацию.
 
-## Благодарности (Credits)
+## Благодарности и признание авторства (Credits & Acknowledgments)
 
-Этот проект использует передовые математические алгоритмы и идеи динамического управления фазой орбит, 
-разработанные фрактальным сообществом. Особая благодарность авторам и исследователям с Fractal Forums, 
-чей совместный труд лег в основу этого движка:
-* **Kevin Martin** - автор фундаментальных методов векторизации и оптимизации циклов возмущений.
-* **Zhuoran Yu** - разработчик концепции динамического сброса орбит.
-* **Claude Heiland-Allen** - исследователь экстремального фрактального приближения и создатель проекта MDZ.
+Этот проект использует передовые алгоритмы метода возмущений и концепции управления фазами орбит, 
+разработанные мировым фрактальным сообществом. Особая благодарность следующим авторам и первопроходцам 
+с Fractal Forums, чей совместный труд сделал создание этого движка возможным:
+
+* **Kevin Martin** — за новаторские методы векторизации, оптимизацию глубоких циклов и точное определение границ ухода орбит.
+* **Zhuoran Yu** — за разработку математической концепции динамической релокализации опорной точки и перебазирования орбит (Orbit Re-basing).
+* **James Ward Martin (JWM)** — за создание фундаментального проекта MDZ (Mandelbrot Deep Zoom), заложившего основы применения 
+библиотек MPFR/GMP для сверхглубокого погружения.
+* **Claude Heiland-Allen** — за колоссальные математические исследования фрактального зума, сохранение исходного 
+программного наследия сообщества и разработку продвинутых алгоритмов трансформации палитр.
+
 
 
 ## Ключевые особенности:
-* Расчёт опорной траектории на 1000 бит всего один раз.
-* Реактивный расчёт миллионов пикселей на аппаратном double.
-* При использовании чисел с плавающей запятой двойной точности (порядка $10^{-15}$) теория возмущений позволяет приблизиться к уровню **$10^{-308}$ - не дальше.**
-* Динамическая релокализация опорной точки (Перебазирование орбиты).
-* Расчет можно выполнить существенно быстрее, если использовать билинейную аппроксимацию.
-* Настоящий SSAA 2x2 для идеально сглаженного изображения без алиасинга.
-* Многопоточность на чистом C++11 (Pure C++11 Multi-threading).
-* Синхронизация через DwmFlush для плавного вывода кадров без микрофризов.
-* Динамическое вращение палитры для создания классического эффекта <переливающихся> цветов.
+
+* **Высокоточная опорная орбита:** Опорная траектория с точностью 1000 бит вычисляется строго один раз для каждого слоя приближения 
+с использованием библиотеки GNU MPFR.
+* **Аппаратное ускорение:** Сверхбыстрые математические расчеты для миллионов пикселей за счет использования аппаратных регистров 
+double процессора.
+* При использовании чисел с плавающей запятой двойной точности (порядка $10^{-15}$) теория возмущений позволяет приблизиться 
+к уровню **$10^{-308}$ — не дальше.**
+* **Динамическая релокализация опорной точки** (Перебазирование орбиты / Orbit Re-basing).
+* **Билинейная аппроксимация (BLA Skip-100):** Расчет выполняется существенно быстрее за счет одновременного «перепрыгивания» 
+через 100 итераций на гладких участках фрактала.
+* **Настоящий суперсэмплинг 2x2 SSAA (Прямая интеграция в RGB):** Безупречное, сглаженное качество изображения с 4 независимыми 
+выборками на один пиксель. Смешивание происходит напрямую в цветовом пространстве RGB, что полностью устраняет хроматический шум.
+* **Многопоточность на чистом C++11:** Высокоскоростные параллельные вычисления, встроенные напрямую в стандарт языка и прозрачно 
+масштабируемые на любые архитектуры процессоров.
+* **Синхронизация через DwmFlush:** Плавный вывод кадров без микрофризов и разрывов, аппаратно синхронизированный с диспетчером окон Windows DWM.
+* **Динамическое вращение палитры:** Классический, невероятно плавный эффект переливающихся цветов фрактала с нулевой нагрузкой на процессор.
+
 
 
 ## Безграничная точность (Arbitrary Precision Arithmetic)
 
-Движок полностью избавлен от аппаратных ограничений 64-битных (`double`) и 128-битных (`__float128`) чисел, которые неизбежно слепнут и выдают 
-пиксельные квадраты на глубинах более $10^{-15}$ и $10^{-34}$.
-* **Интеграция MPFR/GMP**: Вся высокоточная навигация, пересчёт масштаба при кликах мыши и движении стрелочками клавиатуры ведутся 
-внутри сверхглубокой бинарной памяти с точностью **1000 бит**!
-* **308 десятичных знаков**: Координаты кадра сохраняются и считываются из файла `Mandelbrot.txt`. Навигация и радар MPFR работают на глубине до 1000 бит, 
-однако скоростной пиксельный дельта-движок ограничен аппаратной экспонентой `double`, что позволяет исследовать безупречно четкие 
-структуры на запредельных масштабах **вплоть до $10^{-308}$ знаков**.
+Движок полностью избавлен от аппаратных ограничений стандартных типов данных — нативного 64-битного (`double`) 
+и расширенного 80-битного (`long double`), которые неизбежно теряют значащие разряды и приводят к пикселизации 
+кадра («эффекту квадратов») на масштабах приближения глубже \(10^{-15}\) и \(10^{-19}\).
+
+* **Интеграция MPFR/GMP:** Вся высокоточная координатная навигация, масштабирование при кликах мыши и расчет шага 
+сетки осуществляются внутри изолированной бинарной памяти с точностью **1000 бит**.
+* **Физический лимит в 308 знаков:** Экспоненциальный диапазон аппаратного регистра `double` ограничивает скоростной 
+дельта-движок максимальной теоретической глубиной погружения в **\(10^{-308}\) знаков**. Текущие координаты кадра 
+сохраняются и считываются через файл `Mandelbrot.txt`, гарантируя безупречную четкость математических микроструктур 
+на пороге кремниевого барьера.
+
 
 
 ## Реактивный метод возмущений (Perturbation Theory)
 
-Рендеринг глубоких фракталов больше не требует тяжелых вычислений <в столбик> для каждого пикселя, что обычно замедляло программы в тысячи раз.
-* **Однократный расчёт опоры**: Сверхтяжелый BigFloat-радар MPFR вычисляет точную траекторию всего для **одной-единственной центральной точки 
-кадра и строго ОДИН раз** в начале рендеринга.
-* **Аппаратное ускорение на double**: Весь остальной массив экрана (миллионы супер-пикселей) рассчитывается параллельно на бешеной скорости 
-чистых, аппаратных регистров `double` процессора, вычисляя лишь микроскопические отклонения (дельты) от центральной оси. 
-Скорость генерации взлетела в 1000 раз!
+Рендеринг экстремальных приближений больше не требует выполнения ресурсоемких длинных вычислений произвольной точности 
+для каждого отдельного пикселя, что исторически замедляло фрактальный софт в тысячи раз.
+
+* **Высокоточная опорная орбита:** Сверхтяжелый BigFloat-радар MPFR рассчитывает абсолютную и точную траекторию всего 
+для **одной центральной точки кадра и строго один раз** перед началом рендеринга.
+* **Аппаратное ускорение вычислений:** Весь остальной массив экрана (миллионы пикселей) просчитывается параллельно на нативной 
+скорости процессорных регистров `double`. Алгоритм вычисляет лишь микроскопические отклонения (дельты) от центральной опорной оси, 
+что обеспечивает колоссальный выигрыш в производительности и ускоряет генерацию кадра до 1000 раз!
+
 
 ## Динамическая релокализация опорной точки (Перебазирование орбиты)
 
 Это предмет особой гордости: движок работает на тех же математических и архитектурных принципах, 
 что и самые продвинутые рендереры Мандельброта в мире.
-* Динамический сброс в ноль (Dynamic Reset to Zero): На каждом шаге для каждого пикселя отслеживается соотношение его абсолютных 
+* **Динамический сброс в ноль (Dynamic Reset to Zero)**: На каждом шаге для каждого пикселя отслеживается соотношение его абсолютных 
 координат и текущего отклонения (дельты). Если дельта уходит слишком далеко или основная опорная орбита завершается, поток 
 вычислений динамически сбрасывает индекс отслеживания в ноль. Это превращает накопленные координаты в новое автономное начало 
 отсчета и полностью устраняет артефакты точности.
-* Оптимизация цикла <На один шаг за предел ухода> (One-Step Beyond Escape Loop Optimization): Чтобы выжать максимум производительности 
+* **Оптимизация цикла <На один шаг за предел ухода> (One-Step Beyond Escape Loop Optimization)**: Чтобы выжать максимум производительности 
 из CPU, трекер опорной орбиты MPFR записывает ровно одну дополнительную точку в массив орбиты сразу после того, как она превышает 
 радиус ухода (escape radius). Такое точное определение границы гарантирует безупречное перебазирование орбиты.
-* Оптимизация ветвлений в глубоком цикле (Deep Loop Branch Optimization): Эта элегантная структура кода существенно упрощает 
+* **Оптимизация ветвлений в глубоком цикле (Deep Loop Branch Optimization)**: Эта элегантная структура кода существенно упрощает 
 условия внутри самого глубокого цикла итераций. Минимизируя тяжелые ветвления и избегая сложных вложенных условий там, где это 
 возможно, код повышает эффективность предсказателя ветвлений процессора и позволяет конвейеру CPU выполнять базовые математические 
 расчеты с максимальной пропускной способностью.
 
 
-## Билинейную аппроксимацию
 
-Расчет можно выполнить существенно быстрее, если использовать билинейную аппроксимацию (BLA Skip-100). 
-Код предварительно рассчитывает матрицы трансформации коэффициентов для шагов по 100 итераций. 
-Если текущая точка находится достаточно близко к опорной орбите, алгоритм <перепрыгивает> сразу 100 итераций 
-за один математический шаг, минимизируя нагрузку на CPU.
+## Билинейная аппроксимация (Bilinear Approximation)
+
+Расчет фрактала выполняется существенно быстрее за счет интеграции метода билинейной аппроксимации (**BLA Skip-100**). 
+
+* **Предварительный расчет матриц:** Движок заранее вычисляет коэффициенты трансформации матриц для шагов 
+по 100 итераций.
+* **Масштабный пропуск итераций:** Если текущая точка дельты находится в пределах безопасного радиуса сходимости 
+относительно опорной орбиты, алгоритм «перепрыгивает» сразу 100 итераций за один математический шаг. 
+Это кардинально снижает нагрузку на процессор и обеспечивает колоссальный прирост скорости рендеринга 
+на гладких участках множества Мандельброта.
+
 
 ## DwmFlush
 
@@ -358,41 +399,33 @@ https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
 высокопроизводительном сервере - абсолютно без внешних зависимостей.
 
 
-## True SSAA 2x2 (Прямая интеграция в RGB)
+## Истинное сглаживание SSAA 2x2: Прямая интеграция в RGB-пространство
 
-В проекте реализовано «настоящее» сглаживание суперсэмплинга 2x2 (SSAA). Каждый пиксель экрана вычисляется из четырех 
-независимых субпикселей фрактальных координат. 
-### В чем проблема стандартного подхода?
+В движке реализован алгоритм честного суперсэмплинга избыточной выборки **True 2x2 Super-Sampling Anti-Aliasing (SSAA)**. 
+Каждый финальный пиксель экрана формируется на основе вычисления четырех независимых субпиксельных фрактальных координат. 
+Это позволяет полностью победить **алиасинг (aliasing)** — неизбежный цифровой шум, возникающий из-за того, что бесконечно 
+сложные микронити множества Мандельброта на границах множества в миллионы раз меньше физического пикселя монитора.
 
-Стандартный способ сглаживания фракталов часто выполняет усреднение количества итераций (индексов палитры):
-* **Стандартный путь:** `Color( (iter1 + iter2 + iter3 + iter4) / 4 )`
+### Математическая несостоятельность стандартного подхода
+Классический способ сглаживания во фрактальных рендерерах ошибочно выполняет усреднение сырых значений итераций (индексов палитры) 
+до этапа окрашивания:
+* **Компиляция по умолчанию:** `Color( (iter1 + iter2 + iter3 + iter4) / 4 )`
 
-Математически это неверно, так как фрактальные палитры **нелинейны**. Усреднение индексов цветов $A$ и $B$ часто 
-указывает на совершенно несвязанный цвет $C$. Это создает сильный визуальный шум, артефакты и ложные хроматические 
-контуры.
-### Наше решение: интеграция в RGB
+Математически данный подход некорректен, поскольку фрактальные цветовые палитры **строго нелинейны**. 
+Попытка вычислить среднее арифметическое между индексами цветов \(A\) и \(B\) проецирует результат на абсолютно 
+случайный, несвязанный цвет \(C\). В результате на изображении лавинообразно возникают ложные хроматические контуры, 
+пиксельные артефакты и цифровой контрастный шум.
 
-Вместо усреднения шагов алгоритма мы сначала вычисляем 32-битный цвет для каждого субпикселя, а затем выполняем 
-средневзвешенное значение их интенсивностей:
-* **Наш путь:** `(Color(iter1) + Color(iter2) + Color(iter3) + Color(iter4)) / 4`
+### Инженерное решение: Оптическая интеграция в RGB
+Вместо усреднения шагов алгоритма наш движок сначала вычисляет точный 32-битный цвет для каждого из 4 субпикселей, 
+а затем выполняет корректное средневзвешенное слияние их канальных интенсивностей:
+* **Алгоритм Direct RGB Integration:** `(Color(iter1) + Color(iter2) + Color(iter3) + Color(iter4)) / 4`
 
-Вычисление компонентов RGB перед субдискретизацией гарантирует, что полученный цвет — это настоящая оптическая смесь. 
-Это полностью устраняет шум и раскрывает истинную структурную геометрию множества Мандельброта, восстанавливая 
-микронити размером меньше одного пикселя.
+Прямая интеграция и вычисление независимых RGB-компонентов до этапа понижения разрешения гарантируют, 
+что итоговый пиксель представляет собой чистую оптическую смесь. Данная технология полностью ликвидирует визуальный 
+шум, исключает мерцание картинки и восстанавливает тончайшие фрактальные микроструктуры размером меньше одного физического 
+пикселя, превращая их в мягкие, полупрозрачные и непрерывные линии.
 
-
-## Почему без суперсэмплинга возникает шум?
-
-Шум при рендеринге фрактала — это не баг, а фундаментальное явление цифровой графики: **алиасинг (aliasing)**. 
-
-Множество Мандельброта бесконечно сложно. На его границах существуют детали, которые в миллионы раз меньше 
-физического пикселя монитора.
-* **Без суперсэмплинга:** Алгоритм берет пробу ровно в одной точке (в центре пикселя). Если луч попал в тонкую 
-нить — пиксель становится ярким. Промахнулся на микрон — пиксель стал черным. Из-за этого соседние пиксели 
-хаотично «цепляют» случайные куски микродеталей, создавая кашу из точек.
-* **С SSAA 2x2:** Код берет 4 пробы в разных углах пикселя, вычисляет их реальные цвета и смешивает их. 
-Если в пиксель попадает ультратонкая нить, она не исчезает и не мерцает, а превращается в мягкую, 
-полупрозрачную линию, точно передающую форму фрактала.
 
 
 ## Визуальная эстетика. Смена цветов
