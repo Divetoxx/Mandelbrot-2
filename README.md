@@ -177,6 +177,13 @@ The file must contain three numbers separated by a newline:
 *    Ordinate (Center Y coordinate)
 *    Size (Zoom level/Area size)
 
+Example file:
+```C++
+-1.758008286774384722
+-0.012039512139649579
+7.3e-15
+```
+
 
 ### Controls & Hotkeys
 
@@ -469,6 +476,13 @@ double процессора.
 *    Abscissa (Координата X центра)
 *    Ordinate (Координата Y центра)
 *    Size (Масштаб/Размер области)
+
+Вот так:
+```C++
+-1.758008286774384722
+-0.012039512139649579
+7.3e-15
+```
 
 
 ### Горячие клавиши
