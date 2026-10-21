@@ -162,16 +162,9 @@ The application provides intuitive mouse and keyboard controls for exploring the
 *   **Right Click (WM_RBUTTONDOWN):** Zoom out (2x) from the current view.
 
 ### Keyboard Navigation
-* **Default (On Launch):** The program automatically renders a breathtaking, ultra-deep zoom location right away (scale depth ~ $10^{-113}$):
-```C++
-g_params.center_re_str = "-1.74919762896578937419423768162729211653261585574161734756645570271259437106847945278504682550816934045282325615313706";
-g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
-g_params.size_str  = "1.34e-113";
-```
-
+* **Default (On Launch):** The program automatically renders a breathtaking, ultra-deep zoom location right away (scale depth ~ $10^{-113}$).
 * **Keys `1` to `8`:** Press any of these keys while running to instantly teleport to one of eight other pre-configured 
 scenic locations across the Mandelbrot set.
-
 *   **UP / DOWN Arrows:** Fine-tuned zoom in/out by a factor of **1.05x**.
 
 ### Data Management Mandelbrot.txt and File Structure
@@ -184,9 +177,6 @@ The file must contain three numbers separated by a newline:
 *    Ordinate (Center Y coordinate)
 *    Size (Zoom level/Area size)
 
-Example file content:
-
-![Mandelbrot txt](Mandelbrot.png)
 
 ### Controls & Hotkeys
 
@@ -463,16 +453,9 @@ double процессора.
 *   WM_RBUTTONDOWN (Правая кнопка) - уменьшаем масштаб в 2 раза и центрируем новую область вокруг точки клика.
 
 ### Быстрая навигация по фракталу
-* **По умолчанию (при запуске):** Программа автоматически стартует в точке экстремального приближения (глубина порядка $10^{-113}$):
-```C++
-g_params.center_re_str = "-1.74919762896578937419423768162729211653261585574161734756645570271259437106847945278504682550816934045282325615313706";
-g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
-g_params.size_str  = "1.34e-113";
-```
-
+* **По умолчанию (при запуске):** Программа автоматически стартует в точке экстремального приближения (глубина порядка $10^{-113}$).
 * **Клавиши `1` - `8`:** Нажмите любую из этих клавиш во время работы программы, чтобы мгновенно переключиться на одну 
 из восьми других предустановленных точек множества Мандельброта.
-
 *   VK_UP (Стрелка ВВЕРХ) и VK_DOWN (Стрелка ВНИЗ) - увеличиваем и уменьшаем в 1.05 раза но без точки клика.
 
 
@@ -487,9 +470,6 @@ g_params.size_str  = "1.34e-113";
 *    Ordinate (Координата Y центра)
 *    Size (Масштаб/Размер области)
 
-Пример содержания файла:
-
-![Mandelbrot txt](Mandelbrot.png)
 
 ### Горячие клавиши
 
