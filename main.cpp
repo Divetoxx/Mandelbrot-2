@@ -1,6 +1,7 @@
 #ifndef UNICODE
 #define UNICODE
 #endif
+
 #include <windows.h>
 #include <dwmapi.h>
 #include <vector>
@@ -14,37 +15,42 @@
 #include <iomanip>
 #include <gmp.h>
 #include <mpfr.h>
+
 const int WIDTH = 1000;
 const int HEIGHT = 1000;
 const int SS_W = 2000;
 const int SS_H = 2000;
 const int PALETTE_SIZE = 1024;
 const mpfr_prec_t MPFR_BITS = 1000;
+
 struct FractalParams { 
-double step_d;
-std::string center_re_str; 
-std::string center_im_str;
-std::string size_str;
-uint32_t iter_max; 
+    double step_d;
+    std::string center_re_str; 
+    std::string center_im_str;
+    std::string size_str;
+    uint32_t iter_max; 
 };
+
 struct ComplexDouble {
-double re;
-double im;
+    double re;
+    double im;
 };
+
 std::mutex g_params_mutex;
 FractalParams g_params;
 std::atomic<bool> g_abort{false};
 HANDLE g_render_event;
 uint32_t g_ss_buffer[SS_W * SS_H];
+
 void generate_full_palette(RGBQUAD* pal) {
-const double pi = 3.141592653589793;
-for (int i = 0; i < PALETTE_SIZE; i++) {
-double angle = (2.0 * pi * i) / (double)PALETTE_SIZE;
-pal[i].rgbRed = (uint8_t)(127.0 + 127.0 * std::sin(angle * 4));
-pal[i].rgbBlue = (uint8_t)(127.0 + 127.0 * std::cos(angle * 4));
-pal[i].rgbGreen = (uint8_t)(127.0 + 127.0 * std::sin(angle * 4));
-pal[i].rgbReserved = 0;
-}
+    const double pi = 3.141592653589793;
+    for (int i = 0; i < PALETTE_SIZE; i++) {
+        double angle = (2.0 * pi * i) / (double)PALETTE_SIZE;
+        pal[i].rgbRed      = (uint8_t)(127.0 + 127.0 * std::sin(angle * 4));
+        pal[i].rgbBlue     = (uint8_t)(127.0 + 127.0 * std::cos(angle * 4));
+        pal[i].rgbGreen    = (uint8_t)(127.0 + 127.0 * std::sin(angle * 4));
+        pal[i].rgbReserved = 0;
+    }
 }
 
 
@@ -300,223 +306,269 @@ void thread_mandelbrot_calc() {
                                     delta_im = z_im;
                                     has_re_based = true;
                                 }
-const double aa = 2.0 * ref_ptr[index].re + delta_re;
-const double bb = 2.0 * ref_ptr[index].im + delta_im;
-const double nextDeltaRe = aa * delta_re - bb * delta_im + delta_rec;
-delta_im = aa * delta_im + bb * delta_re + delta_imc;
-delta_re = nextDeltaRe;
-index++;
-i++;
-z_re = ref_ptr[index].re + delta_re;
-z_im = ref_ptr[index].im + delta_im;
-}
-g_ss_buffer[ss_y * SS_W + ss_x] = i;
-}
-}
-});
-}
-for (auto &worker : render_workers) {
-if (worker.joinable()) worker.join();
-}
-}
-}
+                                const double aa = 2.0 * ref_ptr[index].re + delta_re;
+                                const double bb = 2.0 * ref_ptr[index].im + delta_im;
+                                const double nextDeltaRe = aa * delta_re - bb * delta_im + delta_rec;
+                                delta_im = aa * delta_im + bb * delta_re + delta_imc;
+                                delta_re = nextDeltaRe;
+                                index++;
+                                i++;
+                                z_re = ref_ptr[index].re + delta_re;
+                                z_im = ref_ptr[index].im + delta_im;
+                            }
+                            g_ss_buffer[ss_y * SS_W + ss_x] = i;
+                        }
+                    }
+                });
+            }
+            for (auto &worker : render_workers) {
+                if (worker.joinable()) worker.join();
+            }
+        }
+    }
 }
 
 LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
-switch (msg) {
-case WM_LBUTTONDOWN:
-case WM_RBUTTONDOWN: {
-g_abort = true; 
-std::lock_guard<std::mutex> lock(g_params_mutex);
-mpfr_t cx, cy, sz, st, mx, my, clicked_x, clicked_y;
-mpfr_inits2(MPFR_BITS, cx, cy, sz, st, mx, my, clicked_x, clicked_y, NULL);
-mpfr_set_str(cx, g_params.center_re_str.c_str(), 10, MPFR_RNDN);
-mpfr_set_str(cy, g_params.center_im_str.c_str(), 10, MPFR_RNDN);
-mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
-mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
-double mouse_x_d = (double)((short)LOWORD(lp));
-double mouse_y_d = (double)((short)HIWORD(lp));
-double ss_mouse_x = mouse_x_d * 2.0;
-double ss_mouse_y = mouse_y_d * 2.0;
-mpfr_set_d(mx, ss_mouse_x - (double)(SS_W / 2), MPFR_RNDN);
-mpfr_set_d(my, (double)(SS_H / 2) - ss_mouse_y, MPFR_RNDN); 
-mpfr_mul(mx, mx, st, MPFR_RNDN);
-mpfr_mul(my, my, st, MPFR_RNDN);
-mpfr_add(clicked_x, cx, mx, MPFR_RNDN);
-mpfr_add(clicked_y, cy, my, MPFR_RNDN);
-if (msg == WM_LBUTTONDOWN) {
-mpfr_div_ui(sz, sz, 2, MPFR_RNDN);
-} else {
-mpfr_mul_ui(sz, sz, 2, MPFR_RNDN);
-}
-mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
-g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
-char out_x[2048], out_y[2048], out_sz[2048];
-mpfr_snprintf(out_x, sizeof(out_x), "%.300Rf", clicked_x);
-mpfr_snprintf(out_y, sizeof(out_y), "%.300Rf", clicked_y);
-mpfr_snprintf(out_sz, sizeof(out_sz), "%.300Rf", sz);
-g_params.center_re_str = out_x;
-g_params.center_im_str = out_y;
-g_params.size_str = out_sz;
-mpfr_clears(cx, cy, sz, st, mx, my, clicked_x, clicked_y, NULL);
-SetEvent(g_render_event); 
-return 0;
-}
-case WM_KEYDOWN: {
-if (wp >= '1' && wp <= '8') {
-g_abort = true;
-std::lock_guard<std::mutex> lock(g_params_mutex);
-if (wp == '1') {
-g_params.center_re_str = "-1.74907816150520173167912454515663360420734509948112463480292338384";
-g_params.center_im_str = "-0.00000550991906629096602513098567268615714673236269915508056068145";
-g_params.size_str  = "1.53e-62";
-}
-if (wp == '2') {
-g_params.center_re_str = "-1.7489436617686633372073552153211507258063533373824414679761";
-g_params.center_im_str = "-0.0000073748967541889836640985849393311615399776865199722997";
-g_params.size_str  = "1.01e-55";
-}
-if (wp == '3') {
-g_params.center_re_str = "-1.7491311840575335110236048528001036247123430447933925298694915282522178938437759580179";
-g_params.center_im_str = "-0.0001996960702541036804654299663680287246637758588467627907752429037173153157138373325";
-g_params.size_str  = "2.84e-82";
-}
-if (wp == '4') {
-g_params.center_re_str = "-1.74994586497557459407526067070055710001";
-g_params.center_im_str = "-0.0000000852088539604644334731909824511";
-g_params.size_str  = "7.17e-36";
-}
-if (wp == '5') {
-g_params.center_re_str = "-1.267078059171397835210199054200436920994876769284288837862647";
-g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
-g_params.size_str  = "2.4e-57";
-}
-if (wp == '6') {
-g_params.center_re_str = "-1.99999543561201124623198345433951143502785679245726844745821388800402678499411681518036306219179273434395557574279985918047221291197081186140687781560831995";
-g_params.center_im_str = "-0.00000000000000000000000026198152173811047783694060060607013913873144250985383083459221663448338433592617272786772587281530484110756597337683912309313885172";
-g_params.size_str  = "1.15e-119";
-}
-if (wp == '7') {
-g_params.center_re_str = "-0.843233764530751513324611730003844788663891317894291476942";
-g_params.center_im_str = "0.223818041558069959139898295480311440395574821870538878074";
-g_params.size_str  = "2.66e-52";
-}
-if (wp == '8') {
-g_params.center_re_str = "-0.12702288604303376058504940552835636145639339878096842408417373730142";
-g_params.center_im_str = "-0.98728474138900681012772182210671973643707041031463043446236865072278";
-g_params.size_str  = "6.18e-64";
-}
-mpfr_t sz, st;
-mpfr_inits2(MPFR_BITS, sz, st, NULL);
-mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
-mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
-g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
-mpfr_clears(sz, st, NULL);
-SetEvent(g_render_event);
-return 0;
-}
-if (wp == VK_UP || wp == VK_DOWN) {
-g_abort = true;
-std::lock_guard<std::mutex> lock(g_params_mutex);
-mpfr_t sz, st;
-mpfr_inits2(MPFR_BITS, sz, st, NULL);
-mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
-if (wp == VK_UP) {
-mpfr_div_d(sz, sz, 1.05, MPFR_RNDN);
-}
-else if (wp == VK_DOWN) {
-mpfr_mul_d(sz, sz, 1.05, MPFR_RNDN);
-}
-mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
-g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
-char out_sz[2048]; 
-mpfr_snprintf(out_sz, sizeof(out_sz), "%.300Rf", sz);
-g_params.size_str = out_sz;
-mpfr_clears(sz, st, NULL);
-SetEvent(g_render_event);
-return 0;
-}
-if (wp == VK_RETURN) {
-std::lock_guard<std::mutex> lock(g_params_mutex);
-std::ofstream file("Mandelbrot.txt");
-if (file.is_open()) {
-file << g_params.center_re_str << "\n" << g_params.center_im_str << "\n" << g_params.size_str << "\n";
-file.close();
-}
-return 0;
-}
-if (wp == VK_BACK) {
-std::ifstream file("Mandelbrot.txt");
-if (file.is_open()) {
-std::vector<std::string> lines; std::string line;
-while (std::getline(file, line)) {
-if (!line.empty()) lines.push_back(line);
-if (lines.size() == 3) break;
-}
-file.close();
-if (lines.size() == 3) {
-g_abort = true;
-std::lock_guard<std::mutex> lock(g_params_mutex);
-g_params.center_re_str = lines[0];
-g_params.center_im_str = lines[1];
-g_params.size_str  = lines[2];
-mpfr_t sz, st;
-mpfr_inits2(MPFR_BITS, sz, st, NULL);
-mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
-mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
-g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
-mpfr_clears(sz, st, NULL);
-SetEvent(g_render_event);
-}
-}
-return 0;
-}
-break; 
-}
-case WM_DESTROY: PostQuitMessage(0); return 0;
-}
-return DefWindowProc(hwnd, msg, wp, lp);
-}
-int main() {
-HINSTANCE inst = GetModuleHandle(NULL);
-WNDCLASS wc = {0};
-wc.lpfnWndProc = wnd_proc;
-wc.hInstance = inst;
-wc.hIcon = LoadIcon(inst, MAKEINTRESOURCE(1));
-wc.lpszClassName = L"MandelClass";
-wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-RegisterClass(&wc);
-HWND hwnd = CreateWindowEx(0, L"MandelClass", L"Mandelbrot set. MPFR + Perturbation. OpenMP. Supersampling 2x2",WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT,WIDTH + 16, HEIGHT + 38, NULL, NULL, inst, NULL);
-HDC hdc_win = GetDC(hwnd);
-HDC hdc_mem = CreateCompatibleDC(hdc_win);
-BITMAPINFO bmi = {0};
-bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-bmi.bmiHeader.biWidth = WIDTH;
-bmi.bmiHeader.biHeight = -HEIGHT;
-bmi.bmiHeader.biPlanes = 1;
-bmi.bmiHeader.biBitCount = 32;
-bmi.bmiHeader.biCompression = BI_RGB;
-RGBQUAD* screen_pixels = nullptr;
-HBITMAP h_bmp = CreateDIBSection(hdc_mem, &bmi, DIB_RGB_COLORS, (void**)&screen_pixels, NULL, 0);
-SelectObject(hdc_mem, h_bmp);
-g_params.iter_max = 500000;
-g_params.center_re_str = "-1.74919762896578937419423768162729211653261585574161734756645570271259437106847945278504682550816934045282325615313706";
-g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
-g_params.size_str  = "1.34e-113";
-mpfr_t sz, st;
-mpfr_inits2(MPFR_BITS, sz, st, NULL);
-mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
-mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
-g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
-mpfr_clears(sz, st, NULL);
-g_render_event = CreateEvent(NULL, TRUE, TRUE, NULL);
-std::thread(thread_mandelbrot_calc).detach();
-std::thread(thread_palette_rotator, hdc_win, hdc_mem, screen_pixels).detach();
-MSG msg;
-while (GetMessage(&msg, NULL, 0, 0)) {
-TranslateMessage(&msg);
-DispatchMessage(&msg);
-}
-return 0;
+    switch (msg) {
+        case WM_LBUTTONDOWN:
+        case WM_RBUTTONDOWN: {
+            g_abort = true; 
+            std::lock_guard<std::mutex> lock(g_params_mutex);
+            
+            mpfr_t cx, cy, sz, st, mx, my, clicked_x, clicked_y;
+            mpfr_inits2(MPFR_BITS, cx, cy, sz, st, mx, my, clicked_x, clicked_y, NULL);
+            mpfr_set_str(cx, g_params.center_re_str.c_str(), 10, MPFR_RNDN);
+            mpfr_set_str(cy, g_params.center_im_str.c_str(), 10, MPFR_RNDN);
+            mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
+            mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
+            
+            double mouse_x_d = (double)((short)LOWORD(lp));
+            double mouse_y_d = (double)((short)HIWORD(lp));
+            double ss_mouse_x = mouse_x_d * 2.0;
+            double ss_mouse_y = mouse_y_d * 2.0;
+            
+            mpfr_set_d(mx, ss_mouse_x - (double)(SS_W / 2), MPFR_RNDN);
+            mpfr_set_d(my, (double)(SS_H / 2) - ss_mouse_y, MPFR_RNDN); 
+            mpfr_mul(mx, mx, st, MPFR_RNDN);
+            mpfr_mul(my, my, st, MPFR_RNDN);
+            mpfr_add(clicked_x, cx, mx, MPFR_RNDN);
+            mpfr_add(clicked_y, cy, my, MPFR_RNDN);
+            
+            if (msg == WM_LBUTTONDOWN) {
+                mpfr_div_ui(sz, sz, 2, MPFR_RNDN);
+            } else {
+                mpfr_mul_ui(sz, sz, 2, MPFR_RNDN);
+            }
+            
+            mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
+            g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
+            
+            char out_x[2048], out_y[2048], out_sz[2048];
+            mpfr_snprintf(out_x, sizeof(out_x), "%.300Rf", clicked_x);
+            mpfr_snprintf(out_y, sizeof(out_y), "%.300Rf", clicked_y);
+            mpfr_snprintf(out_sz, sizeof(out_sz), "%.300Rf", sz);
+            
+            g_params.center_re_str = out_x;
+            g_params.center_im_str = out_y;
+            g_params.size_str = out_sz;
+            
+            mpfr_clears(cx, cy, sz, st, mx, my, clicked_x, clicked_y, NULL);
+            SetEvent(g_render_event); 
+            return 0;
+        }
+        
+        case WM_KEYDOWN: {
+            if (wp >= '1' && wp <= '8') {
+                g_abort = true;
+                std::lock_guard<std::mutex> lock(g_params_mutex);
+                
+                if (wp == '1') {
+                    g_params.center_re_str = "-1.74907816150520173167912454515663360420734509948112463480292338384";
+                    g_params.center_im_str = "-0.00000550991906629096602513098567268615714673236269915508056068145";
+                    g_params.size_str  = "1.53e-62";
+                }
+                if (wp == '2') {
+                    g_params.center_re_str = "-1.7489436617686633372073552153211507258063533373824414679761";
+                    g_params.center_im_str = "-0.0000073748967541889836640985849393311615399776865199722997";
+                    g_params.size_str  = "1.01e-55";
+                }
+                if (wp == '3') {
+                    g_params.center_re_str = "-1.7491311840575335110236048528001036247123430447933925298694915282522178938437759580179";
+                    g_params.center_im_str = "-0.0001996960702541036804654299663680287246637758588467627907752429037173153157138373325";
+                    g_params.size_str  = "2.84e-82";
+                }
+                if (wp == '4') {
+                    g_params.center_re_str = "-1.74994586497557459407526067070055710001";
+                    g_params.center_im_str = "-0.0000000852088539604644334731909824511";
+                    g_params.size_str  = "7.17e-36";
+                }
+                if (wp == '5') {
+                    g_params.center_re_str = "-1.267078059171397835210199054200436920994876769284288837862647";
+                    g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
+                    g_params.size_str  = "2.4e-57";
+                }
+                if (wp == '6') {
+                    g_params.center_re_str = "-1.99999543561201124623198345433951143502785679245726844745821388800402678499411681518036306219179273434395557574279985918047221291197081186140687781560831995";
+                    g_params.center_im_str = "-0.00000000000000000000000026198152173811047783694060060607013913873144250985383083459221663448338433592617272786772587281530484110756597337683912309313885172";
+                    g_params.size_str  = "1.15e-119";
+                }
+                if (wp == '7') {
+                    g_params.center_re_str = "-0.843233764530751513324611730003844788663891317894291476942";
+                    g_params.center_im_str = "0.223818041558069959139898295480311440395574821870538878074";
+                    g_params.size_str  = "2.66e-52";
+                }
+                if (wp == '8') {
+                    g_params.center_re_str = "-0.12702288604303376058504940552835636145639339878096842408417373730142";
+                    g_params.center_im_str = "-0.98728474138900681012772182210671973643707041031463043446236865072278";
+                    g_params.size_str  = "6.18e-64";
+                }
+                
+                mpfr_t sz, st;
+                mpfr_inits2(MPFR_BITS, sz, st, NULL);
+                mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
+                mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
+                g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
+                mpfr_clears(sz, st, NULL);
+                
+                SetEvent(g_render_event);
+                return 0;
+            }
+            
+            if (wp == VK_UP || wp == VK_DOWN) {
+                g_abort = true;
+                std::lock_guard<std::mutex> lock(g_params_mutex);
+                
+                mpfr_t sz, st;
+                mpfr_inits2(MPFR_BITS, sz, st, NULL);
+                mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
+                
+                if (wp == VK_UP) {
+                    mpfr_div_d(sz, sz, 1.05, MPFR_RNDN);
+                } else if (wp == VK_DOWN) {
+                    mpfr_mul_d(sz, sz, 1.05, MPFR_RNDN);
+                }
+                
+                mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
+                g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
+                
+                char out_sz[2048]; 
+                mpfr_snprintf(out_sz, sizeof(out_sz), "%.300Rf", sz);
+                g_params.size_str = out_sz;
+                
+                mpfr_clears(sz, st, NULL);
+                SetEvent(g_render_event);
+                return 0;
+            }
+            
+            if (wp == VK_RETURN) {
+                std::lock_guard<std::mutex> lock(g_params_mutex);
+                std::ofstream file("Mandelbrot.txt");
+                if (file.is_open()) {
+                    file << g_params.center_re_str << "\n" << g_params.center_im_str << "\n" << g_params.size_str << "\n";
+                    file.close();
+                }
+                return 0;
+            }
+            
+            if (wp == VK_BACK) {
+                std::ifstream file("Mandelbrot.txt");
+                if (file.is_open()) {
+                    std::vector<std::string> lines; 
+                    std::string line;
+                    while (std::getline(file, line)) {
+                        if (!line.empty()) lines.push_back(line);
+                        if (lines.size() == 3) break;
+                    }
+                    file.close();
+                    
+                    if (lines.size() == 3) {
+                        g_abort = true;
+                        std::lock_guard<std::mutex> lock(g_params_mutex);
+                        g_params.center_re_str = lines[0];
+                        g_params.center_im_str = lines[1];
+                        g_params.size_str  = lines[2];
+                        
+                        mpfr_t sz, st;
+                        mpfr_inits2(MPFR_BITS, sz, st, NULL);
+                        mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
+                        mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
+                        g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
+                        mpfr_clears(sz, st, NULL);
+                        
+                        SetEvent(g_render_event);
+                    }
+                }
+                return 0;
+            }
+            break; 
+        }
+        
+        case WM_DESTROY: 
+            PostQuitMessage(0); 
+            return 0;
+    }
+    return DefWindowProc(hwnd, msg, wp, lp);
 }
 
+
+
+int main() {
+    HINSTANCE inst = GetModuleHandle(NULL);
+    WNDCLASS wc = {0};
+    
+    wc.lpfnWndProc   = wnd_proc;
+    wc.hInstance     = inst;
+    wc.hIcon         = LoadIcon(inst, MAKEINTRESOURCE(1));
+    wc.lpszClassName = L"MandelClass";
+    wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+    RegisterClass(&wc);
+    
+    HWND hwnd = CreateWindowEx(
+        0, L"MandelClass", 
+        L"Mandelbrot set. MPFR + Perturbation. Pure C++11. Supersampling 2x2",
+        WS_OVERLAPPEDWINDOW | WS_VISIBLE, 
+        CW_USEDEFAULT, CW_USEDEFAULT,
+        WIDTH + 16, HEIGHT + 38, 
+        NULL, NULL, inst, NULL
+    );
+    
+    HDC hdc_win = GetDC(hwnd);
+    HDC hdc_mem = CreateCompatibleDC(hdc_win);
+    
+    BITMAPINFO bmi = {0};
+    bmi.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth       = WIDTH;
+    bmi.bmiHeader.biHeight      = -HEIGHT;
+    bmi.bmiHeader.biPlanes      = 1;
+    bmi.bmiHeader.biBitCount    = 32;
+    bmi.bmiHeader.biCompression = BI_RGB;
+    
+    RGBQUAD* screen_pixels = nullptr;
+    HBITMAP h_bmp = CreateDIBSection(hdc_mem, &bmi, DIB_RGB_COLORS, (void**)&screen_pixels, NULL, 0);
+    SelectObject(hdc_mem, h_bmp);
+    
+    g_params.iter_max = 500000;
+    g_params.center_re_str = "-1.74919762896578937419423768162729211653261585574161734756645570271259437106847945278504682550816934045282325615313706";
+    g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
+    g_params.size_str  = "1.34e-113";
+    
+    mpfr_t sz, st;
+    mpfr_inits2(MPFR_BITS, sz, st, NULL);
+    mpfr_set_str(sz, g_params.size_str.c_str(), 10, MPFR_RNDN);
+    mpfr_div_ui(st, sz, SS_W, MPFR_RNDN);
+    g_params.step_d = mpfr_get_d(st, MPFR_RNDN);
+    mpfr_clears(sz, st, NULL);
+    
+    g_render_event = CreateEvent(NULL, TRUE, TRUE, NULL);
+    
+    std::thread(thread_mandelbrot_calc).detach();
+    std::thread(thread_palette_rotator, hdc_win, hdc_mem, screen_pixels).detach();
+    
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    
+    return 0;
+}
