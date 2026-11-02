@@ -204,13 +204,12 @@ g_params.center_im_str = "-0.000000425307771524404227258550121592494011509565151
 g_params.size_str  = "1.34e-113";
 ```
 
-
-
-| | | |
-| :--- | :---: | ---: |
-| | https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481 | |
    
-
+<p align="center">
+  <a href="https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481">
+    <img src="1.png" width="1000" alt="Mandelbrot Zoom Preview">
+  </a>
+</p>
 
 
 ```C++
