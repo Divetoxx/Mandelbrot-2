@@ -205,8 +205,10 @@ g_params.size_str  = "1.34e-113";
 ```
 
 
-![](https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481) 
-   
+
+<p align="center">
+  <video src="https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481" controls width="100%"></video>
+</p>   
 
 
 
