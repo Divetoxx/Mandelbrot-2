@@ -203,7 +203,18 @@ g_params.center_re_str = "-1.749197628965789374194237681627292116532615855741617
 g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
 g_params.size_str  = "1.34e-113";
 ```
-https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481
+
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481" 
+         autoplay="autoplay" 
+         loop="loop" 
+         muted="muted" 
+         playsinline="playsinline"
+         controls="controls" 
+         style="max-width: 100%; width: 1000px; height: auto;">
+  </video>
+</div>
+
 
 
 ```C++
