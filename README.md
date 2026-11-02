@@ -204,16 +204,9 @@ g_params.center_im_str = "-0.000000425307771524404227258550121592494011509565151
 g_params.size_str  = "1.34e-113";
 ```
 
-<div align="center">
-  <video src="https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481" 
-         autoplay="autoplay" 
-         loop="loop" 
-         muted="muted" 
-         playsinline="playsinline"
-         controls="controls" 
-         style="max-width: 100%; width: 1000px; height: auto;">
-  </video>
-</div>
+
+![](https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481) 
+   
 
 
 
