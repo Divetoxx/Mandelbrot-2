@@ -205,10 +205,6 @@ g_params.size_str  = "1.34e-113";
 ```
 https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481
 
-Or static:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%201.jpg)
-
 
 ```C++
 if (wp == '1') {
@@ -217,10 +213,6 @@ g_params.center_im_str = "-0.000005509919066290966025130985672686157146732362699
 g_params.size_str      = "1.53e-62"; }
 ```
 https://github.com/user-attachments/assets/019a873e-55bb-4616-a92a-cf9825672798
-
-Or static:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%202.jpg)
 
 
 ```C++
@@ -231,10 +223,6 @@ g_params.size_str      = "1.01e-55"; }
 ```
 https://github.com/user-attachments/assets/1111a250-20d9-46f7-8d87-e4ea843c48d5
 
-Or static:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%203.jpg)
-
 
 ```C++
 if (wp == '3') {
@@ -243,10 +231,6 @@ g_params.center_im_str = "-0.000199696070254103680465429966368028724663775858846
 g_params.size_str      = "2.84e-82"; }
 ```
 https://github.com/user-attachments/assets/ec5accfe-b53e-48d6-a971-10af14999527
-
-Or static:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%204.jpg)
 
 
 ```C++
@@ -257,10 +241,6 @@ g_params.size_str      = "7.17e-36"; }
 ```
 https://github.com/user-attachments/assets/545b722a-a2a5-4ec2-ba5c-8a5c9d052a32
 
-Or static:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%205.jpg)
-
 
 ```C++
 if (wp == '5') {
@@ -269,10 +249,6 @@ g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384
 g_params.size_str      = "2.4e-57"; }
 ```
 https://github.com/user-attachments/assets/37a76cb8-992b-4d08-84dd-c8b5138eec1a
-
-Or static:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%206.jpg)
 
 
 ```C++
@@ -283,10 +259,6 @@ g_params.size_str      = "1.15e-119"; }
 ```
 https://github.com/user-attachments/assets/74aa5a47-8197-4c16-a7c5-4bffc1204ea0
 
-Or static:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%207.jpg)
-
 
 ```C++
 if (wp == '7') {
@@ -296,10 +268,6 @@ g_params.size_str  = "2.66e-52"; }
 ```
 https://github.com/user-attachments/assets/14efdbea-797f-420d-9694-72625f2b0e0a
 
-Or static:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%208.jpg)
-
 
 ```C++
 if (wp == '8') {
@@ -308,10 +276,6 @@ g_params.center_im_str = "-0.987284741389006810127721822106719736437070410314630
 g_params.size_str  = "6.18e-64"; }
 ```
 https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
-
-Or static:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%209.jpg)
 
 
 
@@ -543,10 +507,6 @@ g_params.size_str  = "1.34e-113";
 ```
 https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481
 
-Или статичная:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%201.jpg)
-
 
 ```C++
 if (wp == '1') {
@@ -555,10 +515,6 @@ g_params.center_im_str = "-0.000005509919066290966025130985672686157146732362699
 g_params.size_str      = "1.53e-62"; }
 ```
 https://github.com/user-attachments/assets/019a873e-55bb-4616-a92a-cf9825672798
-
-Или статичная:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%202.jpg)
 
 
 ```C++
@@ -569,10 +525,6 @@ g_params.size_str      = "1.01e-55"; }
 ```
 https://github.com/user-attachments/assets/1111a250-20d9-46f7-8d87-e4ea843c48d5
 
-Или статичная:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%203.jpg)
-
 
 ```C++
 if (wp == '3') {
@@ -581,10 +533,6 @@ g_params.center_im_str = "-0.000199696070254103680465429966368028724663775858846
 g_params.size_str      = "2.84e-82"; }
 ```
 https://github.com/user-attachments/assets/ec5accfe-b53e-48d6-a971-10af14999527
-
-Или статичная:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%204.jpg)
 
 
 ```C++
@@ -595,10 +543,6 @@ g_params.size_str      = "7.17e-36"; }
 ```
 https://github.com/user-attachments/assets/545b722a-a2a5-4ec2-ba5c-8a5c9d052a32
 
-Или статичная:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%205.jpg)
-
 
 ```C++
 if (wp == '5') {
@@ -607,10 +551,6 @@ g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384
 g_params.size_str      = "2.4e-57"; }
 ```
 https://github.com/user-attachments/assets/37a76cb8-992b-4d08-84dd-c8b5138eec1a
-
-Или статичная:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%206.jpg)
 
 
 ```C++
@@ -621,10 +561,6 @@ g_params.size_str      = "1.15e-119"; }
 ```
 https://github.com/user-attachments/assets/74aa5a47-8197-4c16-a7c5-4bffc1204ea0
 
-Или статичная:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%207.jpg)
-
 
 ```C++
 if (wp == '7') {
@@ -633,10 +569,6 @@ g_params.center_im_str = "0.2238180415580699591398982954803114403955748218705388
 g_params.size_str  = "2.66e-52"; }
 ```
 https://github.com/user-attachments/assets/14efdbea-797f-420d-9694-72625f2b0e0a
-
-Или статичная:
-
-![Mandelbrot Set](Mandelbrot%20Set%20Image%208.jpg)
 
 
 ```C++
@@ -647,9 +579,8 @@ g_params.size_str  = "6.18e-64"; }
 ```
 https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
 
-Или статичная:
 
-![Mandelbrot Set](Mandelbrot%20Set%20Image%209.jpg)
+
 
 
 
