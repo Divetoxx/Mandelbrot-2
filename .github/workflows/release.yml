@@ -64,7 +64,7 @@ jobs:
             * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.
             * **Dynamic Palette Rotation:** Classic, ultra-smooth fractal color-cycling effects with zero performance overhead.
 
-            <video src=""></video>
+            <video src="https://github.com/user-attachments/assets/dd3ffb4a-0c68-439b-b120-1398da1de029"></video>
 
           files: |
             Mandelbrot_AVX2.exe
