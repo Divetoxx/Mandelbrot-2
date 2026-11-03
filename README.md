@@ -18,7 +18,9 @@ g_params.center_re_str = "-1.749197628965789374194237681627292116532615855741617
 g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
 g_params.size_str  = "1.34e-113";
 ```
-![](Mandelbrot.mp4)
+
+<video src="https://githubusercontent.com/Divetoxx/Mandelbrot-2/Mandelbrot.mp4" controls width="100%"></video>
+
 
 ## Credits & Acknowledgments
 
