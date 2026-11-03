@@ -19,7 +19,7 @@ g_params.center_im_str = "-0.000000425307771524404227258550121592494011509565151
 g_params.size_str  = "1.34e-113";
 ```
 
-<video src="https://raw.githubusercontent.com/Divetoxx/Mandelbrot-2/Mandelbrot.mp4" controls width="100%"></video>
+
 
 
 ## Credits & Acknowledgments
@@ -101,6 +101,8 @@ g_params.center_re_str = "-1.74994586497557459407526067070055710001";
 g_params.center_im_str = "-0.0000000852088539604644334731909824511";
 g_params.size_str      = "7.17e-36"; }
 ```
+https://github.com/user-attachments/assets/7a75a2c7-e497-4f6e-881f-2bec506f05b3
+
 
 ## Bilinear Approximation
 
