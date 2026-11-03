@@ -18,9 +18,7 @@ g_params.center_re_str = "-1.749197628965789374194237681627292116532615855741617
 g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
 g_params.size_str  = "1.34e-113";
 ```
-
-
-
+https://github.com/user-attachments/assets/64331d12-0a2a-48e9-867d-b12cef9b71cd
 
 ## Credits & Acknowledgments
 
@@ -53,6 +51,9 @@ g_params.center_re_str = "-1.267078059171397835210199054200436920994876769284288
 g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
 g_params.size_str      = "2.4e-57"; }
 ```
+
+https://github.com/user-attachments/assets/80efc3d1-2f38-45a3-9baf-e2976f9658ab
+
 
 ## Arbitrary Precision Arithmetic (Infinite Depth)
 
@@ -140,6 +141,8 @@ g_params.center_im_str = "-0.987284741389006810127721822106719736437070410314630
 g_params.size_str  = "6.18e-64"; }
 ```
 
+https://github.com/user-attachments/assets/dd3ffb4a-0c68-439b-b120-1398da1de029
+
 
 ## True 2x2 SSAA: Direct RGB Integration Space
 
@@ -191,6 +194,8 @@ g_params.center_re_str = "-1.999995435612011246231983454339511435027856792457268
 g_params.center_im_str = "-0.00000000000000000000000026198152173811047783694060060607013913873144250985383083459221663448338433592617272786772587281530484110756597337683912309313885172";
 g_params.size_str      = "1.15e-119"; }
 ```
+https://github.com/user-attachments/assets/1c2e880b-48cf-43f9-8036-f841b9fb2d25
+
 
 ## Controls & Hotkeys
 The application provides intuitive mouse and keyboard controls for exploring the fractal:
@@ -222,6 +227,14 @@ Example file:
 7.3e-15
 ```
 
+```C++
+if (wp == '7') {
+g_params.center_re_str = "-0.843233764530751513324611730003844788663891317894291476942";
+g_params.center_im_str = "0.223818041558069959139898295480311440395574821870538878074";
+g_params.size_str  = "2.66e-52"; }
+```
+https://github.com/user-attachments/assets/18951d41-fe96-4edb-8332-93ddfb0a84d0
+
 
 ### Controls & Hotkeys
 
@@ -252,6 +265,8 @@ g_params.center_re_str = "-1.749197628965789374194237681627292116532615855741617
 g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
 g_params.size_str  = "1.34e-113";
 ```
+https://github.com/user-attachments/assets/64331d12-0a2a-48e9-867d-b12cef9b71cd
+
 
 ## Благодарности и признание авторства (Credits & Acknowledgments)
 
@@ -291,6 +306,8 @@ g_params.center_re_str = "-1.267078059171397835210199054200436920994876769284288
 g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
 g_params.size_str      = "2.4e-57"; }
 ```
+https://github.com/user-attachments/assets/80efc3d1-2f38-45a3-9baf-e2976f9658ab
+
 
 ## Безграничная точность (Arbitrary Precision Arithmetic)
 
@@ -341,6 +358,9 @@ g_params.center_im_str = "-0.0000000852088539604644334731909824511";
 g_params.size_str      = "7.17e-36"; }
 ```
 
+https://github.com/user-attachments/assets/7a75a2c7-e497-4f6e-881f-2bec506f05b3
+
+
 ## Билинейная аппроксимация (Bilinear Approximation)
 
 Расчет фрактала выполняется существенно быстрее за счет интеграции метода билинейной аппроксимации (**BLA Skip-100**). 
@@ -377,6 +397,8 @@ g_params.center_re_str = "-0.127022886043033760585049405528356361456393398780968
 g_params.center_im_str = "-0.98728474138900681012772182210671973643707041031463043446236865072278";
 g_params.size_str  = "6.18e-64"; }
 ```
+https://github.com/user-attachments/assets/dd3ffb4a-0c68-439b-b120-1398da1de029
+
 
 ## Истинное сглаживание SSAA 2x2: Прямая интеграция в RGB-пространство
 
@@ -439,6 +461,8 @@ g_params.center_im_str = "-0.000000000000000000000000261981521738110477836940600
 g_params.size_str      = "1.15e-119"; }
 ```
 
+https://github.com/user-attachments/assets/1c2e880b-48cf-43f9-8036-f841b9fb2d25
+
 
 ## Управление и горячие клавиши
 
@@ -470,6 +494,16 @@ g_params.size_str      = "1.15e-119"; }
 -0.012039512139649579
 7.3e-15
 ```
+
+```C++
+if (wp == '7') {
+g_params.center_re_str = "-0.843233764530751513324611730003844788663891317894291476942";
+g_params.center_im_str = "0.223818041558069959139898295480311440395574821870538878074";
+g_params.size_str  = "2.66e-52"; }
+```
+
+https://github.com/user-attachments/assets/18951d41-fe96-4edb-8332-93ddfb0a84d0
+
 
 
 ### Горячие клавиши
