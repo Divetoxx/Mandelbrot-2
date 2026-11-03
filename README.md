@@ -11,7 +11,13 @@
 
 # 🇺🇸 English Version
 
-# Mandelbrot GUI: Visualizer with Perturbation Theory and Bilinear approximation
+# Mandelbrot GUI Renderer: Perturbation Theory and Bilinear approximation
+
+```C++
+g_params.center_re_str = "-1.74919762896578937419423768162729211653261585574161734756645570271259437106847945278504682550816934045282325615313706";
+g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
+g_params.size_str  = "1.34e-113";
+```
 
 ## Credits & Acknowledgments
 
@@ -38,6 +44,12 @@ and advanced palette conversion algorithms.
 * **DwmFlush Synchronization:** Stutter-free, hardware-aligned frame presentation synchronized with Windows DWM.
 * **Dynamic Palette Rotation:** Classic, ultra-smooth fractal color-cycling effects with zero performance overhead.
 
+```C++
+if (wp == '5') {
+g_params.center_re_str = "-1.267078059171397835210199054200436920994876769284288837862647";
+g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
+g_params.size_str      = "2.4e-57"; }
+```
 
 ## Arbitrary Precision Arithmetic (Infinite Depth)
 
@@ -80,6 +92,13 @@ iteration loop. By minimizing heavy branching and avoiding complex nested condit
 branch prediction efficiency and allows the CPU pipeline to execute the core mathematics with maximum throughput.
 
 
+```C++
+if (wp == '4') {
+g_params.center_re_str = "-1.74994586497557459407526067070055710001";
+g_params.center_im_str = "-0.0000000852088539604644334731909824511";
+g_params.size_str      = "7.17e-36"; }
+```
+
 ## Bilinear Approximation
 
 The rendering engine achieves a massive performance leap by integrating the Bilinear Approximation 
@@ -108,6 +127,13 @@ The engine achieves perfect visual smoothness by synchronizing directly with the
 
 High-speed parallel computing built directly into the language standard. Scales transparently across architectures-delivering 
 flawless 100% CPU utilization whether running on a 4-core laptop or a 128-core high-performance server without external dependencies.
+
+```C++
+if (wp == '8') {
+g_params.center_re_str = "-0.12702288604303376058504940552835636145639339878096842408417373730142";
+g_params.center_im_str = "-0.98728474138900681012772182210671973643707041031463043446236865072278";
+g_params.size_str  = "6.18e-64"; }
+```
 
 
 ## True 2x2 SSAA: Direct RGB Integration Space
@@ -154,6 +180,13 @@ This makes the Mandelbrot Set a kind of absolute.
 The Mandelbrot set exists independently of our minds and technology. It is an infinite mathematical structure that 
 has always existed.
 
+```C++
+if (wp == '6') {
+g_params.center_re_str = "-1.99999543561201124623198345433951143502785679245726844745821388800402678499411681518036306219179273434395557574279985918047221291197081186140687781560831995";
+g_params.center_im_str = "-0.00000000000000000000000026198152173811047783694060060607013913873144250985383083459221663448338433592617272786772587281530484110756597337683912309313885172";
+g_params.size_str      = "1.15e-119"; }
+```
+
 ## Controls & Hotkeys
 The application provides intuitive mouse and keyboard controls for exploring the fractal:
 
@@ -196,87 +229,6 @@ Example file:
 | **Save Loc** | `ENTER` | Exports coordinates to `Mandelbrot.txt`. |
 | **Load Loc** | `BACKSPACE` | Imports coordinates and renders. |
 
-## The videos - they show the program! 
-
-```C++
-g_params.center_re_str = "-1.74919762896578937419423768162729211653261585574161734756645570271259437106847945278504682550816934045282325615313706";
-g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
-g_params.size_str  = "1.34e-113";
-```
-https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481
-
-
-```C++
-if (wp == '1') {
-g_params.center_re_str = "-1.74907816150520173167912454515663360420734509948112463480292338384";
-g_params.center_im_str = "-0.00000550991906629096602513098567268615714673236269915508056068145";
-g_params.size_str      = "1.53e-62"; }
-```
-https://github.com/user-attachments/assets/019a873e-55bb-4616-a92a-cf9825672798
-
-
-```C++
-if (wp == '2') {
-g_params.center_re_str = "-1.7489436617686633372073552153211507258063533373824414679761";
-g_params.center_im_str = "-0.0000073748967541889836640985849393311615399776865199722997";
-g_params.size_str      = "1.01e-55"; }
-```
-https://github.com/user-attachments/assets/1111a250-20d9-46f7-8d87-e4ea843c48d5
-
-
-```C++
-if (wp == '3') {
-g_params.center_re_str = "-1.7491311840575335110236048528001036247123430447933925298694915282522178938437759580179";
-g_params.center_im_str = "-0.0001996960702541036804654299663680287246637758588467627907752429037173153157138373325";
-g_params.size_str      = "2.84e-82"; }
-```
-https://github.com/user-attachments/assets/ec5accfe-b53e-48d6-a971-10af14999527
-
-
-```C++
-if (wp == '4') {
-g_params.center_re_str = "-1.74994586497557459407526067070055710001";
-g_params.center_im_str = "-0.0000000852088539604644334731909824511";
-g_params.size_str      = "7.17e-36"; }
-```
-https://github.com/user-attachments/assets/545b722a-a2a5-4ec2-ba5c-8a5c9d052a32
-
-
-```C++
-if (wp == '5') {
-g_params.center_re_str = "-1.267078059171397835210199054200436920994876769284288837862647";
-g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
-g_params.size_str      = "2.4e-57"; }
-```
-https://github.com/user-attachments/assets/37a76cb8-992b-4d08-84dd-c8b5138eec1a
-
-
-```C++
-if (wp == '6') {
-g_params.center_re_str = "-1.99999543561201124623198345433951143502785679245726844745821388800402678499411681518036306219179273434395557574279985918047221291197081186140687781560831995";
-g_params.center_im_str = "-0.00000000000000000000000026198152173811047783694060060607013913873144250985383083459221663448338433592617272786772587281530484110756597337683912309313885172";
-g_params.size_str      = "1.15e-119"; }
-```
-https://github.com/user-attachments/assets/74aa5a47-8197-4c16-a7c5-4bffc1204ea0
-
-
-```C++
-if (wp == '7') {
-g_params.center_re_str = "-0.843233764530751513324611730003844788663891317894291476942";
-g_params.center_im_str = "0.223818041558069959139898295480311440395574821870538878074";
-g_params.size_str  = "2.66e-52"; }
-```
-https://github.com/user-attachments/assets/14efdbea-797f-420d-9694-72625f2b0e0a
-
-
-```C++
-if (wp == '8') {
-g_params.center_re_str = "-0.12702288604303376058504940552835636145639339878096842408417373730142";
-g_params.center_im_str = "-0.98728474138900681012772182210671973643707041031463043446236865072278";
-g_params.size_str  = "6.18e-64"; }
-```
-https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
-
 
 
 
@@ -288,7 +240,13 @@ https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
 <a name="russian"></a>
 # 🇷🇺 Русская версия
 
-# Графический интерфейс Мандельброта: Визуализатор с методом возмущений и билинейную аппроксимацию.
+# Графический рендерер Мандельброта с методом возмущений и билинейную аппроксимацию.
+
+```C++
+g_params.center_re_str = "-1.74919762896578937419423768162729211653261585574161734756645570271259437106847945278504682550816934045282325615313706";
+g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
+g_params.size_str  = "1.34e-113";
+```
 
 ## Благодарности и признание авторства (Credits & Acknowledgments)
 
@@ -302,7 +260,6 @@ https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
 библиотек MPFR/GMP для сверхглубокого погружения.
 * **Claude Heiland-Allen** — за колоссальные математические исследования фрактального зума, сохранение исходного 
 программного наследия сообщества и разработку продвинутых алгоритмов трансформации палитр.
-
 
 
 ## Ключевые особенности:
@@ -323,7 +280,12 @@ double процессора.
 * **Синхронизация через DwmFlush:** Плавный вывод кадров без микрофризов и разрывов, аппаратно синхронизированный с диспетчером окон Windows DWM.
 * **Динамическое вращение палитры:** Классический, невероятно плавный эффект переливающихся цветов фрактала с нулевой нагрузкой на процессор.
 
-
+```C++
+if (wp == '5') {
+g_params.center_re_str = "-1.267078059171397835210199054200436920994876769284288837862647";
+g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
+g_params.size_str      = "2.4e-57"; }
+```
 
 ## Безграничная точность (Arbitrary Precision Arithmetic)
 
@@ -367,7 +329,12 @@ double процессора.
 возможно, код повышает эффективность предсказателя ветвлений процессора и позволяет конвейеру CPU выполнять базовые математические 
 расчеты с максимальной пропускной способностью.
 
-
+```C++
+if (wp == '4') {
+g_params.center_re_str = "-1.74994586497557459407526067070055710001";
+g_params.center_im_str = "-0.0000000852088539604644334731909824511";
+g_params.size_str      = "7.17e-36"; }
+```
 
 ## Билинейная аппроксимация (Bilinear Approximation)
 
@@ -398,6 +365,13 @@ double процессора.
 100%-ю загрузку процессора как на 4-ядерном ноутбуке, так и на 128-ядерном 
 высокопроизводительном сервере - абсолютно без внешних зависимостей.
 
+
+```C++
+if (wp == '8') {
+g_params.center_re_str = "-0.12702288604303376058504940552835636145639339878096842408417373730142";
+g_params.center_im_str = "-0.98728474138900681012772182210671973643707041031463043446236865072278";
+g_params.size_str  = "6.18e-64"; }
+```
 
 ## Истинное сглаживание SSAA 2x2: Прямая интеграция в RGB-пространство
 
@@ -453,6 +427,13 @@ double процессора.
 Множество Мандельброта существует независимо от нашего разума и технологий. 
 Это бесконечная математическая структура, которая существовала всегда.
 
+```C++
+if (wp == '6') {
+g_params.center_re_str = "-1.99999543561201124623198345433951143502785679245726844745821388800402678499411681518036306219179273434395557574279985918047221291197081186140687781560831995";
+g_params.center_im_str = "-0.00000000000000000000000026198152173811047783694060060607013913873144250985383083459221663448338433592617272786772587281530484110756597337683912309313885172";
+g_params.size_str      = "1.15e-119"; }
+```
+
 
 ## Управление и горячие клавиши
 
@@ -496,91 +477,6 @@ double процессора.
 | **Пресеты** | Клавиши `1` - `8` | Мгновенный переход к 8 предустановленным локациям. |
 | **Сохранить** | `ENTER` | Экспорт текущих координат и масштаба в файл `Mandelbrot.txt`. |
 | **Загрузить** | `BACKSPACE` | Импорт координат из файла и мгновенный переход к месту. |
-
-
-## Видео - показывает программу!
-
-```C++
-g_params.center_re_str = "-1.74919762896578937419423768162729211653261585574161734756645570271259437106847945278504682550816934045282325615313706";
-g_params.center_im_str = "-0.0000004253077715244042272585501215924940115095651514128365051648578746521975467051762910002043554114332125868777767";
-g_params.size_str  = "1.34e-113";
-```
-https://github.com/user-attachments/assets/bf4c67c9-48e7-4b1e-b855-a6b27e449481
-
-
-```C++
-if (wp == '1') {
-g_params.center_re_str = "-1.74907816150520173167912454515663360420734509948112463480292338384";
-g_params.center_im_str = "-0.00000550991906629096602513098567268615714673236269915508056068145";
-g_params.size_str      = "1.53e-62"; }
-```
-https://github.com/user-attachments/assets/019a873e-55bb-4616-a92a-cf9825672798
-
-
-```C++
-if (wp == '2') {
-g_params.center_re_str = "-1.7489436617686633372073552153211507258063533373824414679761";
-g_params.center_im_str = "-0.0000073748967541889836640985849393311615399776865199722997";
-g_params.size_str      = "1.01e-55"; }
-```
-https://github.com/user-attachments/assets/1111a250-20d9-46f7-8d87-e4ea843c48d5
-
-
-```C++
-if (wp == '3') {
-g_params.center_re_str = "-1.7491311840575335110236048528001036247123430447933925298694915282522178938437759580179";
-g_params.center_im_str = "-0.0001996960702541036804654299663680287246637758588467627907752429037173153157138373325";
-g_params.size_str      = "2.84e-82"; }
-```
-https://github.com/user-attachments/assets/ec5accfe-b53e-48d6-a971-10af14999527
-
-
-```C++
-if (wp == '4') {
-g_params.center_re_str = "-1.74994586497557459407526067070055710001";
-g_params.center_im_str = "-0.0000000852088539604644334731909824511";
-g_params.size_str      = "7.17e-36"; }
-```
-https://github.com/user-attachments/assets/545b722a-a2a5-4ec2-ba5c-8a5c9d052a32
-
-
-```C++
-if (wp == '5') {
-g_params.center_re_str = "-1.267078059171397835210199054200436920994876769284288837862647";
-g_params.center_im_str = "-0.123788215196292957558264285607075473360968832625384429809391";
-g_params.size_str      = "2.4e-57"; }
-```
-https://github.com/user-attachments/assets/37a76cb8-992b-4d08-84dd-c8b5138eec1a
-
-
-```C++
-if (wp == '6') {
-g_params.center_re_str = "-1.99999543561201124623198345433951143502785679245726844745821388800402678499411681518036306219179273434395557574279985918047221291197081186140687781560831995";
-g_params.center_im_str = "-0.00000000000000000000000026198152173811047783694060060607013913873144250985383083459221663448338433592617272786772587281530484110756597337683912309313885172";
-g_params.size_str      = "1.15e-119"; }
-```
-https://github.com/user-attachments/assets/74aa5a47-8197-4c16-a7c5-4bffc1204ea0
-
-
-```C++
-if (wp == '7') {
-g_params.center_re_str = "-0.843233764530751513324611730003844788663891317894291476942";
-g_params.center_im_str = "0.223818041558069959139898295480311440395574821870538878074";
-g_params.size_str  = "2.66e-52"; }
-```
-https://github.com/user-attachments/assets/14efdbea-797f-420d-9694-72625f2b0e0a
-
-
-```C++
-if (wp == '8') {
-g_params.center_re_str = "-0.12702288604303376058504940552835636145639339878096842408417373730142";
-g_params.center_im_str = "-0.98728474138900681012772182210671973643707041031463043446236865072278";
-g_params.size_str  = "6.18e-64"; }
-```
-https://github.com/user-attachments/assets/d104f654-a498-4ff7-a9db-d48dd0f98c61
-
-
-
 
 
 
